@@ -25,5 +25,8 @@ def config : RenderConfig where
   emitHtmlMulti := .immediately
   htmlDepth := 2
   extraHead := codeHighlightHead
+  logo := some "logo.svg"
+  logoLink := some "../"
+  extraFilesHtml := [("site/logo.svg", "logo.svg")]
 
 def main := manualMain (%doc Lectures.En) (extraSteps := [buildExercisesFrom mainFileName]) (config := config)
