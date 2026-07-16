@@ -42,9 +42,58 @@ header {
 }
 .header-title h1 { color: #ffffff; }
 #logo img { padding: 0.4rem 0 0.4rem 0.6rem; box-sizing: border-box; }
+
+body { background: #f8fafc; }
+
+/* Content as a landing-style card */
+.content-wrapper {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  padding: 2rem 2.5rem;
+  margin: 1.5rem;
+}
+@media screen and (max-width: 700px) {
+  .content-wrapper { padding: 1rem; margin: 0.5rem; border-radius: 0.75rem; }
+}
+
+/* Typography */
+main section p, main section li, main section dd { color: #334155; }
+main section strong { color: #0f172a; }
+main > section > h1 {
+  padding-bottom: 0.4rem;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, #1e3a8a, #0d9488) 1;
+}
 main section a { color: #1e3a8a; }
 main section a:hover { color: #0d9488; }
+
+/* Code blocks as slate panels */
+code.hl.lean.block {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+}
+
+/* Tables */
+table.tabular th, table.tabular td {
+  border: 1px solid #e2e8f0;
+  padding: 0.4rem 0.9rem;
+}
+table.tabular th { background: #f1f5f9; color: #0f172a; }
+table.tabular { border-collapse: collapse; }
+
+/* Table of contents */
+#toc { border-right: 1px solid #e2e8f0; }
+#toc a { color: #475569; }
 #toc a:hover { color: #0d9488; }
+#toc tr.current a { color: #1e3a8a; font-weight: 600; }
+
+/* Previous/next navigation */
+.prev-next-buttons > * { color: #1e3a8a; }
 "
 
 def codeHighlightHead : Array Verso.Output.Html :=
