@@ -1,41 +1,36 @@
 /-
-Copyright (c) 2024-2025 Lean FRO LLC. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Author: David Thrane Christiansen
+Shared build step that extracts `savedLean` blocks into files under
+`example-code` in the output directory. Parameterized by the path of the
+main module so both language builds can reuse it.
+
+Adapted from the Verso textbook template (Lean FRO LLC, Apache 2.0).
 -/
 
 import Std.Data.HashMap
 import VersoManual
-import TextbookTemplate
+import Lectures.Meta.Lean
 
 open Verso Doc
 open Verso.Genre Manual
-
 open Std (HashMap)
 
-open TextbookTemplate
-
-
--- Computes the path of this very `main`, to ensure that examples get names relative to it
-open Lean Elab Term Command in
-#eval show CommandElabM Unit from do
-  let here := (← liftTermElabM (readThe Lean.Core.Context)).fileName
-  elabCommand (← `(private def $(mkIdent `mainFileName) : System.FilePath := $(quote here)))
+namespace Lectures
 
 /--
-Extract the marked exercises and example code.
+Extract the marked exercises and example code, resolving saved filenames
+relative to the directory of `mainFile`.
 -/
-partial def buildExercises (mode : Mode) (cfg : Config) (_state : TraverseState) (text : Part Manual) : BuildLogT IO Unit := do
+partial def buildExercisesFrom (mainFile : System.FilePath) (mode : Mode) (cfg : Config) (_state : TraverseState) (text : Part Manual) : BuildLogT IO Unit := do
   let .multi := mode
     | pure ()
   let code := (← part text |>.run {}).snd
-  let dest := cfg.destination / "example-code"
-  let some mainDir := mainFileName.parent
-    | throw <| IO.userError "Can't find directory of `TextbookTemplateMain.lean`"
+  let dest := cfg.destination / "html-multi" / "example-code"
+  let some mainDir := mainFile.parent
+    | throw <| IO.userError s!"Can't find directory of `{mainFile}`"
 
   IO.FS.createDirAll <| dest
   for ⟨fn, f⟩ in code do
-    -- Make sure the path is relative to that of this one
+    -- Make sure the path is relative to that of the main module
     if let some fn' := fn.dropPrefix? mainDir.toString then
       let fn' := (fn'.dropWhile (· ∈ System.FilePath.pathSeparators)).copy
       let fn := dest / fn'
@@ -78,12 +73,3 @@ where
       for di in dis do
         for b in di.desc do block b
     | .para .. | .code .. => pure ()
-
-
-def config : RenderConfig where
-  emitTeX := false
-  emitHtmlSingle := .no
-  emitHtmlMulti := .immediately
-  htmlDepth := 2
-
-def main := manualMain (%doc TextbookTemplate) (extraSteps := [buildExercises]) (config := config)

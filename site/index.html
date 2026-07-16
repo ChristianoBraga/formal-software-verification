@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formal Software Verification · Verificação Formal de Software</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #475569;
+    --accent: #1e3a8a;
+    --accent2: #0d9488;
+    --border: #e2e8f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #93c5fd;
+      --accent2: #5eead4;
+      --border: #334155;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    padding: 2rem 1rem;
+  }
+  .card {
+    max-width: 44rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  }
+  .logo { width: 96px; height: 96px; }
+  h1 {
+    font-size: 1.75rem;
+    margin: 1.25rem 0 0.25rem;
+  }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+  }
+  p {
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0.75rem 0;
+    text-align: left;
+  }
+  p strong { color: var(--text); }
+  .links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0 0.5rem;
+    flex-wrap: wrap;
+  }
+  .links a {
+    display: inline-block;
+    padding: 0.8rem 2.2rem;
+    border-radius: 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  }
+  @media (prefers-color-scheme: dark) {
+    .links a { color: #0f172a; }
+  }
+  .links a:hover { filter: brightness(1.1); }
+  footer {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main class="card">
+  <img class="logo" src="logo.svg" alt="Course logo: turnstile with a check mark">
+  <h1>Formal Software Verification</h1>
+  <h2>Verificação Formal de Software</h2>
+  <p><strong>English.</strong> Lecture notes for a master's course on proving properties
+  of imperative programs in <a href="https://lean-lang.org">Lean</a>. The course runs from
+  classical logic and structured proofs, through functional programming, inductive
+  predicates, and big-step operational semantics, to Hoare logic and automated
+  verification with the <code>mvcgen</code> tactic. Every piece of Lean code in the notes
+  is checked by the compiler when the site is built.</p>
+  <p><strong>Português.</strong> Notas de aula de uma disciplina de mestrado sobre prova de
+  propriedades de programas imperativos em <a href="https://lean-lang.org">Lean</a>. A
+  disciplina vai da lógica clássica e das provas estruturadas, passando por programação
+  funcional, predicados indutivos e semântica operacional big-step, até a lógica de Hoare
+  e a verificação automatizada com a tática <code>mvcgen</code>. O compilador checa todo o
+  código Lean das notas na construção do site.</p>
+  <nav class="links">
+    <a href="en/">English</a>
+    <a href="pt/">Português</a>
+  </nav>
+  <footer>
+    Mestrado em Sistemas e Computação · Instituto Militar de Engenharia (IME) ·
+    Christiano Braga
+  </footer>
+</main>
+</body>
+</html>

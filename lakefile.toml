@@ -1,5 +1,5 @@
-name = "textbook"
-defaultTargets = ["TextbookTemplate", "textbook"]
+name = "lectures"
+defaultTargets = ["Lectures"]
 
 [[require]]
 name = "verso"
@@ -7,8 +7,12 @@ git = "https://github.com/leanprover/verso"
 rev = "v4.32.0"
 
 [[lean_lib]]
-name = "TextbookTemplate"
+name = "Lectures"
 
 [[lean_exe]]
-name = "textbook"
-root = "TextbookTemplateMain"
+name = "lectures-en"
+root = "LecturesEnMain"
+
+[[lean_exe]]
+name = "lectures-pt"
+root = "LecturesPtMain"

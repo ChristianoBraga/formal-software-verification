@@ -1,26 +1,46 @@
-This is a demonstration of a textbook built in Verso's manual genre.
+# Formal Software Verification — Lecture Notes
 
-To build it, run:
+Lecture notes for the course *Verificação Formal de Software* (IME, Mestrado em
+Sistemas e Computação), written in [Verso](https://github.com/leanprover/verso).
+
+**Published site:** <https://christianobraga.github.io/formal-software-verification/>
+([English](https://christianobraga.github.io/formal-software-verification/en/) ·
+[Português](https://christianobraga.github.io/formal-software-verification/pt/)).
+Every push to `main` rebuilds and redeploys the site via GitHub Actions
+(`.github/workflows/deploy.yml`); the landing page lives in `site/`.
+The notes exist in two languages, with parallel document trees:
+
+- `Lectures/En/` — English lectures, root document `Lectures/En.lean`
+- `Lectures/Pt/` — Portuguese lectures, root document `Lectures/Pt.lean`
+
+Lean code is identical in both versions; only the prose differs.
+
+## Building
+
 ```
-$ lake exe textbook
+lake exe lectures-en --output _out/en
+lake exe lectures-pt --output _out/pt
 ```
 
-This textbook is written in the `Manual` genre. It uses the same
-version of Lean for the example code as it does for Verso itself;
-please see [the package description example](../package-docs) for an
-example in which the Lean code is external to the document and written
-in a different version of Lean.
+Each build writes a multi-page HTML site to its output directory. The exercise
+files extracted from `savedLean` blocks (one file per lecture module) land in
+`html-multi/example-code/`, inside the served site, and each lecture's
+Exercises section links to its file.
 
-# Code Samples
+## Viewing
 
-Additionally, this example demonstrates a non-trivial extension to the
-manual genre: extraction of Lean modules from the inline examples. This
-extension uses [a custom `savedLean` code block](TextbookTemplate/Meta/Lean.lean)
-to indicate that an example or exercise should be saved. At elaboration time,
-a custom block element saves the original filename and the contents of the
-code block. Then, in [`TextbookTemplateMain.lean`](TextbookTemplateMain.lean), the
-custom build step `buildExercises` traverses the entire book prior to HTML
-generation, collecting the exercise blocks. The collected blocks are assembled
-into files and written to the `example-code` subdirectory of the output.
+Verso's HTML must be served, not opened directly from the filesystem:
 
+```
+python3 -m http.server 8000 --directory _out/en/html-multi
+```
 
+## Adding a lecture
+
+1. Create `Lectures/En/LectureNN.lean` and `Lectures/Pt/LectureNN.lean`
+   (start from Lecture01 as a model).
+2. Import and `{include 0 ...}` them in `Lectures/En.lean` and `Lectures/Pt.lean`.
+3. Put exercises in `savedLean` blocks so they are extracted for students.
+4. Add formal citations to `Lectures/Papers.lean` when Verso's citation types
+   fit (`InProceedings`, `Article`, `Thesis`, `ArXiv`); otherwise use margin
+   notes with the full reference.

@@ -1,7 +1,10 @@
 /-
-Copyright (c) 2025 Lean FRO LLC. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Author: David Thrane Christiansen
+Custom code blocks for the Formal Software Verification lecture notes.
+`savedLean` blocks are elaborated like `lean` blocks and additionally
+extracted to files in the `example-code` output directory, so students
+receive a runnable exercise file per lecture.
+
+Adapted from the Verso textbook template (Lean FRO LLC, Apache 2.0).
 -/
 
 import VersoManual
@@ -11,7 +14,7 @@ open Verso.Doc Elab
 open Verso.ArgParse
 open Lean
 
-namespace TextbookTemplate
+namespace Lectures
 
 block_extension Block.savedLean (file : String) (source : String) where
   data := .arr #[.str file, .str source]

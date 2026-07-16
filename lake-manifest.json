@@ -51,6 +51,6 @@
    "inputRev": "main",
    "inherited": true,
    "configFile": "lakefile.lean"}],
- "name": "textbook",
+ "name": "lectures",
  "lakeDir": ".lake",
  "fixedToolchain": false}
