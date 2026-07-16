@@ -2,6 +2,7 @@ import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Papers
 import Lectures.Pt.Lecture01
+import Lectures.Pt.Lecture02
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -23,3 +24,5 @@ A disciplina apresenta os fundamentos e a infraestrutura correspondente em Lean 
 As referências principais são [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL), [*The Hitchhiker's Guide to Logical Verification*](https://github.com/lean-forward/logical_verification_2026) (LoVe) e [*The Lean Language Reference*](https://lean-lang.org/doc/reference/latest/).
 
 {include 0 Lectures.Pt.Lecture01}
+
+{include 0 Lectures.Pt.Lecture02}

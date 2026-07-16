@@ -2,6 +2,7 @@ import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Papers
 import Lectures.En.Lecture01
+import Lectures.En.Lecture02
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -23,3 +24,5 @@ The course presents the foundations and the corresponding infrastructure in Lean
 The main references are [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL), [*The Hitchhiker's Guide to Logical Verification*](https://github.com/lean-forward/logical_verification_2026) (LoVe), and [*The Lean Language Reference*](https://lean-lang.org/doc/reference/latest/).
 
 {include 0 Lectures.En.Lecture01}
+
+{include 0 Lectures.En.Lecture02}
