@@ -61,10 +61,18 @@ body { background: #f8fafc; }
 /* Typography */
 main section p, main section li, main section dd { color: #334155; }
 main section strong { color: #0f172a; }
-main > section > h1 {
+.content-wrapper > section > h1 {
   padding-bottom: 0.4rem;
   border-bottom: 3px solid;
   border-image: linear-gradient(90deg, #1e3a8a, #0d9488) 1;
+}
+
+/* Margin notes as small cards on the slate background */
+.marginalia .note {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 main section a { color: #1e3a8a; }
 main section a:hover { color: #0d9488; }
