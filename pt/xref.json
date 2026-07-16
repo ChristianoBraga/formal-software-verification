@@ -1,0 +1,716 @@
+{"Verso.Genre.Manual.section":
+ {"title": "Sections or chapters of the manual",
+  "description": null,
+  "contents":
+  {"aula-2":
+   [{"id": "aula-2",
+     "data":
+     {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+      "shortTitle": null,
+      "sectionNum": "2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/"}],
+   "aula-1":
+   [{"id": "aula-1",
+     "data":
+     {"title": "Aula 1: Motivação e Lógica Proposicional",
+      "shortTitle": null,
+      "sectionNum": "1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Aula-1___-Motiva______o-e-L___gica-Proposicional/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Predicados-e-Quantificadores":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Predicados-e-Quantificadores",
+     "data":
+     {"title": "Predicados e Quantificadores",
+      "shortTitle": null,
+      "sectionNum": "2.1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Predicados e Quantificadores",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Predicados-e-Quantificadores/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--O-Quantificador-Universal":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--O-Quantificador-Universal",
+     "data":
+     {"title": "O Quantificador Universal",
+      "shortTitle": null,
+      "sectionNum": "2.2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "O Quantificador Universal",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/O-Quantificador-Universal/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--O-Quantificador-Existencial":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--O-Quantificador-Existencial",
+     "data":
+     {"title": "O Quantificador Existencial",
+      "shortTitle": null,
+      "sectionNum": "2.3.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "O Quantificador Existencial",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/O-Quantificador-Existencial/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Leis-de-Nega______o-dos-Quantificadores":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Leis-de-Nega______o-dos-Quantificadores",
+     "data":
+     {"title": "Leis de Negação dos Quantificadores",
+      "shortTitle": null,
+      "sectionNum": "2.4.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Leis de Negação dos Quantificadores",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Leis-de-Nega______o-dos-Quantificadores/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Exerc___cios":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Exerc___cios",
+     "data":
+     {"title": "Exercícios",
+      "shortTitle": null,
+      "sectionNum": "2.7.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Exercícios", "shortTitle": null, "number": "7"}]},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Conjuntos":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--Conjuntos",
+     "data":
+     {"title": "Conjuntos",
+      "shortTitle": null,
+      "sectionNum": "2.6.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Conjuntos", "shortTitle": null, "number": "6"}]},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/"}],
+   "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--A-Ordem-dos-Quantificadores":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-2___-L___gica-de-Predicados-e-Conjuntos--A-Ordem-dos-Quantificadores",
+     "data":
+     {"title": "A Ordem dos Quantificadores",
+      "shortTitle": null,
+      "sectionNum": "2.5.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 2: Lógica de Predicados e Conjuntos",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "A Ordem dos Quantificadores",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/A-Ordem-dos-Quantificadores/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Proposi______es":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Proposi______es",
+     "data":
+     {"title": "Proposições",
+      "shortTitle": null,
+      "sectionNum": "1.2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Proposições", "shortTitle": null, "number": "2"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Proposi______es/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Racioc___nio-Cl___ssico":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Racioc___nio-Cl___ssico",
+     "data":
+     {"title": "Raciocínio Clássico",
+      "shortTitle": null,
+      "sectionNum": "1.5.5.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Primeiras Provas em Lean", "shortTitle": null, "number": "5"},
+       {"title": "Raciocínio Clássico", "shortTitle": null, "number": "5"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Nega______o":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Nega______o",
+     "data":
+     {"title": "Negação",
+      "shortTitle": null,
+      "sectionNum": "1.5.4.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Primeiras Provas em Lean", "shortTitle": null, "number": "5"},
+       {"title": "Negação", "shortTitle": null, "number": "4"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Implica______o":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Implica______o",
+     "data":
+     {"title": "Implicação",
+      "shortTitle": null,
+      "sectionNum": "1.5.1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Primeiras Provas em Lean", "shortTitle": null, "number": "5"},
+       {"title": "Implicação", "shortTitle": null, "number": "1"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Disjun______o":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Disjun______o",
+     "data":
+     {"title": "Disjunção",
+      "shortTitle": null,
+      "sectionNum": "1.5.3.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Primeiras Provas em Lean", "shortTitle": null, "number": "5"},
+       {"title": "Disjunção", "shortTitle": null, "number": "3"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Conjun______o":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean--Conjun______o",
+     "data":
+     {"title": "Conjunção",
+      "shortTitle": null,
+      "sectionNum": "1.5.2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Primeiras Provas em Lean", "shortTitle": null, "number": "5"},
+       {"title": "Conjunção", "shortTitle": null, "number": "2"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Primeiras-Provas-em-Lean",
+     "data":
+     {"title": "Primeiras Provas em Lean",
+      "shortTitle": null,
+      "sectionNum": "1.5.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Primeiras Provas em Lean",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Por-que-Verificar-Software-Formalmente___":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Por-que-Verificar-Software-Formalmente___",
+     "data":
+     {"title": "Por que Verificar Software Formalmente?",
+      "shortTitle": null,
+      "sectionNum": "1.1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Por que Verificar Software Formalmente?",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Por-que-Verificar-Software-Formalmente___/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Exerc___cios":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Exerc___cios",
+     "data":
+     {"title": "Exercícios",
+      "shortTitle": null,
+      "sectionNum": "1.6.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Exercícios", "shortTitle": null, "number": "6"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Equival___ncia-L___gica":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Equival___ncia-L___gica",
+     "data":
+     {"title": "Equivalência Lógica",
+      "shortTitle": null,
+      "sectionNum": "1.4.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Equivalência Lógica", "shortTitle": null, "number": "4"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Equival___ncia-L___gica/"}],
+   "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Conectivos":
+   [{"id":
+     "Verifica______o-Formal-de-Software--Aula-1___-Motiva______o-e-L___gica-Proposicional--Conectivos",
+     "data":
+     {"title": "Conectivos",
+      "shortTitle": null,
+      "sectionNum": "1.3.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Aula 1: Motivação e Lógica Proposicional",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Conectivos", "shortTitle": null, "number": "3"}]},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Conectivos/"}],
+   "Verifica______o-Formal-de-Software":
+   [{"id": "Verifica______o-Formal-de-Software",
+     "data":
+     {"title": "Verificação Formal de Software",
+      "shortTitle": null,
+      "sectionNum": "",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Verificação Formal de Software",
+        "shortTitle": null,
+        "number": null}]},
+     "address": "/"}]}},
+ "Verso.Genre.Manual.example":
+ {"title": "Verso.Genre.Manual.example",
+  "description": null,
+  "contents":
+  {"union_subset_swap":
+   [{"id": "union_subset_swap",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/#union_subset_swap":
+      {"display": "union_subset_swap",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Conjuntos"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/"}],
+   "not_not_elim":
+   [{"id": "not_not_elim",
+     "data":
+     {"/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/#not_not_elim":
+      {"display": "not_not_elim",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Primeiras Provas em Lean",
+        "Raciocínio Clássico"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "not_forall_exists":
+   [{"id": "not_forall_exists",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Leis-de-Nega______o-dos-Quantificadores/#not_forall_exists":
+      {"display": "not_forall_exists",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Leis de Negação dos Quantificadores"]}},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Leis-de-Nega______o-dos-Quantificadores/"}],
+   "not_exists_iff":
+   [{"id": "not_exists_iff",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Leis-de-Nega______o-dos-Quantificadores/#not_exists_iff":
+      {"display": "not_exists_iff",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Leis de Negação dos Quantificadores"]}},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Leis-de-Nega______o-dos-Quantificadores/"}],
+   "inter_subset_left":
+   [{"id": "inter_subset_left",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/#inter_subset_left":
+      {"display": "inter_subset_left",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Conjuntos"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/"}],
+   "forall_and_distrib":
+   [{"id": "forall_and_distrib",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/O-Quantificador-Universal/#forall_and_distrib":
+      {"display": "forall_and_distrib",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "O Quantificador Universal"]}},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/O-Quantificador-Universal/"}],
+   "exists_imp_exists":
+   [{"id": "exists_imp_exists",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/O-Quantificador-Existencial/#exists_imp_exists":
+      {"display": "exists_imp_exists",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "O Quantificador Existencial"]}},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/O-Quantificador-Existencial/"}],
+   "exists_forall_swap":
+   [{"id": "exists_forall_swap",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/A-Ordem-dos-Quantificadores/#exists_forall_swap":
+      {"display": "exists_forall_swap",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "A Ordem dos Quantificadores"]}},
+     "address":
+     "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/A-Ordem-dos-Quantificadores/"}],
+   "exercise5":
+   [{"id": "exercise5",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise5-next":
+      {"display": "exercise5",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise5":
+      {"display": "exercise5",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/"},
+    {"id": "exercise5-next",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise5-next":
+      {"display": "exercise5",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise5":
+      {"display": "exercise5",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/"}],
+   "exercise4":
+   [{"id": "exercise4-next",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise4-next":
+      {"display": "exercise4",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise4":
+      {"display": "exercise4",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/"},
+    {"id": "exercise4",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise4-next":
+      {"display": "exercise4",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise4":
+      {"display": "exercise4",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/"}],
+   "exercise3":
+   [{"id": "exercise3",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise3-next":
+      {"display": "exercise3",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise3":
+      {"display": "exercise3",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/"},
+    {"id": "exercise3-next",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise3-next":
+      {"display": "exercise3",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise3":
+      {"display": "exercise3",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/"}],
+   "exercise2":
+   [{"id": "exercise2-next",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise2-next":
+      {"display": "exercise2",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise2":
+      {"display": "exercise2",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/"},
+    {"id": "exercise2",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise2-next":
+      {"display": "exercise2",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise2":
+      {"display": "exercise2",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/"}],
+   "exercise1":
+   [{"id": "exercise1-next",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise1-next":
+      {"display": "exercise1",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise1":
+      {"display": "exercise1",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/"},
+    {"id": "exercise1",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Exerc___cios/#exercise1-next":
+      {"display": "exercise1",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Exercícios"]},
+      "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/#exercise1":
+      {"display": "exercise1",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Exercícios"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Exerc___cios/"}],
+   "deMorgan_or":
+   [{"id": "deMorgan_or",
+     "data":
+     {"/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/#deMorgan_or":
+      {"display": "deMorgan_or",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Primeiras Provas em Lean",
+        "Negação"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "deMorgan_and":
+   [{"id": "deMorgan_and",
+     "data":
+     {"/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/#deMorgan_and":
+      {"display": "deMorgan_and",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Primeiras Provas em Lean",
+        "Raciocínio Clássico"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "contrapositive":
+   [{"id": "contrapositive",
+     "data":
+     {"/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/#contrapositive":
+      {"display": "contrapositive",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 1: Motivação e Lógica Proposicional",
+        "Primeiras Provas em Lean",
+        "Negação"]}},
+     "address":
+     "/Aula-1___-Motiva______o-e-L___gica-Proposicional/Primeiras-Provas-em-Lean/"}],
+   "Set":
+   [{"id": "Set",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/#Set":
+      {"display": "Set",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Conjuntos"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/"}],
+   "Evens":
+   [{"id": "Evens",
+     "data":
+     {"/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/#Evens":
+      {"display": "Evens",
+       "context":
+       ["Verificação Formal de Software",
+        "Aula 2: Lógica de Predicados e Conjuntos",
+        "Conjuntos"]}},
+     "address": "/Aula-2___-L___gica-de-Predicados-e-Conjuntos/Conjuntos/"}]}},
+ "Verso.Genre.Manual.doc.tech":
+ {"title": "Terminology",
+  "description": "Definitions of technical terms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic.conv":
+ {"title": "Conversion Tactics",
+  "description": "Tactics for performing targeted rewriting of subterms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic":
+ {"title": "Tactic Documentation",
+  "description": "Detailed descriptions of tactics",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.suggestion":
+ {"title": "Lean constant suggestions",
+  "description": "Search suggestions for Lean constants",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.option":
+ {"title": "Compiler options", "description": null, "contents": {}},
+ "Verso.Genre.Manual.doc":
+ {"title": "Lean constant reference",
+  "description": "Documentation for Lean constants",
+  "contents": {}}}

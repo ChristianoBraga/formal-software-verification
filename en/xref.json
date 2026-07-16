@@ -1,0 +1,708 @@
+{"Verso.Genre.Manual.section":
+ {"title": "Sections or chapters of the manual",
+  "description": null,
+  "contents":
+  {"lecture-2":
+   [{"id": "lecture-2",
+     "data":
+     {"title": "Lecture 2: Predicate Logic and Sets",
+      "shortTitle": null,
+      "sectionNum": "2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/"}],
+   "lecture-1":
+   [{"id": "lecture-1",
+     "data":
+     {"title": "Lecture 1: Motivation and Propositional Logic",
+      "shortTitle": null,
+      "sectionNum": "1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--The-Universal-Quantifier":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--The-Universal-Quantifier",
+     "data":
+     {"title": "The Universal Quantifier",
+      "shortTitle": null,
+      "sectionNum": "2.2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "The Universal Quantifier",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/The-Universal-Quantifier/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--The-Order-of-Quantifiers":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--The-Order-of-Quantifiers",
+     "data":
+     {"title": "The Order of Quantifiers",
+      "shortTitle": null,
+      "sectionNum": "2.5.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "The Order of Quantifiers",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/The-Order-of-Quantifiers/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--The-Existential-Quantifier":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--The-Existential-Quantifier",
+     "data":
+     {"title": "The Existential Quantifier",
+      "shortTitle": null,
+      "sectionNum": "2.3.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "The Existential Quantifier",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/The-Existential-Quantifier/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Sets":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Sets",
+     "data":
+     {"title": "Sets",
+      "shortTitle": null,
+      "sectionNum": "2.6.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Sets", "shortTitle": null, "number": "6"}]},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Sets/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Quantifier-Negation-Laws":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Quantifier-Negation-Laws",
+     "data":
+     {"title": "Quantifier Negation Laws",
+      "shortTitle": null,
+      "sectionNum": "2.4.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Quantifier Negation Laws",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/Quantifier-Negation-Laws/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Predicates-and-Quantifiers":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Predicates-and-Quantifiers",
+     "data":
+     {"title": "Predicates and Quantifiers",
+      "shortTitle": null,
+      "sectionNum": "2.1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Predicates and Quantifiers",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/Predicates-and-Quantifiers/"}],
+   "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Exercises":
+   [{"id":
+     "Formal-Software-Verification--Lecture-2___-Predicate-Logic-and-Sets--Exercises",
+     "data":
+     {"title": "Exercises",
+      "shortTitle": null,
+      "sectionNum": "2.7.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 2: Predicate Logic and Sets",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Exercises", "shortTitle": null, "number": "7"}]},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Exercises/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Why-Verify-Software-Formally___":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Why-Verify-Software-Formally___",
+     "data":
+     {"title": "Why Verify Software Formally?",
+      "shortTitle": null,
+      "sectionNum": "1.1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Why Verify Software Formally?",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/Why-Verify-Software-Formally___/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Propositions":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Propositions",
+     "data":
+     {"title": "Propositions",
+      "shortTitle": null,
+      "sectionNum": "1.2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Propositions", "shortTitle": null, "number": "2"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/Propositions/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Logical-Equivalence":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Logical-Equivalence",
+     "data":
+     {"title": "Logical Equivalence",
+      "shortTitle": null,
+      "sectionNum": "1.4.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Logical Equivalence", "shortTitle": null, "number": "4"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/Logical-Equivalence/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Negation":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Negation",
+     "data":
+     {"title": "Negation",
+      "shortTitle": null,
+      "sectionNum": "1.5.4.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "First Proofs in Lean", "shortTitle": null, "number": "5"},
+       {"title": "Negation", "shortTitle": null, "number": "4"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Implication":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Implication",
+     "data":
+     {"title": "Implication",
+      "shortTitle": null,
+      "sectionNum": "1.5.1.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "First Proofs in Lean", "shortTitle": null, "number": "5"},
+       {"title": "Implication", "shortTitle": null, "number": "1"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Disjunction":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Disjunction",
+     "data":
+     {"title": "Disjunction",
+      "shortTitle": null,
+      "sectionNum": "1.5.3.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "First Proofs in Lean", "shortTitle": null, "number": "5"},
+       {"title": "Disjunction", "shortTitle": null, "number": "3"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Conjunction":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Conjunction",
+     "data":
+     {"title": "Conjunction",
+      "shortTitle": null,
+      "sectionNum": "1.5.2.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "First Proofs in Lean", "shortTitle": null, "number": "5"},
+       {"title": "Conjunction", "shortTitle": null, "number": "2"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Classical-Reasoning":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean--Classical-Reasoning",
+     "data":
+     {"title": "Classical Reasoning",
+      "shortTitle": null,
+      "sectionNum": "1.5.5.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "First Proofs in Lean", "shortTitle": null, "number": "5"},
+       {"title": "Classical Reasoning", "shortTitle": null, "number": "5"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--First-Proofs-in-Lean",
+     "data":
+     {"title": "First Proofs in Lean",
+      "shortTitle": null,
+      "sectionNum": "1.5.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "First Proofs in Lean", "shortTitle": null, "number": "5"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Exercises":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Exercises",
+     "data":
+     {"title": "Exercises",
+      "shortTitle": null,
+      "sectionNum": "1.6.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Exercises", "shortTitle": null, "number": "6"}]},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/"}],
+   "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Connectives":
+   [{"id":
+     "Formal-Software-Verification--Lecture-1___-Motivation-and-Propositional-Logic--Connectives",
+     "data":
+     {"title": "Connectives",
+      "shortTitle": null,
+      "sectionNum": "1.3.",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Lecture 1: Motivation and Propositional Logic",
+        "shortTitle": null,
+        "number": "1"},
+       {"title": "Connectives", "shortTitle": null, "number": "3"}]},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/Connectives/"}],
+   "Formal-Software-Verification":
+   [{"id": "Formal-Software-Verification",
+     "data":
+     {"title": "Formal Software Verification",
+      "shortTitle": null,
+      "sectionNum": "",
+      "searchPriority": 50,
+      "context":
+      [{"title": "Formal Software Verification",
+        "shortTitle": null,
+        "number": null}]},
+     "address": "/"}]}},
+ "Verso.Genre.Manual.example":
+ {"title": "Verso.Genre.Manual.example",
+  "description": null,
+  "contents":
+  {"union_subset_swap":
+   [{"id": "union_subset_swap",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Sets/#union_subset_swap":
+      {"display": "union_subset_swap",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Sets"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Sets/"}],
+   "not_not_elim":
+   [{"id": "not_not_elim",
+     "data":
+     {"/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/#not_not_elim":
+      {"display": "not_not_elim",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "First Proofs in Lean",
+        "Classical Reasoning"]}},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "not_forall_exists":
+   [{"id": "not_forall_exists",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Quantifier-Negation-Laws/#not_forall_exists":
+      {"display": "not_forall_exists",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Quantifier Negation Laws"]}},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/Quantifier-Negation-Laws/"}],
+   "not_exists_iff":
+   [{"id": "not_exists_iff",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Quantifier-Negation-Laws/#not_exists_iff":
+      {"display": "not_exists_iff",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Quantifier Negation Laws"]}},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/Quantifier-Negation-Laws/"}],
+   "inter_subset_left":
+   [{"id": "inter_subset_left",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Sets/#inter_subset_left":
+      {"display": "inter_subset_left",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Sets"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Sets/"}],
+   "forall_and_distrib":
+   [{"id": "forall_and_distrib",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/The-Universal-Quantifier/#forall_and_distrib":
+      {"display": "forall_and_distrib",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "The Universal Quantifier"]}},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/The-Universal-Quantifier/"}],
+   "exists_imp_exists":
+   [{"id": "exists_imp_exists",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/The-Existential-Quantifier/#exists_imp_exists":
+      {"display": "exists_imp_exists",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "The Existential Quantifier"]}},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/The-Existential-Quantifier/"}],
+   "exists_forall_swap":
+   [{"id": "exists_forall_swap",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/The-Order-of-Quantifiers/#exists_forall_swap":
+      {"display": "exists_forall_swap",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "The Order of Quantifiers"]}},
+     "address":
+     "/Lecture-2___-Predicate-Logic-and-Sets/The-Order-of-Quantifiers/"}],
+   "exercise5":
+   [{"id": "exercise5",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise5-next":
+      {"display": "exercise5",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise5":
+      {"display": "exercise5",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/"},
+    {"id": "exercise5-next",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise5-next":
+      {"display": "exercise5",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise5":
+      {"display": "exercise5",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Exercises/"}],
+   "exercise4":
+   [{"id": "exercise4-next",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise4-next":
+      {"display": "exercise4",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise4":
+      {"display": "exercise4",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Exercises/"},
+    {"id": "exercise4",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise4-next":
+      {"display": "exercise4",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise4":
+      {"display": "exercise4",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/"}],
+   "exercise3":
+   [{"id": "exercise3",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise3-next":
+      {"display": "exercise3",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise3":
+      {"display": "exercise3",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/"},
+    {"id": "exercise3-next",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise3-next":
+      {"display": "exercise3",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise3":
+      {"display": "exercise3",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Exercises/"}],
+   "exercise2":
+   [{"id": "exercise2-next",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise2-next":
+      {"display": "exercise2",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise2":
+      {"display": "exercise2",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Exercises/"},
+    {"id": "exercise2",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise2-next":
+      {"display": "exercise2",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise2":
+      {"display": "exercise2",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/"}],
+   "exercise1":
+   [{"id": "exercise1-next",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise1-next":
+      {"display": "exercise1",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise1":
+      {"display": "exercise1",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Exercises/"},
+    {"id": "exercise1",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Exercises/#exercise1-next":
+      {"display": "exercise1",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Exercises"]},
+      "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/#exercise1":
+      {"display": "exercise1",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "Exercises"]}},
+     "address": "/Lecture-1___-Motivation-and-Propositional-Logic/Exercises/"}],
+   "deMorgan_or":
+   [{"id": "deMorgan_or",
+     "data":
+     {"/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/#deMorgan_or":
+      {"display": "deMorgan_or",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "First Proofs in Lean",
+        "Negation"]}},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "deMorgan_and":
+   [{"id": "deMorgan_and",
+     "data":
+     {"/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/#deMorgan_and":
+      {"display": "deMorgan_and",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "First Proofs in Lean",
+        "Classical Reasoning"]}},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "contrapositive":
+   [{"id": "contrapositive",
+     "data":
+     {"/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/#contrapositive":
+      {"display": "contrapositive",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 1: Motivation and Propositional Logic",
+        "First Proofs in Lean",
+        "Negation"]}},
+     "address":
+     "/Lecture-1___-Motivation-and-Propositional-Logic/First-Proofs-in-Lean/"}],
+   "Set":
+   [{"id": "Set",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Sets/#Set":
+      {"display": "Set",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Sets"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Sets/"}],
+   "Evens":
+   [{"id": "Evens",
+     "data":
+     {"/Lecture-2___-Predicate-Logic-and-Sets/Sets/#Evens":
+      {"display": "Evens",
+       "context":
+       ["Formal Software Verification",
+        "Lecture 2: Predicate Logic and Sets",
+        "Sets"]}},
+     "address": "/Lecture-2___-Predicate-Logic-and-Sets/Sets/"}]}},
+ "Verso.Genre.Manual.doc.tech":
+ {"title": "Terminology",
+  "description": "Definitions of technical terms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic.conv":
+ {"title": "Conversion Tactics",
+  "description": "Tactics for performing targeted rewriting of subterms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic":
+ {"title": "Tactic Documentation",
+  "description": "Detailed descriptions of tactics",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.suggestion":
+ {"title": "Lean constant suggestions",
+  "description": "Search suggestions for Lean constants",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.option":
+ {"title": "Compiler options", "description": null, "contents": {}},
+ "Verso.Genre.Manual.doc":
+ {"title": "Lean constant reference",
+  "description": "Documentation for Lean constants",
+  "contents": {}}}

@@ -1,0 +1,169 @@
+{"99":
+ "<code>union_subset_swap (α : Type) (s t : Set α) : s ∪ t ⊆ t ∪ s</code>",
+ "98":
+ "<code>Membership.mem.{u, v} {α : outParam (Type u)} {γ : Type v} [self : Membership α γ] : γ → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The membership relation `a ∈ s : Prop` where `a : α`, `s : γ`. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∈` in identifiers is `mem`.</code>",
+ "97": "<code>x ∈ s ∩ t</code>",
+ "96":
+ "<code>HasSubset.Subset.{u} {α : Type u} [self : HasSubset α] : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">Subset relation: `a ⊆ b`  \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `⊆` in identifiers is `subset`.</code>",
+ "95":
+ "<code>Inter.inter.{u} {α : Type u} [self : Inter α] : α → α → α</code><span class=\"sep\"></span><code class=\"docstring\">`a ∩ b` is the intersection of `a` and `b`. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∩` in identifiers is `inter`.</code>",
+ "94": "<code>inter_subset_left (α : Type) (s t : Set α) : s ∩ t ⊆ s</code>",
+ "93": "<code>Inter.mk.{u} {α : Type u} (inter : α → α → α) : Inter α</code>",
+ "92":
+ "<code>Inter.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">Notation type class for the intersection operation `∩`. </code>",
+ "91": "<code>Union.mk.{u} {α : Type u} (union : α → α → α) : Union α</code>",
+ "90":
+ "<code>Union.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">Notation type class for the union operation `∪`. </code>",
+ "9":
+ "<code class=\"docstring\">`apply e` tries to match the current goal against the conclusion of `e`'s type.\nIf it succeeds, then the tactic returns as many subgoals as the number of premises that\nhave not been fixed by type inference or type class resolution.\nNon-dependent premises are added before dependent ones.\n\nThe `apply` tactic uses higher-order pattern matching, type class resolution,\nand first-order unification with dependent types.\n</code>",
+ "89":
+ "<code>HasSubset.mk.{u} {α : Type u} (Subset : α → α → Prop) : HasSubset α</code>",
+ "88":
+ "<code>HasSubset.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">Notation type class for the subset relation `⊆`. </code>",
+ "87": "<code>Evens : Set Nat</code>",
+ "86": "<code>Set α</code>",
+ "85":
+ "<code>Membership.mk.{u, v} {α : outParam (Type u)} {γ : Type v} (mem : γ → α → Prop) : Membership α γ</code>",
+ "84":
+ "<code>Membership.{u, v} (α : outParam (Type u)) (γ : Type v) : Type (max u v)</code><span class=\"sep\"></span><code class=\"docstring\">The typeclass behind the notation `a ∈ s : Prop` where `a : α`, `s : γ`.\nBecause `α` is an `outParam`, the \"container type\" `γ` determines the type\nof the elements of the container.\n</code>",
+ "83": "<code>Set (α : Type) : Type</code>",
+ "82": "<code>∀ (y : β), R a y</code>",
+ "81": "<code>β</code>",
+ "80": "<code>∃ x, ∀ (y : β), R x y</code>",
+ "8": "<code>P → Q</code>",
+ "79": "<code>α → β → Prop</code>",
+ "78":
+ "<code>exists_forall_swap (α β : Type) (R : α → β → Prop) (h : ∃ x, ∀ (y : β), R x y) (y : β) : ∃ x, R x y</code>",
+ "77": "<code>¬P a</code>",
+ "76": "<code>¬∃ x, ¬P x</code>",
+ "75": "<code>¬∀ (x : α), P x</code>",
+ "74":
+ "<code>not_forall_exists (α : Type) (P : α → Prop) (h : ¬∀ (x : α), P x) : ∃ x, ¬P x</code>",
+ "73": "<code>∀ (x : α), ¬P x</code>",
+ "72": "<code>¬∃ x, P x</code>",
+ "71":
+ "<code>not_exists_iff (α : Type) (P : α → Prop) : (¬∃ x, P x) ↔ ∀ (x : α), ¬P x</code>",
+ "70": "<code>∃ x, P x</code>",
+ "7":
+ "<code class=\"docstring\">`exact e` closes the main goal if its target type matches that of `e`.\n</code>",
+ "69":
+ "<code>exists_imp_exists (α : Type) (P Q : α → Prop) (h : ∀ (x : α), P x → Q x) : (∃ x, P x) → ∃ x, Q x</code>",
+ "68":
+ "<code class=\"docstring\">The `obtain` tactic is a combination of `have` and `rcases`. See `rcases` for\na description of supported patterns.\n\n```lean\nobtain ⟨patt⟩ : type := proof\n```\nis equivalent to\n```lean\nhave h : type := proof\nrcases h with ⟨patt⟩\n```\n\nIf `⟨patt⟩` is omitted, `rcases` will try to infer the pattern.\n\nIf `type` is omitted, `:= proof` is required.\n</code>",
+ "67": "<code>P a ∧ Q a</code>",
+ "66": "<code>∃ x, P x ∧ Q x</code>",
+ "65":
+ "<code class=\"docstring\">`exists e₁, e₂, ...` is shorthand for `refine ⟨e₁, e₂, ...⟩; try trivial`.\nIt is useful for existential goals.\n</code>",
+ "64":
+ "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `=` in identifiers is `eq`.</code>",
+ "63":
+ "<code>HMul.hMul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HMul α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a * b` computes the product of `a` and `b`.\nThe meaning of this notation is type-dependent. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `*` in identifiers is `mul`.</code>",
+ "62":
+ "<code>Exists.{u} {α : Sort u} (p : α → Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">Existential quantification. If `p : α → Prop` is a predicate, then `∃ x : α, p x`\nasserts that there is some `x` of type `α` such that `p x` holds.\nTo create an existential proof, use the `exists` tactic,\nor the anonymous constructor notation `⟨x, h⟩`.\nTo unpack an existential, use `cases h` where `h` is a proof of `∃ x : α, p x`,\nor `let ⟨x, hx⟩ := h` where `.\n\nBecause Lean has proof irrelevance, any two proofs of an existential are\ndefinitionally equal. One consequence of this is that it is impossible to recover the\nwitness of an existential from the mere fact of its existence.\nFor example, the following does not compile:\n```\nexample (h : ∃ x : Nat, x = x) : Nat :=\n  let ⟨x, _⟩ := h  -- fail, because the goal is `Nat : Type`\n  x\n```\nThe error message `recursor 'Exists.casesOn' can only eliminate into Prop` means\nthat this only works when the current goal is another proposition:\n```\nexample (h : ∃ x : Nat, x = x) : True :=\n  let ⟨x, _⟩ := h  -- ok, because the goal is `True : Prop`\n  trivial\n```\n</code>",
+ "61":
+ "<code>rfl.{u} {α : Sort u} {a : α} : a = a</code><span class=\"sep\"></span><code class=\"docstring\">`rfl : a = a` is the unique constructor of the equality type. This is the\nsame as `Eq.refl` except that it takes `a` implicitly instead of explicitly.\n\nThis is a more powerful theorem than it may appear at first, because although\nthe statement of the theorem is `a = a`, Lean will allow anything that is\ndefinitionally equal to that type. So, for instance, `2 + 2 = 4` is proven in\nLean by `rfl`, because both sides are the same up to definitional equality.\n</code>",
+ "60":
+ "<code>Exists.intro.{u} {α : Sort u} {p : α → Prop} (w : α) (h : p w) : Exists p</code><span class=\"sep\"></span><code class=\"docstring\">Existential introduction. If `a : α` and `h : p a`,\nthen `⟨a, h⟩` is a proof that `∃ x : α, p x`. </code>",
+ "6":
+ "<code class=\"docstring\">Introduces one or more hypotheses, optionally naming and/or pattern-matching them.\nFor each hypothesis to be introduced, the remaining main goal's target type must\nbe a `let` or function type.\n\n* `intro` by itself introduces one anonymous hypothesis, which can be accessed\n  by e.g. `assumption`. It is equivalent to `intro _`.\n* `intro x y` introduces two hypotheses and names them. Individual hypotheses\n  can be anonymized via `_`, given a type ascription, or matched against a pattern:\n  ```lean\n  -- ... ⊢ α × β → ...\n  intro (a, b)\n  -- ..., a : α, b : β ⊢ ...\n  ```\n* `intro rfl` is short for `intro h; subst h`, if `h` is an equality where the left-hand or right-hand side\n  is a variable.\n* Alternatively, `intro` can be combined with pattern matching much like `fun`:\n  ```lean\n  intro\n  | n + 1, 0 =&gt; tac\n  | ...\n  ```\n</code>",
+ "59": "<code>(∀ (x : α), P x) ∧ ∀ (x : α), Q x</code>",
+ "58":
+ "<code>forall_and_distrib (α : Type) (P Q : α → Prop) : (∀ (x : α), P x ∧ Q x) ↔ (∀ (x : α), P x) ∧ ∀ (x : α), Q x</code>",
+ "57": "<code>P a → Q a</code>",
+ "56":
+ "<code class=\"docstring\">`specialize h a₁ ... aₙ` is equivalent to `replace h := h a₁ ... aₙ`.\nIt specializes the local hypothesis `h` by instantiating\nuniversal quantifications and implications using the concrete terms `a₁` ... `aₙ`.\nThe tactic adds a new hypothesis with the same name and tries to remove\nthe original `h` if possible.\n\nExample: given `h : ∀ (n : Nat), p n → q n` and `h' : p 2`,\nthen `specialize h 2 h'` replaces `h` with `h : q 2`.\n\nThe tactic also supports instantiating particular universal quantifiers\nusing named argument syntax. Example: given `h : ∀ (m n : Nat), p m n`,\nthen `specialize h (n := 2)` replaces `h` with `h : ∀ (m : Nat), p m 2`.\n</code>",
+ "55": "<code>P a</code>",
+ "54": "<code>∀ (x : α), P x → Q x</code>",
+ "53": "<code>α</code>",
+ "52": "<code>∀ (x : α), P x ∧ Q x</code>",
+ "51": "<code>α → Prop</code>",
+ "50":
+ "<code class=\"docstring\">A type universe. `Type ≡ Type 0`, `Type u ≡ Sort (u + 1)`. </code>",
+ "5":
+ "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
+ "49": "<code>Type</code>",
+ "48":
+ "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The natural numbers, starting at zero.\n\nThis type is special-cased by both the kernel and the compiler, and overridden with an efficient\nimplementation. Both use a fast arbitrary-precision arithmetic library (usually\n[GMP](https://gmplib.org/)); at runtime, `Nat` values that are sufficiently small are unboxed.\n</code>",
+ "47":
+ "<code>GT.gt.{u} {α : Type u} [LT α] (a b : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`a &gt; b` is an abbreviation for `b &lt; a`. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `&gt;` in identifiers is `gt`.</code>",
+ "46": "<code>Nat</code>",
+ "45": "<code>exercise5 (P Q : Prop) : ((P → Q) → P) → P</code>",
+ "44": "<code>exercise4 (P Q : Prop) : ¬P ∨ ¬Q → ¬(P ∧ Q)</code>",
+ "43": "<code>exercise3 (P Q R : Prop) : (P ∨ Q) ∨ R → P ∨ Q ∨ R</code>",
+ "42": "<code>exercise2 (P Q R : Prop) : P ∧ (Q ∨ R) ↔ P ∧ Q ∨ P ∧ R</code>",
+ "41":
+ "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
+ "40":
+ "<code>exercise1 (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) : P → R</code>",
+ "4": "<code>Q</code>",
+ "39": "<code>¬(P ∧ Q)</code>",
+ "38": "<code>deMorgan_and (P Q : Prop) : ¬(P ∧ Q) → ¬P ∨ ¬Q</code>",
+ "37": "<code>Classical.byContradiction {p : Prop} (h : ¬p → False) : p</code>",
+ "36": "<code>¬¬P</code>",
+ "35": "<code>not_not_elim (P : Prop) (h : ¬¬P) : P</code>",
+ "34":
+ "<code>Classical.em (p : Prop) : p ∨ ¬p</code><span class=\"sep\"></span><code class=\"docstring\">**Diaconescu's theorem**: excluded middle from choice, Function extensionality and propositional extensionality. </code>",
+ "33": "<code>¬P ∧ ¬Q</code>",
+ "32": "<code>¬(P ∨ Q)</code>",
+ "31":
+ "<code>Iff (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">If and only if, or logical bi-implication. `a ↔ b` means that `a` implies `b` and vice versa.\nBy `propext`, this implies that `a` and `b` are equal and hence any expression involving `a`\nis equivalent to the corresponding expression with `b` instead.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `↔` in identifiers is `iff`.\n\n * The recommended spelling of `&lt;-&gt;` in identifiers is `iff` (prefer `↔` over `&lt;-&gt;`).</code>",
+ "30": "<code>deMorgan_or (P Q : Prop) : ¬(P ∨ Q) ↔ ¬P ∧ ¬Q</code>",
+ "3": "<code>P</code>",
+ "29": "<code>¬Q</code>",
+ "28":
+ "<code>Not (a : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Not p`, or `¬p`, is the negation of `p`. It is defined to be `p → False`,\nso if your goal is `¬p` you can use `intro h` to turn the goal into\n`h : p ⊢ False`, and if you have `hn : ¬p` and `h : p` then `hn h : False`\nand `(hn h).elim` will prove anything.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `¬` in identifiers is `not`.</code>",
+ "27": "<code>contrapositive (P Q : Prop) (hPQ : P → Q) : ¬Q → ¬P</code>",
+ "26":
+ "<code>False : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`False` is the empty proposition. Thus, it has no introduction rules.\nIt represents a contradiction. `False` elimination rule, `False.rec`,\nexpresses the fact that anything follows from a contradiction.\nThis rule is sometimes called ex falso (short for ex falso sequitur quodlibet),\nor the principle of explosion.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>",
+ "25": "<code>¬P</code>",
+ "24":
+ "<code>Or.inr {a b : Prop} (h : b) : a ∨ b</code><span class=\"sep\"></span><code class=\"docstring\">`Or.inr` is \"right injection\" into an `Or`. If `h : b` then `Or.inr h : a ∨ b`. </code>",
+ "23":
+ "<code>Or.inl {a b : Prop} (h : a) : a ∨ b</code><span class=\"sep\"></span><code class=\"docstring\">`Or.inl` is \"left injection\" into an `Or`. If `h : a` then `Or.inl h : a ∨ b`. </code>",
+ "22":
+ "<code class=\"docstring\">After `with`, there is an optional tactic that runs on all branches, and\nthen a list of alternatives.\n</code>",
+ "21":
+ "<code class=\"docstring\">Assuming `x` is a variable in the local context with an inductive type,\n`cases x` splits the main goal, producing one goal for each constructor of the\ninductive type, in which the target is replaced by a general instance of that constructor.\nIf the type of an element in the local context depends on `x`,\nthat element is reverted and reintroduced afterward,\nso that the case split affects that hypothesis as well.\n`cases` detects unreachable cases and closes them automatically.\n\nFor example, given `n : Nat` and a goal with a hypothesis `h : P n` and target `Q n`,\n`cases n` produces one goal with hypothesis `h : P 0` and target `Q 0`,\nand one goal with hypothesis `h : P (Nat.succ a)` and target `Q (Nat.succ a)`.\nHere the name `a` is chosen automatically and is not accessible.\nYou can use `with` to provide the variables names for each constructor.\n- `cases e`, where `e` is an expression instead of a variable, generalizes `e` in the goal,\n  and then cases on the resulting variable.\n- Given `as : List α`, `cases as with | nil =&gt; tac₁ | cons a as' =&gt; tac₂`,\n  uses tactic `tac₁` for the `nil` case, and `tac₂` for the `cons` case,\n  and `a` and `as'` are used as names for the new variables introduced.\n- `cases h : e`, where `e` is a variable or an expression,\n  performs cases on `e` as above, but also adds a hypothesis `h : e = ...` to each goal,\n  where `...` is the constructor instance for that particular case.\n</code>",
+ "20":
+ "<code>Or (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Or a b`, or `a ∨ b`, is the disjunction of propositions. There are two\nconstructors for `Or`, called `Or.inl : a → a ∨ b` and `Or.inr : b → a ∨ b`,\nand you can use `match` or `cases` to destruct an `Or` assumption into the\ntwo cases.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∨` in identifiers is `or`.</code>",
+ "2": "<code>Prop</code>",
+ "19": "<code>P ∨ Q</code>",
+ "18":
+ "<code>And.intro {a b : Prop} (left : a) (right : b) : a ∧ b</code><span class=\"sep\"></span><code class=\"docstring\">`And.intro : a → b → a ∧ b` is the constructor for the And operation. </code>",
+ "17":
+ "<code>And.left {a b : Prop} (self : a ∧ b) : a</code><span class=\"sep\"></span><code class=\"docstring\">Extract the left conjunct from a conjunction. `h : a ∧ b` then\n`h.left`, also notated as `h.1`, is a proof of `a`. </code>",
+ "16":
+ "<code>And.right {a b : Prop} (self : a ∧ b) : b</code><span class=\"sep\"></span><code class=\"docstring\">Extract the right conjunct from a conjunction. `h : a ∧ b` then\n`h.right`, also notated as `h.2`, is a proof of `b`. </code>",
+ "15":
+ "<code class=\"docstring\">If the main goal's target type is an inductive type, `constructor` solves it with\nthe first matching constructor, or else fails.\n</code>",
+ "14":
+ "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∧` in identifiers is `and`.</code>",
+ "13": "<code>P ∧ Q</code>",
+ "12":
+ "<code class=\"docstring\">`show t` finds the first goal whose target unifies with `t`. It makes that the main goal,\nperforms the unification, and replaces the target with the unified version of `t`.\n</code>",
+ "112":
+ "<code>exercise5 (α : Type) (s t u : Set α) : s ∩ (t ∪ u) ⊆ s ∩ t ∪ s ∩ u</code>",
+ "111": "<code>t ⊆ u</code>",
+ "110": "<code>s ⊆ t</code>",
+ "11":
+ "<code class=\"docstring\">The `have` tactic is for adding opaque definitions and hypotheses to the local context of the main goal.\nThe definitions forget their associated value and cannot be unfolded, unlike definitions added by the `let` tactic.\n\n* `have h : t := e` adds the hypothesis `h : t` if `e` is a term of type `t`.\n* `have h := e` uses the type of `e` for `t`.\n* `have : t := e` and `have := e` use `this` for the name of the hypothesis.\n* `have pat := e` for a pattern `pat` is equivalent to `match e with | pat =&gt; _`,\n  where `_` stands for the tactics that follow this one.\n  It is convenient for types that have only one applicable constructor.\n  For example, given `h : p ∧ q ∧ r`, `have ⟨h₁, h₂, h₃⟩ := h` produces the\n  hypotheses `h₁ : p`, `h₂ : q`, and `h₃ : r`.\n* The syntax `have (eq := h) pat := e` is equivalent to `match h : e with | pat =&gt; _`,\n  which adds the equation `h : e = pat` to the local context.\n\nThe tactic supports all the same syntax variants and options as the `have` term.\n\n## Properties and relations\n\n* It is not possible to unfold a variable introduced using `have`, since the definition's value is forgotten.\n  The `let` tactic introduces definitions that can be unfolded.\n* The `have h : t := e` is like doing `let h : t := e; clear_value h`.\n* The `have` tactic is preferred for propositions, and `let` is preferred for non-propositions.\n* Sometimes `have` is used for non-propositions to ensure that the variable is never unfolded,\n  which may be important for performance reasons.\n    Consider using the equivalent `let +nondep` to indicate the intent.\n\n</code>",
+ "109":
+ "<code>exercise4 (α : Type) (s t u : Set α) (hst : s ⊆ t) (htu : t ⊆ u) : s ⊆ u</code>",
+ "108": "<code>∃ x, P x → Q</code>",
+ "107":
+ "<code>exercise3 (α : Type) (P : α → Prop) (Q : Prop) (h : ∃ x, P x → Q) (hP : ∀ (x : α), P x) : Q</code>",
+ "106":
+ "<code>exercise2 (α : Type) (P Q : α → Prop) : (∃ x, P x ∨ Q x) ↔ (∃ x, P x) ∨ ∃ x, Q x</code>",
+ "105": "<code>∀ (x : α), P x</code>",
+ "104":
+ "<code>exercise1 (α : Type) (P Q : α → Prop) (h : ∀ (x : α), P x → Q x) (hP : ∀ (x : α), P x) (x : α) : Q x</code>",
+ "103": "<code>x ∈ t</code>",
+ "102": "<code>x ∈ s</code>",
+ "101": "<code>x ∈ s ∪ t</code>",
+ "100":
+ "<code>Union.union.{u} {α : Type u} [self : Union α] : α → α → α</code><span class=\"sep\"></span><code class=\"docstring\">`a ∪ b` is the union of `a` and `b`. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∪` in identifiers is `union`.</code>",
+ "10": "<code>Q → R</code>",
+ "1":
+ "<code class=\"docstring\">The universe of propositions. `Prop ≡ Sort 0`.\n\nEvery proposition is propositionally equal to either `True` or `False`. </code>",
+ "0":
+ "<code>True : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`True` is a proposition and has only an introduction rule, `True.intro : True`.\nIn other words, `True` is simply true, and has a canonical proof, `True.intro`\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n</code>"}
