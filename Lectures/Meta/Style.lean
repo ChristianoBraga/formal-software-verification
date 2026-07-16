@@ -28,7 +28,7 @@ Site theme matching the landing page in `site/index.html`. Palette is
 indigo `#1e3a8a` to teal `#0d9488` on slate, with the header carrying the
 landing gradient.
 -/
-def themeCss : String := "
+def themeCss : String := r#"
 :root {
   --verso-text-color: #0f172a;
   --verso-structure-color: #0f172a;
@@ -67,6 +67,15 @@ main section strong { color: #0f172a; }
   border-image: linear-gradient(90deg, #1e3a8a, #0d9488) 1;
 }
 
+/* Verso bug workaround: main is a query container, and style containment
+   (implied by container-type) keeps CSS counters from accumulating across
+   sibling subtrees, so every margin note renders as 1. The numbers instead
+   come from data-note-num attributes set by the script below. */
+.marginalia { counter-increment: none; }
+.marginalia .note { counter-increment: none; }
+.marginalia::after { content: attr(data-note-num); }
+.marginalia .note::before { content: attr(data-note-num) "."; }
+
 /* Margin notes as small cards on the slate background */
 .marginalia .note {
   background: #ffffff;
@@ -102,8 +111,25 @@ table.tabular { border-collapse: collapse; }
 
 /* Previous/next navigation */
 .prev-next-buttons > * { color: #1e3a8a; }
+"#
+
+/--
+Numbers the margin notes on each page, replacing Verso's CSS counters,
+which do not accumulate inside the `main` query container.
+-/
+def marginNoteNumberJs : String := "
+document.addEventListener('DOMContentLoaded', () => {
+  let i = 0;
+  for (const m of document.querySelectorAll('main .marginalia')) {
+    i++;
+    m.dataset.noteNum = String(i);
+    const note = m.querySelector('.note');
+    if (note) { note.dataset.noteNum = String(i); }
+  }
+});
 "
 
 def codeHighlightHead : Array Verso.Output.Html :=
   #[{{<style>{{Verso.Output.Html.text false codeHighlightCss}}</style>}},
-    {{<style>{{Verso.Output.Html.text false themeCss}}</style>}}]
+    {{<style>{{Verso.Output.Html.text false themeCss}}</style>}},
+    {{<script>{{Verso.Output.Html.text false marginNoteNumberJs}}</script>}}]
