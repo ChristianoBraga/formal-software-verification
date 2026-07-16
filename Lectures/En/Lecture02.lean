@@ -182,7 +182,7 @@ theorem exists_forall_swap (α β : Type) (R : α → β → Prop)
   exact ⟨a, ha b⟩
 ```
 
-The converse fails. Over the natural numbers, take R x y to be x ≥ y. Then ∀ y, ∃ x, R x y holds, since each y satisfies y ≥ y, and ∃ x, ∀ y, R x y states that some natural number is greater than or equal to all others, which is false.
+The converse fails. Over the natural numbers, take R x y to be x ≥ y. Then ∀ y, ∃ x, R x y holds, since each y satisfies y ≥ y, and ∃ x, ∀ y, R x y states that some natural number is greater than or equal to every natural number, which is false.
 
 # Sets
 
@@ -192,7 +192,7 @@ Chapter 3 of HTPIwL develops proofs about sets. A set of elements of a type α i
 def Set (α : Type) : Type := α → Prop
 ```
 
-Every element of a set comes from the fixed type α. In this typed setting, the collection of all sets that do not contain themselves cannot be written down, so Russell's paradox does not arise.{margin}[B. Russell, letter to Frege, 1902. In J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.]
+Every element of a set comes from the fixed type α. In this typed setting, the collection of all sets that do not contain themselves cannot be written down, so Russell's paradox does not arise.{margin}[B. Russell, letter to Frege, 16 June 1902. In J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.]
 
 The instance below registers the notation x ∈ s, which unfolds by definition to the application s x. In this instance and the following ones, Lean binds the free type variable α automatically.
 
@@ -201,7 +201,7 @@ instance : Membership α (Set α) :=
   ⟨fun s a => s a⟩
 ```
 
-A set given by a property is the predicate itself, and a membership proof is a proof of the property. Mathematical notation writes such a set with a set-builder, as the set of all n such that `∃ k, n = 2 * k`. Lean core has no set-builder notation, so we write the predicate directly.
+A set given by a property is the predicate itself, and a membership proof is a proof of the property. Mathematical notation writes such a set in set-builder notation, as the set of all n such that `∃ k, n = 2 * k`. Lean core has no set-builder notation, so we write the predicate directly.
 
 ```lean
 def Evens : Set Nat := fun n => ∃ k, n = 2 * k

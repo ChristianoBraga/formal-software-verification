@@ -182,7 +182,7 @@ theorem exists_forall_swap (α β : Type) (R : α → β → Prop)
   exact ⟨a, ha b⟩
 ```
 
-A recíproca falha. Sobre os números naturais, tome R x y como x ≥ y. Então ∀ y, ∃ x, R x y vale, pois cada y satisfaz y ≥ y, e ∃ x, ∀ y, R x y afirma que algum número natural é maior ou igual a todos os outros, o que é falso.
+A recíproca falha. Sobre os números naturais, tome R x y como x ≥ y. Então ∀ y, ∃ x, R x y vale, pois cada y satisfaz y ≥ y, e ∃ x, ∀ y, R x y afirma que algum número natural é maior ou igual a todo número natural, o que é falso.
 
 # Conjuntos
 
@@ -192,7 +192,7 @@ O capítulo 3 de HTPIwL desenvolve provas sobre conjuntos. Um conjunto de elemen
 def Set (α : Type) : Type := α → Prop
 ```
 
-Todo elemento de um conjunto vem do tipo fixo α. Nesse cenário tipado, a coleção de todos os conjuntos que não contêm a si mesmos não pode ser escrita, então o paradoxo de Russell não surge.{margin}[B. Russell, carta a Frege, 1902. Em J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.]
+Todo elemento de um conjunto vem do tipo fixo α. Nesse cenário tipado, a coleção de todos os conjuntos que não contêm a si mesmos não pode ser escrita, então o paradoxo de Russell não surge.{margin}[B. Russell, carta a Frege, 16 de junho de 1902. Em J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.]
 
 A instância abaixo registra a notação x ∈ s, que se desdobra por definição na aplicação s x. Nesta instância e nas seguintes, Lean liga a variável de tipo livre α automaticamente.
 

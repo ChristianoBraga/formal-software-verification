@@ -359,7 +359,7 @@ Substitua cada `sorry` por uma prova.
 
 Exercício 1. A implicação compõe.
 
-```savedLean
+```savedLean -keep
 theorem exercise1 (P Q R : Prop)
     (hPQ : P → Q) (hQR : Q → R) : P → R := by
   sorry
@@ -367,7 +367,7 @@ theorem exercise1 (P Q R : Prop)
 
 Exercício 2. A conjunção distribui sobre a disjunção.
 
-```savedLean
+```savedLean -keep
 theorem exercise2 (P Q R : Prop) :
     P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
   sorry
@@ -375,7 +375,7 @@ theorem exercise2 (P Q R : Prop) :
 
 Exercício 3. A disjunção associa.
 
-```savedLean
+```savedLean -keep
 theorem exercise3 (P Q R : Prop) :
     (P ∨ Q) ∨ R → P ∨ (Q ∨ R) := by
   sorry
@@ -383,14 +383,14 @@ theorem exercise3 (P Q R : Prop) :
 
 Exercício 4. Esta direção da primeira lei de De Morgan é construtiva.
 
-```savedLean
+```savedLean -keep
 theorem exercise4 (P Q : Prop) : ¬P ∨ ¬Q → ¬(P ∧ Q) := by
   sorry
 ```
 
 Exercício 5. Lei de Peirce.{margin}[C. S. Peirce, *On the Algebra of Logic: A Contribution to the Philosophy of Notation*, American Journal of Mathematics 7(2), 1885, pp. 180–196.] Ela requer raciocínio clássico; considere uma análise de casos sobre `Classical.em P`.
 
-```savedLean
+```savedLean -keep
 theorem exercise5 (P Q : Prop) : ((P → Q) → P) → P := by
   sorry
 ```
