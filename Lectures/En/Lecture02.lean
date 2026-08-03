@@ -16,7 +16,7 @@ set_option pp.rawOnError true
 tag := "lecture-2"
 %%%
 
-This lecture extends propositional logic with quantifiers and introduces sets, following chapters 2 and 3 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the proof rules for the universal and existential quantifiers, the laws that relate them under negation, and sets as predicates in Lean.
+This lecture extends propositional logic with quantifiers and introduces sets, following chapters [2](https://djvelleman.github.io/HTPIwL/Chap2.html) and [3](https://djvelleman.github.io/HTPIwL/Chap3.html) of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the proof rules for the universal and existential quantifiers, the laws that relate them under negation, and sets as predicates in Lean.
 
 *This lecture is also available as [presentation slides](../slides/lecture-2.en.html).*
 
@@ -86,6 +86,104 @@ theorem forall_and_distrib (α : Type) (P Q : α → Prop) :
     exact ⟨h.left a, h.right a⟩
 ```
 
+## Examples
+
+The examples below combine the two rules of this section with the connectives of Lecture 1.
+
+Example 1. Implication is reflexive at each element.
+
+```lean
+example (α : Type) (P : α → Prop) : ∀ x, P x → P x := by
+  intro a hPa
+  exact hPa
+```
+
+Example 2. A universal hypothesis instantiates at any given element. The application `h a` is already the proof, so no tactics are needed.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ∀ x, P x) (a : α) : P a := h a
+```
+
+Example 3. Instantiating both variables of a binary predicate at the same element yields the diagonal. The tactic `apply` unifies the hypothesis with the goal and finds both instantiations.
+
+```lean
+example (α : Type) (R : α → α → Prop)
+    (h : ∀ x, ∀ y, R x y) : ∀ x, R x x := by
+  intro a
+  apply h
+```
+
+Example 4. Consecutive universal quantifiers commute.
+
+```lean
+example (α β : Type) (R : α → β → Prop)
+    (h : ∀ x, ∀ y, R x y) : ∀ y, ∀ x, R x y := by
+  intro b a
+  exact h a b
+```
+
+Example 5. Conjunction commutes under the quantifier. The tactic `have` records the instantiated hypothesis, and `constructor` splits the goal into the two conjuncts.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x ∧ Q x) : ∀ x, Q x ∧ P x := by
+  intro a
+  have ha := h a
+  constructor
+  · exact ha.right
+  · exact ha.left
+```
+
+Example 6. A disjunct entails the disjunction at each element. Applying `Or.inl` reduces the disjunction to its left side.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x) : ∀ x, P x ∨ Q x := by
+  intro a
+  apply Or.inl
+  exact h a
+```
+
+Example 7. A pointwise disjunction whose left side fails everywhere yields its right side.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x ∨ Q x) (hn : ∀ x, ¬P x) : ∀ x, Q x := by
+  intro a
+  cases h a with
+  | inl hPa => exact absurd hPa (hn a)
+  | inr hQa => exact hQa
+```
+
+Example 8. Contraposition applies at each element. The proof reasons forward, deriving Q a with `have` before reaching the contradiction.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) (hn : ∀ x, ¬Q x) : ∀ x, ¬P x := by
+  intro a hPa
+  have hQa : Q a := h a hPa
+  exact hn a hQa
+```
+
+Example 9. An antecedent that does not mention the quantified variable moves inside the quantifier.
+
+```lean
+example (α : Type) (P : Prop) (Q : α → Prop)
+    (h : P → ∀ x, Q x) : ∀ x, P → Q x := by
+  intro a hP
+  exact h hP a
+```
+
+Example 10. When the type has an element, ∀ x, P x refutes ∀ x, ¬P x.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (h : ∀ x, P x) : ¬∀ x, ¬P x := by
+  intro hn
+  exact hn a (h a)
+```
+
 # The Existential Quantifier
 
 To prove ∃ x, P x, exhibit a *witness* and prove the proposition at it. The anonymous constructor of Lecture 1 pairs the witness with the proof. The term `rfl` proves an equation whose two sides compute to the same value.
@@ -127,6 +225,98 @@ theorem exists_imp_exists (α : Type) (P Q : α → Prop)
   intro hex
   obtain ⟨a, hPa⟩ := hex
   exact ⟨a, h a hPa⟩
+```
+
+## Examples
+
+The examples below combine the witness rule and existential elimination with the connectives of Lecture 1.
+
+Example 1. The witness 7 proves a concrete existential by computation.
+
+```lean
+example : ∃ n : Nat, n + 5 = 12 := ⟨7, rfl⟩
+```
+
+Example 2. Both 0 and 1 satisfy `n * n = n`, and the proof picks the witness 1.
+
+```lean
+example : ∃ n : Nat, n * n = n := by
+  exists 1
+```
+
+Example 3. An element together with a proof at it is the introduction rule packaged as a pair.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (hPa : P a) : ∃ x, P x := ⟨a, hPa⟩
+```
+
+Example 4. On an inhabited type, a universal statement yields an existential one. The tactic `specialize` instantiates the hypothesis, and `exists` finds it as an assumption.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (h : ∀ x, P x) : ∃ x, P x := by
+  specialize h a
+  exists a
+```
+
+Example 5. A proposition that does not mention the bound variable escapes the quantifier.
+
+```lean
+example (α : Type) (P : Prop) (h : ∃ _ : α, P) : P := by
+  obtain ⟨_, hP⟩ := h
+  exact hP
+```
+
+Example 6. Conjunction commutes under the quantifier.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : ∃ x, Q x ∧ P x := by
+  cases h with
+  | intro a ha => exact ⟨a, ha.right, ha.left⟩
+```
+
+Example 7. An existential of a conjunction splits, and the two parts share the witness. The pattern of `obtain` destructures the conjunction under the quantifier in one step.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : (∃ x, P x) ∧ (∃ x, Q x) := by
+  obtain ⟨a, hPa, hQa⟩ := h
+  constructor
+  · exact ⟨a, hPa⟩
+  · exact ⟨a, hQa⟩
+```
+
+Example 8. The witness for P x also witnesses Q x → P x.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x) : ∃ x, Q x → P x := by
+  obtain ⟨a, hPa⟩ := h
+  exists a
+  intro _hQ
+  exact hPa
+```
+
+Example 9. Consecutive existential quantifiers commute.
+
+```lean
+example (α β : Type) (R : α → β → Prop)
+    (h : ∃ x, ∃ y, R x y) : ∃ y, ∃ x, R x y := by
+  obtain ⟨a, b, hab⟩ := h
+  exact ⟨b, a, hab⟩
+```
+
+Example 10. An existential disjunction whose right side fails everywhere witnesses its left side.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∨ Q x) (hn : ∀ x, ¬Q x) : ∃ x, P x := by
+  obtain ⟨a, ha⟩ := h
+  cases ha with
+  | inl hPa => exact ⟨a, hPa⟩
+  | inr hQa => exact absurd hQa (hn a)
 ```
 
 # Quantifier Negation Laws
@@ -188,7 +378,7 @@ The converse fails. Over the natural numbers, take R x y to be x ≥ y. Then ∀
 
 # Sets
 
-Chapter 3 of HTPIwL develops proofs about sets. A set of elements of a type α is determined by which elements belong to it, so the membership predicate determines the set. In Lean, we take this as the definition.
+[Chapter 3](https://djvelleman.github.io/HTPIwL/Chap3.html) of HTPIwL develops proofs about sets. A set of elements of a type α is determined by which elements belong to it, so the membership predicate determines the set. In Lean, we take this as the definition.
 
 ```savedLean
 def Set (α : Type) : Type := α → Prop

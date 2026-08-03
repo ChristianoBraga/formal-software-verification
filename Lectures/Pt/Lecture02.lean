@@ -16,7 +16,7 @@ set_option pp.rawOnError true
 tag := "aula-2"
 %%%
 
-Esta aula estende a lógica proposicional com quantificadores e introduz conjuntos, seguindo os capítulos 2 e 3 de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta as regras de prova dos quantificadores universal e existencial, as leis que os relacionam sob negação e conjuntos como predicados em Lean.
+Esta aula estende a lógica proposicional com quantificadores e introduz conjuntos, seguindo os capítulos [2](https://djvelleman.github.io/HTPIwL/Chap2.html) e [3](https://djvelleman.github.io/HTPIwL/Chap3.html) de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta as regras de prova dos quantificadores universal e existencial, as leis que os relacionam sob negação e conjuntos como predicados em Lean.
 
 *Esta aula também está disponível como [slides de apresentação](../slides/lecture-2.pt.html).*
 
@@ -86,6 +86,104 @@ theorem forall_and_distrib (α : Type) (P Q : α → Prop) :
     exact ⟨h.left a, h.right a⟩
 ```
 
+## Exemplos
+
+Os exemplos abaixo combinam as duas regras desta seção com os conectivos da Aula 1.
+
+Exemplo 1. A implicação é reflexiva em cada elemento.
+
+```lean
+example (α : Type) (P : α → Prop) : ∀ x, P x → P x := by
+  intro a hPa
+  exact hPa
+```
+
+Exemplo 2. Uma hipótese universal se instancia em qualquer elemento dado. A aplicação `h a` já é a prova, então nenhuma tática é necessária.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ∀ x, P x) (a : α) : P a := h a
+```
+
+Exemplo 3. Instanciar as duas variáveis de um predicado binário no mesmo elemento produz a diagonal. A tática `apply` unifica a hipótese com a meta e encontra as duas instanciações.
+
+```lean
+example (α : Type) (R : α → α → Prop)
+    (h : ∀ x, ∀ y, R x y) : ∀ x, R x x := by
+  intro a
+  apply h
+```
+
+Exemplo 4. Quantificadores universais consecutivos comutam.
+
+```lean
+example (α β : Type) (R : α → β → Prop)
+    (h : ∀ x, ∀ y, R x y) : ∀ y, ∀ x, R x y := by
+  intro b a
+  exact h a b
+```
+
+Exemplo 5. A conjunção comuta sob o quantificador. A tática `have` registra a hipótese instanciada, e `constructor` divide a meta nas duas partes da conjunção.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x ∧ Q x) : ∀ x, Q x ∧ P x := by
+  intro a
+  have ha := h a
+  constructor
+  · exact ha.right
+  · exact ha.left
+```
+
+Exemplo 6. Um disjunto implica a disjunção em cada elemento. Aplicar `Or.inl` reduz a disjunção ao seu lado esquerdo.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x) : ∀ x, P x ∨ Q x := by
+  intro a
+  apply Or.inl
+  exact h a
+```
+
+Exemplo 7. Uma disjunção pontual cujo lado esquerdo falha em todo elemento produz o seu lado direito.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x ∨ Q x) (hn : ∀ x, ¬P x) : ∀ x, Q x := by
+  intro a
+  cases h a with
+  | inl hPa => exact absurd hPa (hn a)
+  | inr hQa => exact hQa
+```
+
+Exemplo 8. A contraposição se aplica em cada elemento. A prova raciocina para frente, derivando Q a com `have` antes de chegar à contradição.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) (hn : ∀ x, ¬Q x) : ∀ x, ¬P x := by
+  intro a hPa
+  have hQa : Q a := h a hPa
+  exact hn a hQa
+```
+
+Exemplo 9. Um antecedente que não menciona a variável quantificada move-se para dentro do quantificador.
+
+```lean
+example (α : Type) (P : Prop) (Q : α → Prop)
+    (h : P → ∀ x, Q x) : ∀ x, P → Q x := by
+  intro a hP
+  exact h hP a
+```
+
+Exemplo 10. Quando o tipo tem um elemento, ∀ x, P x refuta ∀ x, ¬P x.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (h : ∀ x, P x) : ¬∀ x, ¬P x := by
+  intro hn
+  exact hn a (h a)
+```
+
 # O Quantificador Existencial
 
 Para provar ∃ x, P x, exiba uma *testemunha* e prove a proposição nela. O construtor anônimo da Aula 1 emparelha a testemunha com a prova. O termo `rfl` prova uma equação cujos dois lados computam para o mesmo valor.
@@ -127,6 +225,98 @@ theorem exists_imp_exists (α : Type) (P Q : α → Prop)
   intro hex
   obtain ⟨a, hPa⟩ := hex
   exact ⟨a, h a hPa⟩
+```
+
+## Exemplos
+
+Os exemplos abaixo combinam a regra da testemunha e a eliminação do existencial com os conectivos da Aula 1.
+
+Exemplo 1. A testemunha 7 prova um existencial concreto por computação.
+
+```lean
+example : ∃ n : Nat, n + 5 = 12 := ⟨7, rfl⟩
+```
+
+Exemplo 2. Tanto 0 quanto 1 satisfazem `n * n = n`, e a prova escolhe a testemunha 1.
+
+```lean
+example : ∃ n : Nat, n * n = n := by
+  exists 1
+```
+
+Exemplo 3. Um elemento junto com uma prova nele é a regra de introdução empacotada como um par.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (hPa : P a) : ∃ x, P x := ⟨a, hPa⟩
+```
+
+Exemplo 4. Em um tipo habitado, uma afirmação universal produz uma existencial. A tática `specialize` instancia a hipótese, e `exists` a encontra como hipótese do contexto.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (h : ∀ x, P x) : ∃ x, P x := by
+  specialize h a
+  exists a
+```
+
+Exemplo 5. Uma proposição que não menciona a variável ligada escapa do quantificador.
+
+```lean
+example (α : Type) (P : Prop) (h : ∃ _ : α, P) : P := by
+  obtain ⟨_, hP⟩ := h
+  exact hP
+```
+
+Exemplo 6. A conjunção comuta sob o quantificador.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : ∃ x, Q x ∧ P x := by
+  cases h with
+  | intro a ha => exact ⟨a, ha.right, ha.left⟩
+```
+
+Exemplo 7. Um existencial de uma conjunção se divide, e as duas partes compartilham a testemunha. O padrão do `obtain` desestrutura a conjunção sob o quantificador em um só passo.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : (∃ x, P x) ∧ (∃ x, Q x) := by
+  obtain ⟨a, hPa, hQa⟩ := h
+  constructor
+  · exact ⟨a, hPa⟩
+  · exact ⟨a, hQa⟩
+```
+
+Exemplo 8. A testemunha de P x também testemunha Q x → P x.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x) : ∃ x, Q x → P x := by
+  obtain ⟨a, hPa⟩ := h
+  exists a
+  intro _hQ
+  exact hPa
+```
+
+Exemplo 9. Quantificadores existenciais consecutivos comutam.
+
+```lean
+example (α β : Type) (R : α → β → Prop)
+    (h : ∃ x, ∃ y, R x y) : ∃ y, ∃ x, R x y := by
+  obtain ⟨a, b, hab⟩ := h
+  exact ⟨b, a, hab⟩
+```
+
+Exemplo 10. Uma disjunção existencial cujo lado direito falha em todo elemento testemunha o seu lado esquerdo.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∨ Q x) (hn : ∀ x, ¬Q x) : ∃ x, P x := by
+  obtain ⟨a, ha⟩ := h
+  cases ha with
+  | inl hPa => exact ⟨a, hPa⟩
+  | inr hQa => exact absurd hQa (hn a)
 ```
 
 # Leis de Negação dos Quantificadores
@@ -188,7 +378,7 @@ A recíproca falha. Sobre os números naturais, tome R x y como x ≥ y. Então 
 
 # Conjuntos
 
-O capítulo 3 de HTPIwL desenvolve provas sobre conjuntos. Um conjunto de elementos de um tipo α é determinado por quais elementos pertencem a ele, então o predicado de pertinência determina o conjunto. Em Lean, tomamos essa propriedade como a definição.
+O [capítulo 3](https://djvelleman.github.io/HTPIwL/Chap3.html) de HTPIwL desenvolve provas sobre conjuntos. Um conjunto de elementos de um tipo α é determinado por quais elementos pertencem a ele, então o predicado de pertinência determina o conjunto. Em Lean, tomamos essa propriedade como a definição.
 
 ```savedLean
 def Set (α : Type) : Type := α → Prop
