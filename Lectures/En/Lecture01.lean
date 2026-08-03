@@ -18,7 +18,7 @@ tag := "lecture-1"
 
 This lecture motivates formal software verification and reviews propositional logic, following chapter 1 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the connectives, the classical equivalences, the natural deduction rules, their encoding in Lean as proof terms, and proofs with tactics.
 
-*This lecture is also available as [presentation slides](../../slides/lecture-1.en.html).*
+*This lecture is also available as [presentation slides](../slides/lecture-1.en.html).*
 
 # Why Verify Software Formally?
 
@@ -1220,7 +1220,7 @@ example (P : Prop) : ¬¬P → P := by
 
 # Exercises
 
-Prove each statement in Lean, replacing `sorry` with a proof. Download the exercise file [`Lecture01.lean`](../../example-code/Lectures/En/Lecture01.lean) and open it in VS Code.
+Prove each statement in Lean, replacing `sorry` with a proof. Download the exercise file [`Lecture01.lean`](example-code/Lectures/En/Lecture01.lean) and open it in VS Code.
 
 ```savedComment
 Exercises for Lecture 1: Motivation and Propositional Logic.

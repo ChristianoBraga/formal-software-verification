@@ -18,7 +18,7 @@ tag := "aula-2"
 
 Esta aula estende a lógica proposicional com quantificadores e introduz conjuntos, seguindo os capítulos 2 e 3 de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta as regras de prova dos quantificadores universal e existencial, as leis que os relacionam sob negação e conjuntos como predicados em Lean.
 
-*Esta aula também está disponível como [slides de apresentação](../../slides/lecture-2.pt.html).*
+*Esta aula também está disponível como [slides de apresentação](../slides/lecture-2.pt.html).*
 
 # Predicados e Quantificadores
 
@@ -252,7 +252,7 @@ Dois conjuntos com os mesmos elementos são iguais. Provar tal igualdade requer 
 
 # Exercícios
 
-Prove cada enunciado em Lean, substituindo `sorry` por uma prova. Baixe o arquivo de exercícios [`Lecture02.lean`](../../example-code/Lectures/Pt/Lecture02.lean) e abra-o no VS Code. O arquivo já contém as definições de `Set`, pertinência, inclusão, união e interseção.
+Prove cada enunciado em Lean, substituindo `sorry` por uma prova. Baixe o arquivo de exercícios [`Lecture02.lean`](example-code/Lectures/Pt/Lecture02.lean) e abra-o no VS Code. O arquivo já contém as definições de `Set`, pertinência, inclusão, união e interseção.
 
 ```savedComment
 Exercícios da Aula 2: Lógica de Predicados e Conjuntos.

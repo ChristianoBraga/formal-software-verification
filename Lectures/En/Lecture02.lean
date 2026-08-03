@@ -18,7 +18,7 @@ tag := "lecture-2"
 
 This lecture extends propositional logic with quantifiers and introduces sets, following chapters 2 and 3 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the proof rules for the universal and existential quantifiers, the laws that relate them under negation, and sets as predicates in Lean.
 
-*This lecture is also available as [presentation slides](../../slides/lecture-2.en.html).*
+*This lecture is also available as [presentation slides](../slides/lecture-2.en.html).*
 
 # Predicates and Quantifiers
 
@@ -252,7 +252,7 @@ Two sets with the same elements are equal. Proving such an equality requires ext
 
 # Exercises
 
-Prove each statement in Lean, replacing `sorry` with a proof. Download the exercise file [`Lecture02.lean`](../../example-code/Lectures/En/Lecture02.lean) and open it in VS Code. The file already contains the definitions of `Set`, membership, inclusion, union, and intersection.
+Prove each statement in Lean, replacing `sorry` with a proof. Download the exercise file [`Lecture02.lean`](example-code/Lectures/En/Lecture02.lean) and open it in VS Code. The file already contains the definitions of `Set`, membership, inclusion, union, and intersection.
 
 ```savedComment
 Exercises for Lecture 2: Predicate Logic and Sets.

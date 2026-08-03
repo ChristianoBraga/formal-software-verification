@@ -18,7 +18,7 @@ tag := "aula-1"
 
 Esta aula motiva a verificação formal de software e revisa a lógica proposicional, seguindo o capítulo 1 de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta os conectivos, as equivalências clássicas, as regras de dedução natural, a sua codificação em Lean como termos de prova e as provas com táticas.
 
-*Esta aula também está disponível como [slides de apresentação](../../slides/lecture-1.pt.html).*
+*Esta aula também está disponível como [slides de apresentação](../slides/lecture-1.pt.html).*
 
 # Por que Verificar Software Formalmente?
 
@@ -1220,7 +1220,7 @@ example (P : Prop) : ¬¬P → P := by
 
 # Exercícios
 
-Prove cada enunciado em Lean, substituindo `sorry` por uma prova. Baixe o arquivo de exercícios [`Lecture01.lean`](../../example-code/Lectures/Pt/Lecture01.lean) e abra-o no VS Code.
+Prove cada enunciado em Lean, substituindo `sorry` por uma prova. Baixe o arquivo de exercícios [`Lecture01.lean`](example-code/Lectures/Pt/Lecture01.lean) e abra-o no VS Code.
 
 ```savedComment
 Exercícios da Aula 1: Motivação e Lógica Proposicional.
