@@ -1,5 +1,2 @@
 /.lake
 /_out
-
-# Untracked until the gh token gains the workflow scope
-/.github/workflows/deploy.yml
