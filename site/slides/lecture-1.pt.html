@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 1: Motivação e Lógica Proposicional · Slides</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569;
+    --accent: #1e3a8a; --accent2: #0d9488; --border: #e2e8f0;
+    --footer-bg: rgba(248,250,252,0.9); --code-bg: rgba(148,163,184,0.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --muted: #94a3b8;
+      --accent: #93c5fd; --accent2: #5eead4; --border: #334155;
+      --footer-bg: rgba(15,23,42,0.9); --code-bg: rgba(148,163,184,0.22);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow: hidden;
+  }
+  .progress {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.25s ease; z-index: 10;
+  }
+  .deck { position: relative; height: 100vh; width: 100vw; }
+  .slide {
+    position: absolute; inset: 0; display: none;
+    flex-direction: column; justify-content: center; align-items: center;
+    padding: clamp(1.5rem, 5vw, 4.5rem) clamp(1.5rem, 6vw, 6rem) clamp(3.5rem, 7vw, 4.5rem);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .slide.active { display: flex; opacity: 1; }
+  .inner { width: 100%; max-width: 66rem; max-height: 100%; overflow-y: auto; }
+  .kicker {
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-size: clamp(0.7rem, 1.6vw, 0.95rem); font-weight: 600;
+    color: var(--accent2); margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 4.2rem); line-height: 1.05; margin: 0 0 1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  h2 {
+    font-size: clamp(1.3rem, 3.6vw, 2.4rem); line-height: 1.15; margin: 0 0 1.1rem;
+    padding-bottom: 0.4rem; border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, var(--accent), var(--accent2)) 1;
+  }
+  ul { margin: 0; padding: 0; list-style: none; }
+  li {
+    position: relative; padding-left: 1.5rem; margin: 0.65rem 0;
+    font-size: clamp(0.95rem, 2.2vw, 1.45rem); line-height: 1.4; color: var(--muted);
+  }
+  li strong { color: var(--text); }
+  li::before {
+    content: ""; position: absolute; left: 0; top: 0.6em;
+    width: 0.55rem; height: 0.55rem; border-radius: 2px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em; background: var(--code-bg);
+    padding: 0.1em 0.35em; border-radius: 0.3em;
+  }
+  .hl-kw { color: #a626a4; }
+  .hl-tac { color: #0d9488; }
+  .hl-const { color: #4078f2; }
+  @media (prefers-color-scheme: dark) {
+    .hl-kw { color: #c678dd; }
+    .hl-tac { color: #5eead4; }
+    .hl-const { color: #61afef; }
+  }
+  pre.tree, pre.code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(0.68rem, 1.55vw, 1rem); line-height: 1.35;
+    margin: 0.5rem 0; padding: 0.8rem 1rem; white-space: pre; overflow-x: auto;
+    background: var(--code-bg); border-radius: 0.5rem; color: var(--text);
+  }
+  table.tt { border-collapse: collapse; margin: 0.5rem 0; font-size: clamp(0.8rem, 1.7vw, 1.1rem); }
+  table.tt th, table.tt td { border: 1px solid var(--border); padding: 0.22rem 0.7rem; text-align: center; color: var(--text); }
+  table.tt th { background: var(--code-bg); }
+  table.tt .l { text-align: left; }
+  .cols { display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: flex-start; }
+  .cols > div { flex: 1 1 22rem; min-width: min(100%, 22rem); }
+  .note { color: var(--muted); font-size: clamp(0.9rem, 1.9vw, 1.2rem); line-height: 1.4; margin: 0.7rem 0 0; }
+  .exh { font-weight: 700; color: var(--text); font-size: clamp(1rem, 2.3vw, 1.45rem); margin: 1rem 0 0.3rem; }
+  ul.brk { margin: 0.6rem 0 0; padding: 0; }
+  ul.brk li { font-size: clamp(0.85rem, 1.7vw, 1.05rem); color: var(--muted); margin: 0.35rem 0; padding-left: 1.3rem; line-height: 1.4; }
+  .lbl { text-transform: uppercase; letter-spacing: 0.08em; font-size: clamp(0.68rem, 1.3vw, 0.85rem); font-weight: 700; color: var(--accent2); margin: 0.5rem 0 0.15rem; }
+  blockquote {
+    margin: 0.5rem 0 1rem; padding: 0.75rem 0 0.75rem 1.5rem;
+    border-left: 5px solid; border-image: linear-gradient(180deg, var(--accent), var(--accent2)) 1;
+    font-size: clamp(1.3rem, 3.4vw, 2.3rem); font-style: italic; line-height: 1.35; color: var(--text);
+  }
+  .cite { font-size: clamp(0.8rem, 1.8vw, 1.05rem); color: var(--muted); }
+  .subtitle { font-size: clamp(1.1rem, 3vw, 2rem); color: var(--muted); margin: 0 0 1.5rem; }
+  .byline { font-size: clamp(0.9rem, 2vw, 1.2rem); color: var(--muted); margin: 0 0 1.5rem; }
+  .notelink a {
+    font-size: clamp(0.95rem, 2vw, 1.15rem); font-weight: 600;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem 1.1rem;
+    display: inline-block; background: var(--card);
+  }
+  .notelink a:hover { border-color: var(--accent2); }
+  .refs { font-size: clamp(0.85rem, 1.9vw, 1.1rem); margin: 1rem 0 0; color: var(--muted); }
+  .slide--title .refs { color: rgba(255,255,255,0.9); }
+  .slide--title .refs a { color: #ffffff; text-decoration: underline; }
+  .slide--title { background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); }
+  .slide--title .kicker { color: rgba(255,255,255,0.85); }
+  .slide--title h1 { -webkit-text-fill-color: #ffffff; color: #ffffff; background: none; }
+  .slide--title .subtitle, .slide--title .byline { color: rgba(255,255,255,0.92); }
+  .slide--title .notelink a {
+    background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.5);
+  }
+  footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.5rem clamp(1rem, 4vw, 3rem);
+    font-size: 0.85rem; color: var(--muted);
+    background: var(--footer-bg); backdrop-filter: blur(6px); z-index: 5;
+  }
+  footer a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent2); }
+  footer .fl { display: flex; gap: 0.9rem; align-items: center; }
+  footer .label { flex: 1; text-align: center; opacity: 0.85; }
+  @media (max-width: 680px) { footer .label { display: none; } }
+  footer .nav { display: flex; gap: 0.4rem; align-items: center; }
+  footer button {
+    font: inherit; cursor: pointer; background: var(--card); color: var(--text);
+    border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.25rem 0.7rem; line-height: 1;
+  }
+  footer button:hover { border-color: var(--accent2); }
+  .zone { position: fixed; top: 0; bottom: 2.8rem; width: 20%; z-index: 4; cursor: pointer; }
+  .zone.prev { left: 0; } .zone.next { right: 0; }
+  @media print {
+    .slide { display: flex !important; opacity: 1 !important; position: relative; page-break-after: always; height: 100vh; }
+    footer, .zone, .progress { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <section class="slide slide--title"><div class="inner">
+    <div class="kicker">Aula 1 · Verificação Formal de Software</div>
+    <h1>Motivação e Lógica Proposicional</h1>
+    <p class="subtitle">Conectivos, equivalências, dedução natural e provas em Lean</p>
+    <p class="byline">Christiano Braga · Mestrado em Sistemas e Computação · IME</p>
+    <p class="notelink"><a href="../pt/Aula-1___-Motiva______o-e-L___gica-Proposicional/">↩ Abrir as notas de aula</a></p>
+    <p class="refs">Baseada em <a href="https://djvelleman.github.io/HTPIwL/" target="_blank" rel="noopener">How To Prove It with Lean</a> (HTPIwL), capítulo <a href="https://djvelleman.github.io/HTPIwL/Chap1.html" target="_blank" rel="noopener">1</a>.</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>O teste mostra presença, não ausência</h2>
+    <ul>
+      <li>Software controla aeronaves, dispositivos médicos, sistemas financeiros e redes de comunicação. Erros custam dinheiro e vidas.</li>
+      <li>O teste examina <strong>finitas</strong> execuções de um programa que admite <strong>infinitas</strong>.</li>
+    </ul>
+    <blockquote>O teste de programas pode ser usado para mostrar a presença de erros, mas nunca para mostrar a sua ausência!</blockquote>
+    <p class="cite">E. W. Dijkstra, <em>Notes on Structured Programming</em>, EWD249, 1970.</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>O caminho complementar</h2>
+    <ul>
+      <li>Enunciamos uma propriedade de um programa como uma <strong>proposição matemática</strong>.</li>
+      <li>Provamos que <strong>toda execução</strong> a satisfaz; a prova cobre todas as entradas de uma vez.</li>
+      <li>Um <strong>assistente de prova</strong> checa cada passo com respeito às regras de uma lógica formal e ajuda a construir a prova interativamente.</li>
+      <li>Em uso corrente: <strong>Lean</strong>, Rocq (antigo Coq), Isabelle/HOL, Agda. Marcos: o micronúcleo <strong>seL4</strong> e o compilador <strong>CompCert</strong>.</li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>Código gerado</h2>
+    <ul>
+      <li>Modelos de linguagem escrevem hoje uma parcela crescente do código. <strong>Plausível não é o mesmo que correto</strong>; o modo de falha é a alucinação.</li>
+      <li>Uma prova checada por máquina é verificada <strong>independentemente de como o código surgiu</strong>, então código errado não passa.</li>
+      <li>O ônus da correção move-se de <strong>ler o código</strong> para <strong>escrever a especificação certa</strong>.</li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>Proposições e conectivos</h2>
+    <ul>
+      <li>Uma <strong>proposição</strong> é uma sentença declarativa que é verdadeira ou falsa. Em Lean o tipo <code>Prop</code> as classifica.</li>
+      <li>Conectivos constroem proposições compostas: <code>¬P</code>, <code>P ∧ Q</code>, <code>P ∨ Q</code>, <code>P → Q</code>, <code>P ↔ Q</code>.</li>
+      <li>São <strong>funções de verdade</strong>. Uma implicação é verdadeira quando o antecedente é falso, e a disjunção é <strong>inclusiva</strong>.</li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.4 Equivalência lógica</h2>
+    <ul>
+      <li>Uma <strong>valoração</strong> atribui um valor de verdade a cada variável. Uma <strong>tautologia</strong> é verdadeira sob toda valoração.</li>
+      <li>A ≡ B quando <code>A ↔ B</code> é uma tautologia, isto é, as duas coincidem sob toda valoração.</li>
+    </ul>
+    <table class="tt">
+      <tr><th class="l">Nome</th><th class="l">Equivalência</th></tr>
+      <tr><td class="l">De Morgan</td><td class="l">¬(P ∧ Q) ≡ ¬P ∨ ¬Q</td></tr>
+      <tr><td class="l">De Morgan</td><td class="l">¬(P ∨ Q) ≡ ¬P ∧ ¬Q</td></tr>
+      <tr><td class="l">Dupla negação</td><td class="l">¬¬P ≡ P</td></tr>
+      <tr><td class="l">Contrapositiva</td><td class="l">P → Q ≡ ¬Q → ¬P</td></tr>
+      <tr><td class="l">Implicação material</td><td class="l">P → Q ≡ ¬P ∨ Q</td></tr>
+    </table>
+    <p class="note">A implicação chama-se <em>material</em> porque a sua verdade depende apenas dos valores de verdade de P e Q, e não de alguma conexão de significado entre eles (Russell, 1903).</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.4 Uma tabela-verdade verifica a equivalência</h2>
+    <p class="note">Segunda lei de De Morgan: as colunas de ¬(P ∨ Q) e ¬P ∧ ¬Q coincidem nas quatro valorações.</p>
+    <table class="tt">
+      <tr><th>P</th><th>Q</th><th>P ∨ Q</th><th>¬(P ∨ Q)</th><th>¬P ∧ ¬Q</th></tr>
+      <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr>
+      <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr>
+      <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr>
+      <tr><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr>
+    </table>
+    <p class="note">Tabelas-verdade decidem qualquer questão proposicional, mas crescem <strong>exponencialmente</strong> no número de variáveis e não se estendem aos quantificadores da Aula 2. Regras de dedução escalam e generalizam.</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.5 Dedução natural: as regras do jogo</h2>
+    <ul>
+      <li>Cada regra tem <strong>premissas</strong> acima de uma linha e uma <strong>conclusão</strong> abaixo, aplicadas um passo por vez (Gentzen, 1935).</li>
+      <li>Regras de <strong>introdução</strong> provam um conectivo; regras de <strong>eliminação</strong> o usam. Algumas regras <strong>descartam</strong> uma suposição, marcada <code>[P]</code>.</li>
+    </ul>
+    <pre class="tree">   [P]
+    ⋮
+    Q                   P → Q    P
+  ───────  →I          ─────────────  →E
+   P → Q                     Q</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.5 Conjunção e disjunção</h2>
+    <pre class="tree">   P    Q              P ∧ Q            P ∧ Q
+  ───────  ∧I         ───────  ∧E₁     ───────  ∧E₂
+   P ∧ Q                 P                Q</pre>
+    <pre class="tree">     P                 Q                              [P]     [Q]
+  ───────  ∨I₁      ───────  ∨I₂          P ∨ Q         ⋮       ⋮
+   P ∨ Q             P ∨ Q                              R       R
+                                        ──────────────────────────  ∨E
+                                                     R</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.5 Negação e a regra clássica</h2>
+    <p class="note">A constante ⊥ é a absurdidade, e ¬P abrevia P → ⊥.</p>
+    <pre class="tree">   [P]
+    ⋮
+    ⊥                  P    ¬P               ⊥
+  ───────  ¬I         ─────────  ¬E        ─────  ⊥E
+    ¬P                    ⊥                   C</pre>
+    <p class="note">As regras acima são <strong>construtivas</strong>. A lógica clássica acrescenta mais uma regra, equivalentemente RAA ou o terceiro excluído.</p>
+    <pre class="tree">   [¬P]
+     ⋮
+     ⊥
+  ─────────  RAA               ───────────  EM
+     P                          P ∨ ¬P</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.6 Dedução natural em Lean</h2>
+    <p class="note">Uma prova de uma proposição é um <strong>termo</strong> cujo tipo é aquela proposição; uma suposição é uma variável daquele tipo. Cada regra constrói ou desmonta um termo.</p>
+    <table class="tt">
+      <tr><th class="l">Regra</th><th class="l">Termo em Lean</th><th class="l">Exemplo</th></tr>
+      <tr><td class="l">suposição</td><td class="l">um nome de hipótese</td><td class="l">h</td></tr>
+      <tr><td class="l">→I</td><td class="l">fun h =&gt; e</td><td class="l">fun h =&gt; h</td></tr>
+      <tr><td class="l">→E</td><td class="l">aplicação</td><td class="l">f a</td></tr>
+      <tr><td class="l">∧I</td><td class="l">⟨_, _⟩</td><td class="l">⟨ha, hb⟩</td></tr>
+      <tr><td class="l">∧E₁, ∧E₂</td><td class="l">.left, .right</td><td class="l">h.left, h.right</td></tr>
+      <tr><td class="l">∨I₁, ∨I₂</td><td class="l">Or.inl, Or.inr</td><td class="l">Or.inl h</td></tr>
+      <tr><td class="l">∨E</td><td class="l">Or.elim ou match</td><td class="l">h.elim f g</td></tr>
+      <tr><td class="l">¬I</td><td class="l">fun h =&gt; e em False</td><td class="l">fun hnP =&gt; hnP hP</td></tr>
+      <tr><td class="l">¬E</td><td class="l">aplicação em False</td><td class="l">hnP hP</td></tr>
+      <tr><td class="l">⊥E</td><td class="l">False.elim ou absurd</td><td class="l">False.elim h</td></tr>
+    </table>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.6 Termos de prova a partir da derivação</h2>
+
+    <p class="exh">1. P ∧ Q → Q ∧ P</p>
+    <div class="cols">
+      <div>
+        <pre class="tree">   [P ∧ Q]        [P ∧ Q]
+  ─────────∧E₂   ─────────∧E₁
+      Q              P
+    ────────────────────── ∧I
+          Q ∧ P
+  ────────────────────────── →I
+       P ∧ Q → Q ∧ P</pre>
+      </div>
+      <div>
+        <pre class="code">fun h => ⟨h.right, h.left⟩</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta P ∧ Q</li>
+          <li><code>h.right</code> e <code>h.left</code> são ∧E₂ e ∧E₁</li>
+          <li><code>⟨_, _⟩</code> é o ∧I</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="exh">2. P → P ∨ Q</p>
+    <div class="cols">
+      <div><pre class="tree">     [P]
+   ───────  ∨I₁
+    P ∨ Q
+  ───────────  →I
+   P → P ∨ Q</pre></div>
+      <div>
+        <pre class="code">fun h => Or.inl h</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta P</li>
+          <li><code>Or.inl</code> é o ∨I₁, escolhendo o disjunto esquerdo</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="exh">3. P → ¬¬P</p>
+    <div class="cols">
+      <div><pre class="tree">   [¬P]   [P]
+  ────────────  ¬E
+       ⊥
+    ────────  ¬I
+       ¬¬P
+   ─────────────  →I
+     P → ¬¬P</pre></div>
+      <div>
+        <pre class="code">fun hP hnP => hnP hP</pre>
+        <ul class="brk">
+          <li><code>fun hP =&gt;</code> é o →I que descarta P</li>
+          <li><code>fun hnP =&gt;</code> é o ¬I que descarta ¬P, pois ¬¬P é ¬P → False</li>
+          <li><code>hnP hP</code> é o ¬E, aplicando ¬P a P para chegar a ⊥</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.7 Provando com táticas</h2>
+    <ul>
+      <li>Uma <strong>tática</strong> transforma o estado de prova, o objetivo junto com as hipóteses em escopo, um passo por vez.</li>
+      <li><code>by</code> entra no modo de táticas, e a sequência de táticas elabora para um termo de prova, então uma prova por táticas e uma por termos produzem o <strong>mesmo objeto</strong>.</li>
+      <li><code>exact</code> fecha um objetivo com um termo; um passo <strong>regressivo</strong> (<code>apply</code>) reduz o objetivo, um passo <strong>progressivo</strong> (<code>have</code>) acrescenta uma hipótese.</li>
+    </ul>
+    <pre class="code">example (P Q : Prop) (h : P → Q) (hP : P) : Q := by
+  apply h
+  exact hP</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.7 Táticas por conectivo</h2>
+    <table class="tt">
+      <tr><th>Conectivo</th><th class="l">Introduzir</th><th class="l">Eliminar</th></tr>
+      <tr><td>→</td><td class="l"><code>intro</code></td><td class="l"><code>apply</code>, aplicação</td></tr>
+      <tr><td>∧</td><td class="l"><code>constructor</code></td><td class="l"><code>.left</code>, <code>.right</code>, <code>cases</code></td></tr>
+      <tr><td>∨</td><td class="l"><code>Or.inl</code>, <code>Or.inr</code></td><td class="l"><code>cases</code></td></tr>
+      <tr><td>¬</td><td class="l"><code>intro</code></td><td class="l"><code>apply</code> para chegar a <code>False</code></td></tr>
+      <tr><td>⊥</td><td class="l">(nenhum)</td><td class="l"><code>exact False.elim</code></td></tr>
+    </table>
+    <div class="cols">
+      <div>
+        <pre class="code">example (P Q : Prop) :
+    P ∨ Q → Q ∨ P := by
+  intro h
+  cases h with
+  | inl hP => exact Or.inr hP
+  | inr hQ => exact Or.inl hQ</pre>
+      </div>
+      <div>
+        <pre class="code">example (P : Prop) : ¬¬P → P := by
+  intro h
+  apply Classical.byContradiction
+  intro hnP
+  exact h hnP</pre>
+      </div>
+    </div>
+    <p class="note">Táticas de introdução constroem o objetivo; táticas de eliminação usam uma hipótese. O raciocínio clássico acrescenta <code>Classical.byContradiction</code> e <code>Classical.em</code>, necessários para a eliminação da dupla negação.</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.7 Provando com táticas, como um jogo de tabuleiro</h2>
+    <p class="note">Uma prova por táticas se desenrola como um jogo de tabuleiro. Cada elemento do jogo nomeia uma parte precisa da prova.</p>
+    <table class="tt">
+      <tr><th class="l">Jogo de tabuleiro</th><th class="l">Prova por táticas</th></tr>
+      <tr><td class="l">O tabuleiro</td><td class="l">o estado de prova, o objetivo junto com as hipóteses em escopo</td></tr>
+      <tr><td class="l">Suas peças</td><td class="l">as hipóteses que você pode usar</td></tr>
+      <tr><td class="l">Uma jogada</td><td class="l">uma tática (<code>intro</code>, <code>apply</code>, <code>exact</code>, <code>cases</code>, <code>constructor</code>, <code>have</code>)</td></tr>
+      <tr><td class="l">Dividir o tabuleiro</td><td class="l">uma tática que abre vários objetivos; cada um precisa ser vencido</td></tr>
+      <tr><td class="l">Duas direções</td><td class="l"><code>apply</code> joga regressivamente a partir do objetivo, <code>have</code> joga progressivamente a partir das suas peças</td></tr>
+      <tr><td class="l">O livro de regras</td><td class="l">as regras de introdução e eliminação da dedução natural</td></tr>
+      <tr><td class="l">Vencer</td><td class="l">todo objetivo fechado, e o núcleo de Lean checa o termo de prova final</td></tr>
+    </table>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.8 Exemplo resolvido: P ∧ Q → P</h2>
+    <div class="cols">
+      <div>
+        <p class="lbl">Derivação</p>
+        <pre class="tree">   [P ∧ Q]
+  ──────────  ∧E₁
+      P
+  ────────────  →I
+   P ∧ Q → P</pre>
+      </div>
+      <div>
+        <p class="lbl">Modo de termos</p>
+        <pre class="code">example (P Q : Prop) : P ∧ Q → P :=
+  fun h => h.left</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta P ∧ Q</li>
+          <li><code>h.left</code> é o ∧E₁, a projeção esquerda</li>
+        </ul>
+        <p class="lbl">Modo de táticas</p>
+        <pre class="code">example (P Q : Prop) : P ∧ Q → P := by
+  intro h
+  exact h.left</pre>
+        <ul class="brk">
+          <li><code>intro h</code> é o →I que descarta P ∧ Q</li>
+          <li><code>exact h.left</code> fecha o objetivo por ∧E₁</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.8 Exemplo resolvido: ⊥ → P</h2>
+    <div class="cols">
+      <div>
+        <p class="lbl">Derivação</p>
+        <pre class="tree">   [⊥]
+  ──────  ⊥E
+    P
+  ────────  →I
+   ⊥ → P</pre>
+      </div>
+      <div>
+        <p class="lbl">Modo de termos</p>
+        <pre class="code">example (P : Prop) : False → P :=
+  fun h => False.elim h</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta ⊥</li>
+          <li><code>False.elim h</code> é o ⊥E, dando qualquer P</li>
+        </ul>
+        <p class="lbl">Modo de táticas</p>
+        <pre class="code">example (P : Prop) : False → P := by
+  intro h
+  exact False.elim h</pre>
+        <ul class="brk">
+          <li><code>intro h</code> é o →I que descarta ⊥</li>
+          <li><code>exact False.elim h</code> fecha o objetivo por ⊥E</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.8 Exemplo resolvido: (P → Q) ∧ P → Q</h2>
+    <div class="cols">
+      <div>
+        <p class="lbl">Derivação</p>
+        <pre class="tree">   [(P→Q)∧P]           [(P→Q)∧P]
+  ───────────── ∧E₁    ───────────── ∧E₂
+      P → Q                  P
+    ────────────────────────────── →E
+                 Q
+   ──────────────────────────────── →I
+        (P → Q) ∧ P → Q</pre>
+      </div>
+      <div>
+        <p class="lbl">Modo de termos</p>
+        <pre class="code">example (P Q : Prop) : (P → Q) ∧ P → Q :=
+  fun h => h.left h.right</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta (P → Q) ∧ P</li>
+          <li><code>h.left</code> e <code>h.right</code> são ∧E₁ e ∧E₂</li>
+          <li>a aplicação <code>h.left h.right</code> é o →E, modus ponens</li>
+        </ul>
+        <p class="lbl">Modo de táticas</p>
+        <pre class="code">example (P Q : Prop) : (P → Q) ∧ P → Q := by
+  intro h
+  apply h.left
+  exact h.right</pre>
+        <ul class="brk">
+          <li><code>intro h</code> é o →I que descarta (P → Q) ∧ P</li>
+          <li><code>apply h.left</code> reduz o objetivo a P por →E</li>
+          <li><code>exact h.right</code> fornece P por ∧E₂</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.8 Exemplo resolvido: P ∨ Q → Q ∨ P</h2>
+    <div class="cols">
+      <div>
+        <p class="lbl">Derivação</p>
+        <pre class="tree">               [P]           [Q]
+   [P ∨ Q]    ─────── ∨I₂   ─────── ∨I₁
+              Q ∨ P         Q ∨ P
+  ───────────────────────────────────── ∨E
+             Q ∨ P
+  ──────────────────────  →I
+   P ∨ Q → Q ∨ P</pre>
+      </div>
+      <div>
+        <p class="lbl">Modo de termos</p>
+        <pre class="code">example (P Q : Prop) : P ∨ Q → Q ∨ P :=
+  fun h => h.elim
+    (fun hP => Or.inr hP)
+    (fun hQ => Or.inl hQ)</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta P ∨ Q</li>
+          <li><code>h.elim</code> é o ∨E, um ramo por disjunto</li>
+          <li><code>Or.inr</code> e <code>Or.inl</code> são ∨I, trocando os disjuntos</li>
+        </ul>
+        <p class="lbl">Modo de táticas</p>
+        <pre class="code">example (P Q : Prop) : P ∨ Q → Q ∨ P := by
+  intro h
+  cases h with
+  | inl hP => exact Or.inr hP
+  | inr hQ => exact Or.inl hQ</pre>
+        <ul class="brk">
+          <li><code>intro h</code> é o →I que descarta P ∨ Q</li>
+          <li><code>cases h</code> é o ∨E, dividindo nos dois disjuntos</li>
+          <li>cada ramo fecha com <code>Or.inr</code> / <code>Or.inl</code> (∨I)</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§1.8 Exemplo resolvido: ¬¬P → P (clássico)</h2>
+    <div class="cols">
+      <div>
+        <p class="lbl">Derivação</p>
+        <pre class="tree">   [¬P]  [¬¬P]
+  ──────────────  ¬E
+        ⊥
+    ──────────  RAA
+        P
+   ───────────────  →I
+     ¬¬P → P</pre>
+      </div>
+      <div>
+        <p class="lbl">Modo de termos</p>
+        <pre class="code">example (P : Prop) : ¬¬P → P :=
+  fun h => Classical.byContradiction (fun hnP => h hnP)</pre>
+        <ul class="brk">
+          <li><code>fun h =&gt;</code> é o →I que descarta ¬¬P</li>
+          <li><code>Classical.byContradiction</code> é a regra clássica (RAA)</li>
+          <li><code>fun hnP =&gt; h hnP</code> deriva ⊥ de ¬P e ¬¬P por ¬E</li>
+        </ul>
+        <p class="lbl">Modo de táticas</p>
+        <pre class="code">example (P : Prop) : ¬¬P → P := by
+  intro h
+  apply Classical.byContradiction
+  intro hnP
+  exact h hnP</pre>
+        <ul class="brk">
+          <li><code>intro h</code> é o →I que descarta ¬¬P</li>
+          <li><code>apply Classical.byContradiction</code> invoca a RAA</li>
+          <li><code>intro hnP</code> e então <code>exact h hnP</code> derivam ⊥ por ¬E</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+</div>
+
+<div class="zone prev" id="zprev" aria-hidden="true"></div>
+<div class="zone next" id="znext" aria-hidden="true"></div>
+
+<footer>
+  <span class="fl">
+    <a class="back" href="../pt/Aula-1___-Motiva______o-e-L___gica-Proposicional/">↩ Notas</a>
+    <a class="jump" id="bstart" href="#1">⇤ Início</a>
+  </span>
+  <span class="label">Aula 1 · Motivação e Lógica Proposicional</span>
+  <span class="nav">
+    <a class="jump" href="lecture-2.pt.html">Próxima aula ›</a>
+    <button id="bprev" aria-label="Slide anterior">‹</button>
+    <span id="counter">1 / 20</span>
+    <button id="bnext" aria-label="Próximo slide">›</button>
+  </span>
+</footer>
+
+<script>
+  // Minimal Lean syntax highlighter for the code blocks and inline code.
+  const LEAN_KW = new Set(['example','theorem','def','fun','by','match','with','let','have','show','if','then','else','do']);
+  const LEAN_TAC = new Set(['intro','exact','apply','cases','constructor','exists','obtain','specialize','rfl','sorry','refine','rintro']);
+  function leanEsc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function leanClass(id) {
+    if (LEAN_KW.has(id)) return 'hl-kw';
+    if (LEAN_TAC.has(id)) return 'hl-tac';
+    if (id.length > 1 && /^[A-Z]/.test(id)) return 'hl-const';
+    return null;
+  }
+  function highlightLean(text) {
+    let out = '', re = /[A-Za-z_][A-Za-z0-9_']*/g, last = 0, m;
+    while ((m = re.exec(text))) {
+      out += leanEsc(text.slice(last, m.index));
+      const c = leanClass(m[0]);
+      out += c ? '<span class="' + c + '">' + m[0] + '</span>' : m[0];
+      last = m.index + m[0].length;
+    }
+    return out + leanEsc(text.slice(last));
+  }
+  document.querySelectorAll('pre.code, code').forEach(el => { el.innerHTML = highlightLean(el.textContent); });
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  let i = 0;
+  function clamp(n) { return Math.max(0, Math.min(slides.length - 1, n)); }
+  function render() {
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    progress.style.width = (i / (slides.length - 1) * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function go(n) { i = clamp(n); render(); }
+  function next() { go(i + 1); }
+  function prev() { go(i - 1); }
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End': go(slides.length - 1); break;
+      case 'f': case 'F':
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen(); break;
+    }
+  });
+  document.getElementById('znext').addEventListener('click', next);
+  document.getElementById('zprev').addEventListener('click', prev);
+  document.getElementById('bnext').addEventListener('click', next);
+  document.getElementById('bprev').addEventListener('click', prev);
+  document.getElementById('bstart').addEventListener('click', (e) => { e.preventDefault(); go(0); });
+
+  // Click to advance, except on links, buttons, and the edge zones (left zone goes back).
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.closest('a, button')) return;
+    next();
+  });
+
+  // Mouse-wheel / trackpad navigation, yielding to in-slide scroll when content overflows.
+  let wheelLock = false;
+  window.addEventListener('wheel', (e) => {
+    const dir = e.deltaY > 0 ? 1 : -1;
+    const inner = slides[i].querySelector('.inner');
+    if (inner) {
+      const canScroll = inner.scrollHeight > inner.clientHeight + 1;
+      const atTop = inner.scrollTop <= 0;
+      const atBottom = inner.scrollTop + inner.clientHeight >= inner.scrollHeight - 1;
+      if (canScroll && ((dir > 0 && !atBottom) || (dir < 0 && !atTop))) return;
+    }
+    e.preventDefault();
+    if (wheelLock || Math.abs(e.deltaY) < 8) return;
+    wheelLock = true;
+    setTimeout(() => { wheelLock = false; }, 500);
+    if (dir > 0) next(); else prev();
+  }, { passive: false });
+
+  const start = parseInt((location.hash || '').slice(1), 10);
+  if (!isNaN(start)) i = clamp(start - 1);
+  render();
+</script>
+</body>
+</html>

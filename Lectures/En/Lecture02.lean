@@ -18,6 +18,8 @@ tag := "lecture-2"
 
 This lecture extends propositional logic with quantifiers and introduces sets, following chapters 2 and 3 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the proof rules for the universal and existential quantifiers, the laws that relate them under negation, and sets as predicates in Lean.
 
+*This lecture is also available as [presentation slides](../../slides/lecture-2.en.html).*
+
 # Predicates and Quantifiers
 
 Lecture 1 excluded "x is even" from the propositions because its truth depends on the unbound variable x. A *predicate* makes this dependence explicit. A predicate on a type α assigns a proposition to each element of α, so in Lean a predicate is a function of type `α → Prop`.

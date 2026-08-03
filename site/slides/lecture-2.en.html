@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 2: Predicate Logic and Sets · Slides</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569;
+    --accent: #1e3a8a; --accent2: #0d9488; --border: #e2e8f0;
+    --footer-bg: rgba(248,250,252,0.9); --code-bg: rgba(148,163,184,0.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --muted: #94a3b8;
+      --accent: #93c5fd; --accent2: #5eead4; --border: #334155;
+      --footer-bg: rgba(15,23,42,0.9); --code-bg: rgba(148,163,184,0.22);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow: hidden;
+  }
+  .progress {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.25s ease; z-index: 10;
+  }
+  .deck { position: relative; height: 100vh; width: 100vw; }
+  .slide {
+    position: absolute; inset: 0; display: none;
+    flex-direction: column; justify-content: center;
+    padding: clamp(1.5rem, 6vw, 6rem) clamp(1.5rem, 6vw, 6rem) clamp(3.5rem, 8vw, 5rem);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .slide.active { display: flex; opacity: 1; }
+  .kicker {
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-size: clamp(0.7rem, 1.6vw, 0.95rem); font-weight: 600;
+    color: var(--accent2); margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 4.2rem); line-height: 1.05; margin: 0 0 1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  h2 {
+    font-size: clamp(1.4rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 1.5rem;
+    padding-bottom: 0.5rem; border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, var(--accent), var(--accent2)) 1;
+  }
+  ul { margin: 0; padding: 0; list-style: none; }
+  li {
+    position: relative; padding-left: 1.6rem; margin: 0.8rem 0;
+    font-size: clamp(1rem, 2.5vw, 1.6rem); line-height: 1.45; color: var(--muted);
+  }
+  li strong { color: var(--text); }
+  li::before {
+    content: ""; position: absolute; left: 0; top: 0.62em;
+    width: 0.6rem; height: 0.6rem; border-radius: 2px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em; background: var(--code-bg);
+    padding: 0.1em 0.35em; border-radius: 0.3em;
+  }
+  .hl-kw { color: #a626a4; }
+  .hl-tac { color: #0d9488; }
+  .hl-const { color: #4078f2; }
+  @media (prefers-color-scheme: dark) {
+    .hl-kw { color: #c678dd; }
+    .hl-tac { color: #5eead4; }
+    .hl-const { color: #61afef; }
+  }
+  .cite { font-size: clamp(0.8rem, 1.8vw, 1.05rem); color: var(--muted); }
+  .subtitle { font-size: clamp(1.1rem, 3vw, 2rem); color: var(--muted); margin: 0 0 1.5rem; }
+  .byline { font-size: clamp(0.9rem, 2vw, 1.2rem); color: var(--muted); margin: 0 0 1.5rem; }
+  .notelink a {
+    font-size: clamp(0.95rem, 2vw, 1.15rem); font-weight: 600;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem 1.1rem;
+    display: inline-block; background: var(--card);
+  }
+  .notelink a:hover { border-color: var(--accent2); }
+  .refs { font-size: clamp(0.85rem, 1.9vw, 1.1rem); margin: 1rem 0 0; color: var(--muted); }
+  .slide--title .refs { color: rgba(255,255,255,0.9); }
+  .slide--title .refs a { color: #ffffff; text-decoration: underline; }
+  .slide--title { background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); }
+  .slide--title .kicker { color: rgba(255,255,255,0.85); }
+  .slide--title h1 { -webkit-text-fill-color: #ffffff; color: #ffffff; background: none; }
+  .slide--title .subtitle, .slide--title .byline { color: rgba(255,255,255,0.92); }
+  .slide--title .notelink a {
+    background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.5);
+  }
+  footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.5rem clamp(1rem, 4vw, 3rem);
+    font-size: 0.85rem; color: var(--muted);
+    background: var(--footer-bg); backdrop-filter: blur(6px); z-index: 5;
+  }
+  footer a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent2); }
+  footer .fl { display: flex; gap: 0.9rem; align-items: center; }
+  footer .label { flex: 1; text-align: center; opacity: 0.85; }
+  @media (max-width: 680px) { footer .label { display: none; } }
+  footer .nav { display: flex; gap: 0.4rem; align-items: center; }
+  footer button {
+    font: inherit; cursor: pointer; background: var(--card); color: var(--text);
+    border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.25rem 0.7rem; line-height: 1;
+  }
+  footer button:hover { border-color: var(--accent2); }
+  .zone { position: fixed; top: 0; bottom: 2.8rem; width: 22%; z-index: 4; cursor: pointer; }
+  .zone.prev { left: 0; } .zone.next { right: 0; }
+  @media print {
+    .slide { display: flex !important; opacity: 1 !important; position: relative; page-break-after: always; height: 100vh; }
+    footer, .zone, .progress { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <section class="slide slide--title">
+    <div class="kicker">Lecture 2 · Formal Software Verification</div>
+    <h1>Predicate Logic and Sets</h1>
+    <p class="subtitle">Quantifiers, their negation laws, and sets as predicates in Lean</p>
+    <p class="byline">Christiano Braga · Mestrado em Sistemas e Computação · IME</p>
+    <p class="notelink"><a href="../en/Lecture-2___-Predicate-Logic-and-Sets/">↩ Open the lecture notes</a></p>
+    <p class="refs">Based on <a href="https://djvelleman.github.io/HTPIwL/" target="_blank" rel="noopener">How To Prove It with Lean</a> (HTPIwL), chapters <a href="https://djvelleman.github.io/HTPIwL/Chap2.html" target="_blank" rel="noopener">2</a> and <a href="https://djvelleman.github.io/HTPIwL/Chap3.html" target="_blank" rel="noopener">3</a>.</p>
+  </section>
+
+  <section class="slide">
+    <h2>Predicates and quantifiers</h2>
+    <ul>
+      <li>A <strong>predicate</strong> on a type α assigns a proposition to each element, so in Lean it is a function <code>α → Prop</code>.</li>
+      <li>Quantifiers bind the variable and produce a proposition: <code>∀ x, P x</code> (for every x) and <code>∃ x, P x</code> (for some x).</li>
+      <li>A bound variable leaves no free variable, so <code>∀ x, P x</code> is itself a proposition ranging over a type.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>The universal quantifier</h2>
+    <ul>
+      <li><strong>Introduce</strong> <code>∀ x, P x</code> by taking an arbitrary element with <code>intro</code> and proving the proposition at it.</li>
+      <li><strong>Eliminate</strong> it by instantiation: <code>h a</code> applies the hypothesis at <code>a</code>; the tactic <code>specialize</code> does this in place.</li>
+      <li>It distributes over conjunction: <code>(∀ x, P x ∧ Q x) ↔ (∀ x, P x) ∧ (∀ x, Q x)</code>.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>The existential quantifier</h2>
+    <ul>
+      <li><strong>Introduce</strong> <code>∃ x, P x</code> by exhibiting a <strong>witness</strong> with its proof: <code>⟨3, rfl⟩</code>, or the <code>exists</code> tactic.</li>
+      <li><strong>Eliminate</strong> it by naming a witness and its proof, with <code>cases</code> or <code>obtain ⟨a, ha⟩ := h</code>.</li>
+      <li>A pointwise implication carries existence from P to Q with the same witness.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Quantifier negation laws</h2>
+    <ul>
+      <li><code>¬(∃ x, P x) ≡ ∀ x, ¬P x</code>, constructive in both directions.</li>
+      <li><code>¬(∀ x, P x) ≡ ∃ x, ¬P x</code>; producing the witness needs <strong>classical reasoning</strong>, as the first De Morgan law did.</li>
+      <li>These exchange negation with the quantifiers, extending the De Morgan laws of Lecture 1.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>The order of quantifiers</h2>
+    <ul>
+      <li>Consecutive quantifiers of the <strong>same kind</strong> commute; quantifiers of <strong>different kinds</strong> do not.</li>
+      <li>One direction holds: <code>(∃ x, ∀ y, R x y) → (∀ y, ∃ x, R x y)</code>.</li>
+      <li>The converse fails. Over ℕ with R x y as x ≥ y, every y has some x, but no x is ≥ every y.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Sets</h2>
+    <ul>
+      <li>A set is its membership predicate: <code>Set α := α → Prop</code>, with <code>x ∈ s</code> unfolding to <code>s x</code>.</li>
+      <li>The typed setting blocks Russell's paradox: the collection of sets not containing themselves cannot be written.</li>
+      <li>Inclusion <code>s ⊆ t</code> is a universally quantified implication; union and intersection apply <code>∨</code> and <code>∧</code> pointwise.</li>
+      <li>Set identities are stated as <strong>inclusions</strong>, since equality needs extensionality beyond this logic.</li>
+    </ul>
+  </section>
+
+</div>
+
+<div class="zone prev" id="zprev" aria-hidden="true"></div>
+<div class="zone next" id="znext" aria-hidden="true"></div>
+
+<footer>
+  <span class="fl">
+    <a class="back" href="../en/Lecture-2___-Predicate-Logic-and-Sets/">↩ Notes</a>
+    <a class="jump" id="bstart" href="#1">⇤ Start</a>
+    <a class="jump" href="lecture-1.en.html">‹ Previous lecture</a>
+  </span>
+  <span class="label">Lecture 2 · Predicate Logic and Sets</span>
+  <span class="nav">
+    <button id="bprev" aria-label="Previous slide">‹</button>
+    <span id="counter">1 / 7</span>
+    <button id="bnext" aria-label="Next slide">›</button>
+  </span>
+</footer>
+
+<script>
+  // Minimal Lean syntax highlighter for the code blocks and inline code.
+  const LEAN_KW = new Set(['example','theorem','def','fun','by','match','with','let','have','show','if','then','else','do']);
+  const LEAN_TAC = new Set(['intro','exact','apply','cases','constructor','exists','obtain','specialize','rfl','sorry','refine','rintro']);
+  function leanEsc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function leanClass(id) {
+    if (LEAN_KW.has(id)) return 'hl-kw';
+    if (LEAN_TAC.has(id)) return 'hl-tac';
+    if (id.length > 1 && /^[A-Z]/.test(id)) return 'hl-const';
+    return null;
+  }
+  function highlightLean(text) {
+    let out = '', re = /[A-Za-z_][A-Za-z0-9_']*/g, last = 0, m;
+    while ((m = re.exec(text))) {
+      out += leanEsc(text.slice(last, m.index));
+      const c = leanClass(m[0]);
+      out += c ? '<span class="' + c + '">' + m[0] + '</span>' : m[0];
+      last = m.index + m[0].length;
+    }
+    return out + leanEsc(text.slice(last));
+  }
+  document.querySelectorAll('pre.code, code').forEach(el => { el.innerHTML = highlightLean(el.textContent); });
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  let i = 0;
+  function clamp(n) { return Math.max(0, Math.min(slides.length - 1, n)); }
+  function render() {
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    progress.style.width = (i / (slides.length - 1) * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function go(n) { i = clamp(n); render(); }
+  function next() { go(i + 1); }
+  function prev() { go(i - 1); }
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End': go(slides.length - 1); break;
+      case 'f': case 'F':
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen(); break;
+    }
+  });
+  document.getElementById('znext').addEventListener('click', next);
+  document.getElementById('zprev').addEventListener('click', prev);
+  document.getElementById('bnext').addEventListener('click', next);
+  document.getElementById('bprev').addEventListener('click', prev);
+  document.getElementById('bstart').addEventListener('click', (e) => { e.preventDefault(); go(0); });
+
+  // Click to advance, except on links, buttons, and the edge zones (left zone goes back).
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.closest('a, button')) return;
+    next();
+  });
+
+  // Mouse-wheel / trackpad navigation, yielding to in-slide scroll when content overflows.
+  let wheelLock = false;
+  window.addEventListener('wheel', (e) => {
+    const dir = e.deltaY > 0 ? 1 : -1;
+    const inner = slides[i].querySelector('.inner');
+    if (inner) {
+      const canScroll = inner.scrollHeight > inner.clientHeight + 1;
+      const atTop = inner.scrollTop <= 0;
+      const atBottom = inner.scrollTop + inner.clientHeight >= inner.scrollHeight - 1;
+      if (canScroll && ((dir > 0 && !atBottom) || (dir < 0 && !atTop))) return;
+    }
+    e.preventDefault();
+    if (wheelLock || Math.abs(e.deltaY) < 8) return;
+    wheelLock = true;
+    setTimeout(() => { wheelLock = false; }, 500);
+    if (dir > 0) next(); else prev();
+  }, { passive: false });
+
+  const start = parseInt((location.hash || '').slice(1), 10);
+  if (!isNaN(start)) i = clamp(start - 1);
+  render();
+</script>
+</body>
+</html>

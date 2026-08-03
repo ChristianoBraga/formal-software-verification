@@ -16,7 +16,9 @@ set_option pp.rawOnError true
 tag := "lecture-1"
 %%%
 
-This lecture motivates formal software verification and reviews propositional logic, following chapter 1 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the connectives, the classical equivalences, and the first structured proofs in Lean.
+This lecture motivates formal software verification and reviews propositional logic, following chapter 1 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the connectives, the classical equivalences, the natural deduction rules, their encoding in Lean as proof terms, and proofs with tactics.
+
+*This lecture is also available as [presentation slides](../../slides/lecture-1.en.html).*
 
 # Why Verify Software Formally?
 
@@ -199,21 +201,668 @@ A truth table verifies each equivalence. For the second De Morgan law, the colum
   * T
 :::
 
-Truth tables decide any propositional question, but their size grows exponentially in the number of variables, and they do not extend to the quantifiers of Lecture 2. Deduction rules, applied one step at a time, scale and generalize. The rest of this lecture develops such proofs in Lean.
+## Examples
 
-# First Proofs in Lean
+Each equivalence below is verified by a truth table. Two propositions are equivalent when their final columns agree in every row, and a tautology has a column that is true in every row.
+
+Example 1. Double negation returns the original proposition.
+
+:::table +header
+*
+  * P
+  * ¬P
+  * ¬¬P
+*
+  * T
+  * F
+  * T
+*
+  * F
+  * T
+  * F
+:::
+
+Example 2. The excluded middle P ∨ ¬P is a tautology.
+
+:::table +header
+*
+  * P
+  * ¬P
+  * P ∨ ¬P
+*
+  * T
+  * F
+  * T
+*
+  * F
+  * T
+  * T
+:::
+
+Example 3. Non-contradiction ¬(P ∧ ¬P) is a tautology.
+
+:::table +header
+*
+  * P
+  * ¬P
+  * P ∧ ¬P
+  * ¬(P ∧ ¬P)
+*
+  * T
+  * F
+  * F
+  * T
+*
+  * F
+  * T
+  * F
+  * T
+:::
+
+Example 4. The first De Morgan law.
+
+:::table +header
+*
+  * P
+  * Q
+  * P ∧ Q
+  * ¬(P ∧ Q)
+  * ¬P
+  * ¬Q
+  * ¬P ∨ ¬Q
+*
+  * T
+  * T
+  * T
+  * F
+  * F
+  * F
+  * F
+*
+  * T
+  * F
+  * F
+  * T
+  * F
+  * T
+  * T
+*
+  * F
+  * T
+  * F
+  * T
+  * T
+  * F
+  * T
+*
+  * F
+  * F
+  * F
+  * T
+  * T
+  * T
+  * T
+:::
+
+Example 5. Disjunction commutes.
+
+:::table +header
+*
+  * P
+  * Q
+  * P ∨ Q
+  * Q ∨ P
+*
+  * T
+  * T
+  * T
+  * T
+*
+  * T
+  * F
+  * T
+  * T
+*
+  * F
+  * T
+  * T
+  * T
+*
+  * F
+  * F
+  * F
+  * F
+:::
+
+Example 6. Disjunction is idempotent.
+
+:::table +header
+*
+  * P
+  * P ∨ P
+*
+  * T
+  * T
+*
+  * F
+  * F
+:::
+
+Example 7. The contrapositive.
+
+:::table +header
+*
+  * P
+  * Q
+  * P → Q
+  * ¬Q
+  * ¬P
+  * ¬Q → ¬P
+*
+  * T
+  * T
+  * T
+  * F
+  * F
+  * T
+*
+  * T
+  * F
+  * F
+  * T
+  * F
+  * F
+*
+  * F
+  * T
+  * T
+  * F
+  * T
+  * T
+*
+  * F
+  * F
+  * T
+  * T
+  * T
+  * T
+:::
+
+Example 8. Material implication.
+
+:::table +header
+*
+  * P
+  * Q
+  * P → Q
+  * ¬P
+  * ¬P ∨ Q
+*
+  * T
+  * T
+  * T
+  * F
+  * T
+*
+  * T
+  * F
+  * F
+  * F
+  * F
+*
+  * F
+  * T
+  * T
+  * T
+  * T
+*
+  * F
+  * F
+  * T
+  * T
+  * T
+:::
+
+Example 9. The biconditional is the conjunction of its two implications.
+
+:::table +header
+*
+  * P
+  * Q
+  * P ↔ Q
+  * P → Q
+  * Q → P
+  * (P → Q) ∧ (Q → P)
+*
+  * T
+  * T
+  * T
+  * T
+  * T
+  * T
+*
+  * T
+  * F
+  * F
+  * F
+  * T
+  * F
+*
+  * F
+  * T
+  * F
+  * T
+  * F
+  * F
+*
+  * F
+  * F
+  * T
+  * T
+  * T
+  * T
+:::
+
+Example 10. The negation of an implication.
+
+:::table +header
+*
+  * P
+  * Q
+  * P → Q
+  * ¬(P → Q)
+  * ¬Q
+  * P ∧ ¬Q
+*
+  * T
+  * T
+  * T
+  * F
+  * F
+  * F
+*
+  * T
+  * F
+  * F
+  * T
+  * T
+  * T
+*
+  * F
+  * T
+  * T
+  * F
+  * F
+  * F
+*
+  * F
+  * F
+  * T
+  * F
+  * T
+  * F
+:::
+
+Truth tables decide any propositional question, but their size grows exponentially in the number of variables, and they do not extend to the quantifiers of Lecture 2. Deduction rules, applied one step at a time, scale and generalize. The next section presents them, and the rest of the lecture develops the corresponding proofs in Lean.
+
+# Natural Deduction
+
+Natural deduction derives a proposition from assumptions by rules that mirror how mathematicians argue.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.] Gerhard Gentzen introduced the system in 1935, and Dag Prawitz gave its proof-theoretic study.{margin}[D. Prawitz, *Natural Deduction: A Proof-Theoretical Study*, Almqvist & Wiksell, Stockholm, 1965.] Each rule has zero or more *premises* above a horizontal line and one *conclusion* below it, and it reads as follows. Given derivations of the premises, the line licenses the conclusion.
+
+A derivation stands on *assumptions*. Some rules *discharge* an assumption, so a proposition assumed at the top of a subderivation no longer counts as an open assumption once the rule fires. We mark a discharged assumption with brackets, as `[P]`, and write a vertical ⋮ for the intervening derivation. A proposition proved with no open assumptions is a *theorem*.
+
+Each connective comes with *introduction* rules, which prove a proposition of that shape, and *elimination* rules, which use a proposition of that shape. This introduction and elimination discipline is exactly the structure that Lean's tactics follow in the next section.
+
+## Implication
+
+To introduce P → Q, assume P, derive Q, and discharge the assumption. To eliminate it, apply an implication to a proof of its antecedent, the rule of *modus ponens*.
+
+```
+   [P]
+    ⋮
+    Q                   P → Q    P
+  ───────  →I          ─────────────  →E
+   P → Q                     Q
+```
+
+## Conjunction
+
+To introduce P ∧ Q, prove both conjuncts. Elimination projects either conjunct.
+
+```
+   P    Q              P ∧ Q            P ∧ Q
+  ───────  ∧I         ───────  ∧E₁     ───────  ∧E₂
+   P ∧ Q                 P                Q
+```
+
+## Disjunction
+
+To introduce P ∨ Q, prove one disjunct. To eliminate it, prove a common conclusion R from each disjunct in turn, discharging the disjunct assumed in each branch.
+
+```
+     P                 Q                              [P]     [Q]
+  ───────  ∨I₁      ───────  ∨I₂          P ∨ Q         ⋮       ⋮
+   P ∨ Q             P ∨ Q                              R       R
+                                        ──────────────────────────  ∨E
+                                                     R
+```
+
+## Negation and Falsehood
+
+The constant ⊥ is the *absurdity*, the proposition with no introduction rule. Negation abbreviates ¬P as P → ⊥, so the rules for negation are the implication rules read at ⊥. To introduce ¬P, assume P, derive ⊥, and discharge the assumption. To eliminate it, a proof of P and a proof of ¬P together yield ⊥. From ⊥, elimination proves any proposition C, the principle *ex falso quodlibet*.
+
+```
+   [P]
+    ⋮
+    ⊥                  P    ¬P               ⊥
+  ───────  ¬I         ─────────  ¬E        ─────  ⊥E
+    ¬P                    ⊥                   C
+```
+
+## Constructive and Classical Rules
+
+The rules above are *constructive*, so a derivation of a disjunction exhibits which disjunct holds and a derivation of an existential exhibits a witness. They do not prove the law of excluded middle P ∨ ¬P or reduce a double negation ¬¬P to P. *Classical* natural deduction adds one further rule, equivalently the excluded middle or *reductio ad absurdum*, which discharges the assumption ¬P upon deriving ⊥.
+
+```
+   [¬P]
+     ⋮
+     ⊥
+  ─────────  RAA               ───────────  EM
+     P                          P ∨ ¬P
+```
+
+The De Morgan law ¬(P ∧ Q) ≡ ¬P ∨ ¬Q and Peirce's law depend on this rule, as the Lean proofs below make precise.
+
+## Examples
+
+The derivations below prove propositional theorems with the rules above. A numeral marks each discharged assumption together with the rule that discharges it, and each tree reads from its leaves down to its root.
+
+Example 1. Implication is reflexive.
+
+```
+   [P]¹
+  ──────  →I,¹
+   P → P
+```
+
+Example 2. A conjunction entails each conjunct.
+
+```
+   [P ∧ Q]¹
+  ──────────  ∧E₁
+      P
+  ────────────  →I,¹
+   P ∧ Q → P
+```
+
+Example 3. A disjunct entails the disjunction.
+
+```
+     [P]¹
+   ────────  ∨I₁
+    P ∨ Q
+  ────────────  →I,¹
+   P → P ∨ Q
+```
+
+Example 4. Anything follows from absurdity, the principle *ex falso quodlibet*.
+
+```
+   [⊥]¹
+  ──────  ⊥E
+    P
+  ────────  →I,¹
+   ⊥ → P
+```
+
+Example 5. Modus ponens, packaged as a single implication.
+
+```
+   [(P→Q)∧P]¹            [(P→Q)∧P]¹
+  ───────────── ∧E₁     ───────────── ∧E₂
+      P → Q                   P
+     ───────────────────────────── →E
+                  Q
+   ─────────────────────────────────── →I,¹
+          (P → Q) ∧ P → Q
+```
+
+Example 6. Disjunction commutes.
+
+```
+                [P]²           [Q]²
+   [P ∨ Q]¹    ─────── ∨I₂    ─────── ∨I₁
+               Q ∨ P          Q ∨ P
+  ────────────────────────────────────── ∨E,²
+              Q ∨ P
+  ─────────────────────── →I,¹
+   P ∨ Q → Q ∨ P
+```
+
+Example 7. Double negation introduction.
+
+```
+    [¬P]²   [P]¹
+   ────────────── ¬E
+         ⊥
+     ────────── ¬I,²
+        ¬¬P
+    ────────────── →I,¹
+      P → ¬¬P
+```
+
+Example 8. Contraposition.
+
+```
+               [P→Q]¹  [P]³
+   [¬Q]²      ─────────────── →E
+                    Q
+  ────────────────────── ¬E
+           ⊥
+     ──────────── ¬I,³
+          ¬P
+    ───────────────── →I,²
+      ¬Q → ¬P
+  ──────────────────────────── →I,¹
+   (P → Q) → (¬Q → ¬P)
+```
+
+Example 9. Double negation elimination, which needs the classical rule.
+
+```
+    [¬P]²  [¬¬P]¹
+   ──────────────── ¬E
+          ⊥
+     ─────────── RAA,²
+          P
+    ─────────────── →I,¹
+     ¬¬P → P
+```
+
+Example 10. Currying turns a conjunctive hypothesis into nested implications.
+
+```
+                      [P]²  [Q]³
+   [P∧Q→R]¹          ──────────── ∧I
+                        P ∧ Q
+      ────────────────────────── →E
+                  R
+               ─────────── →I,³
+                Q → R
+           ───────────────── →I,²
+            P → (Q → R)
+    ───────────────────────────────── →I,¹
+     (P ∧ Q → R) → (P → (Q → R))
+```
+
+# Natural Deduction in Lean
 
 In Lean, we state a proposition and prove it in one declaration. The `example` keyword introduces an anonymous statement, and `theorem` introduces a named one. Hypotheses appear before the colon as named assumptions, and the proposition to prove, the *goal*, appears after it.
 
-The simplest proof uses a hypothesis directly.
+Lean encodes natural deduction directly. A proof of a proposition is a *term* whose type is that proposition, an open assumption is a variable of that type, and each deduction rule becomes a way to build or take apart such a term. The simplest proof uses an assumption directly, the assumption rule of natural deduction.
 
 ```lean
 example (P : Prop) (h : P) : P := h
 ```
 
-Here `h` names the assumption that P holds, and the proof is `h` itself. A proof of a proposition is a term whose type is that proposition. Lecture 3 develops this correspondence between propositions and types.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, in *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
+Here `h` names the assumption that P holds, and the proof is `h` itself. Lecture 3 develops this correspondence between propositions and types.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, in *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
 
-Most proofs use *tactics*, commands that transform the goal step by step. The keyword `by` enters tactic mode. Each connective comes with rules to *introduce* it, proving a goal of that shape, and rules to *eliminate* it, using a hypothesis of that shape.
+The table maps each rule of the previous section to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
+
+:::table +header
+*
+  * Rule
+  * Lean term
+  * Example
+*
+  * assumption
+  * a hypothesis name
+  * `h`
+*
+  * →I
+  * `fun h => e`
+  * `fun h => h`
+*
+  * →E
+  * application
+  * `f a`
+*
+  * ∧I
+  * `⟨_, _⟩`
+  * `⟨ha, hb⟩`
+*
+  * ∧E₁, ∧E₂
+  * `.left`, `.right`
+  * `h.left`, `h.right`
+*
+  * ∨I₁, ∨I₂
+  * `Or.inl`, `Or.inr`
+  * `Or.inl h`
+*
+  * ∨E
+  * `Or.elim` or `match`
+  * `h.elim f g`
+*
+  * ¬I
+  * `fun h => e` into `False`
+  * `fun hnP => hnP hP`
+*
+  * ¬E
+  * application into `False`
+  * `hnP hP`
+*
+  * ⊥E
+  * `False.elim` or `absurd`
+  * `False.elim h`
+:::
+
+Because ¬P abbreviates P → False, the negation rules reuse the terms for implication. To see the correspondence on a full derivation, take P ∧ Q → Q ∧ P. It discharges the assumption P ∧ Q, projects each conjunct, and reassembles them in the opposite order.
+
+```
+        [P ∧ Q]            [P ∧ Q]
+       ─────────  ∧E₂     ─────────  ∧E₁
+           Q                  P
+         ───────────────────────────  ∧I
+                   Q ∧ P
+        ─────────────────────────────  →I
+              P ∧ Q → Q ∧ P
+```
+
+The Lean term follows the derivation step for step. The abstraction `fun h => …` is the →I that discharges P ∧ Q, the projections `h.right` and `h.left` are the two ∧E steps, and the pair `⟨_, _⟩` is the ∧I.
+
+```lean
+example (P Q : Prop) : P ∧ Q → Q ∧ P :=
+  fun h => ⟨h.right, h.left⟩
+```
+
+## Examples
+
+The proofs below encode the ten derivations of the previous section as proof terms. Each term mirrors its derivation, with an introduction rule building a term and an elimination rule taking one apart.
+
+Example 1. Implication is reflexive.
+
+```lean
+example (P : Prop) : P → P :=
+  fun h => h
+```
+
+Example 2. A conjunction entails each conjunct.
+
+```lean
+example (P Q : Prop) : P ∧ Q → P :=
+  fun h => h.left
+```
+
+Example 3. A disjunct entails the disjunction.
+
+```lean
+example (P Q : Prop) : P → P ∨ Q :=
+  fun h => Or.inl h
+```
+
+Example 4. Anything follows from absurdity.
+
+```lean
+example (P : Prop) : False → P :=
+  fun h => False.elim h
+```
+
+Example 5. Modus ponens, packaged as a single implication.
+
+```lean
+example (P Q : Prop) : (P → Q) ∧ P → Q :=
+  fun h => h.left h.right
+```
+
+Example 6. Disjunction commutes.
+
+```lean
+example (P Q : Prop) : P ∨ Q → Q ∨ P :=
+  fun h => h.elim
+    (fun hP => Or.inr hP)
+    (fun hQ => Or.inl hQ)
+```
+
+Example 7. Double negation introduction.
+
+```lean
+example (P : Prop) : P → ¬¬P :=
+  fun hP hnP => hnP hP
+```
+
+Example 8. Contraposition.
+
+```lean
+example (P Q : Prop) : (P → Q) → (¬Q → ¬P) :=
+  fun hPQ hnQ hP => hnQ (hPQ hP)
+```
+
+Example 9. Double negation elimination, which needs classical reasoning.
+
+```lean
+example (P : Prop) : ¬¬P → P :=
+  fun h => Classical.byContradiction (fun hnP => h hnP)
+```
+
+Example 10. Currying turns a conjunctive hypothesis into nested implications.
+
+```lean
+example (P Q R : Prop) : (P ∧ Q → R) → (P → (Q → R)) :=
+  fun h hP hQ => h ⟨hP, hQ⟩
+```
+
+# Proving with Tactics
+
+Writing proof terms by hand becomes impractical as proofs grow. A *tactic* is a command that transforms the *proof state*, the goal together with the hypotheses in scope, one step at a time. The keyword `by` enters tactic mode, and Lean elaborates the tactic sequence into a proof term, so a tactic proof and a term proof yield the same underlying object.
+
+The tactic `exact` closes a goal with a term that proves it, which recovers the term-mode proof above.
+
+```lean
+example (P : Prop) (h : P) : P := by
+  exact h
+```
+
+Tactics reason in two directions. A *backward* step reduces the goal to simpler subgoals, and a *forward* step derives new hypotheses from those in scope. Each connective comes with tactics that *introduce* it, proving a goal of that shape, and tactics that *eliminate* it, using a hypothesis of that shape. We take the connectives in turn.
 
 ## Implication
 
@@ -348,6 +997,227 @@ theorem deMorgan_and (P Q : Prop) : ¬(P ∧ Q) → ¬P ∨ ¬Q := by
   | inr hnP => exact Or.inl hnP
 ```
 
+## Examples
+
+The proofs below prove those same ten theorems again, now with tactics. Each can be read alongside the proof term of the previous section.
+
+Example 1. Implication is reflexive.
+
+```lean
+example (P : Prop) : P → P := by
+  intro h
+  exact h
+```
+
+Example 2. A conjunction entails each conjunct.
+
+```lean
+example (P Q : Prop) : P ∧ Q → P := by
+  intro h
+  exact h.left
+```
+
+Example 3. A disjunct entails the disjunction.
+
+```lean
+example (P Q : Prop) : P → P ∨ Q := by
+  intro h
+  exact Or.inl h
+```
+
+Example 4. Anything follows from absurdity.
+
+```lean
+example (P : Prop) : False → P := by
+  intro h
+  exact False.elim h
+```
+
+Example 5. Modus ponens, packaged as a single implication.
+
+```lean
+example (P Q : Prop) : (P → Q) ∧ P → Q := by
+  intro h
+  apply h.left
+  exact h.right
+```
+
+Example 6. Disjunction commutes.
+
+```lean
+example (P Q : Prop) : P ∨ Q → Q ∨ P := by
+  intro h
+  cases h with
+  | inl hP => exact Or.inr hP
+  | inr hQ => exact Or.inl hQ
+```
+
+Example 7. Double negation introduction.
+
+```lean
+example (P : Prop) : P → ¬¬P := by
+  intro hP hnP
+  exact hnP hP
+```
+
+Example 8. Contraposition.
+
+```lean
+example (P Q : Prop) : (P → Q) → (¬Q → ¬P) := by
+  intro hPQ hnQ hP
+  exact hnQ (hPQ hP)
+```
+
+Example 9. Double negation elimination, which needs classical reasoning.
+
+```lean
+example (P : Prop) : ¬¬P → P := by
+  intro h
+  apply Classical.byContradiction
+  intro hnP
+  exact h hnP
+```
+
+Example 10. Currying turns a conjunctive hypothesis into nested implications.
+
+```lean
+example (P Q R : Prop) : (P ∧ Q → R) → (P → (Q → R)) := by
+  intro h hP hQ
+  exact h ⟨hP, hQ⟩
+```
+
+# Worked Examples
+
+Each example below appears three ways, as a natural deduction derivation, as a proof term, and as a tactic proof. The three present the same proof, and Lean checks both proof scripts when the notes are built. These propositions are disjoint from the examples of the earlier sections and from the exercises.
+
+## A conjunction entails a conjunct
+
+Elimination projects the left conjunct, and the implication discharges the assumption P ∧ Q.
+
+```
+   [P ∧ Q]
+  ──────────  ∧E₁
+      P
+  ────────────  →I
+   P ∧ Q → P
+```
+
+```lean
+example (P Q : Prop) : P ∧ Q → P :=
+  fun h => h.left
+```
+
+```lean
+example (P Q : Prop) : P ∧ Q → P := by
+  intro h
+  exact h.left
+```
+
+## Ex Falso Quodlibet
+
+From a proof of the absurdity, ⊥ elimination proves any proposition.{margin}[*Ex falso quodlibet* is Latin for "from a falsehood, anything follows".]
+
+```
+   [⊥]
+  ──────  ⊥E
+    P
+  ────────  →I
+   ⊥ → P
+```
+
+```lean
+example (P : Prop) : False → P :=
+  fun h => False.elim h
+```
+
+```lean
+example (P : Prop) : False → P := by
+  intro h
+  exact False.elim h
+```
+
+## Modus Ponens
+
+An implication and its antecedent, both projected from the conjunction, combine by →E to give the consequent.{margin}[*Modus ponens* is Latin, short for *modus ponendo ponens*, "the mode that affirms by affirming".]
+
+```
+   [(P→Q)∧P]           [(P→Q)∧P]
+  ───────────── ∧E₁    ───────────── ∧E₂
+      P → Q                  P
+    ────────────────────────────── →E
+                 Q
+   ──────────────────────────────── →I
+        (P → Q) ∧ P → Q
+```
+
+```lean
+example (P Q : Prop) : (P → Q) ∧ P → Q :=
+  fun h => h.left h.right
+```
+
+```lean
+example (P Q : Prop) : (P → Q) ∧ P → Q := by
+  intro h
+  apply h.left
+  exact h.right
+```
+
+## Disjunction Commutes
+
+Case analysis on the disjunction rebuilds it with the disjuncts exchanged.
+
+```
+               [P]           [Q]
+   [P ∨ Q]    ─────── ∨I₂   ─────── ∨I₁
+              Q ∨ P         Q ∨ P
+  ───────────────────────────────────── ∨E
+             Q ∨ P
+  ──────────────────────  →I
+   P ∨ Q → Q ∨ P
+```
+
+```lean
+example (P Q : Prop) : P ∨ Q → Q ∨ P :=
+  fun h => h.elim
+    (fun hP => Or.inr hP)
+    (fun hQ => Or.inl hQ)
+```
+
+```lean
+example (P Q : Prop) : P ∨ Q → Q ∨ P := by
+  intro h
+  cases h with
+  | inl hP => exact Or.inr hP
+  | inr hQ => exact Or.inl hQ
+```
+
+## Double Negation Elimination
+
+This direction requires classical reasoning. `Classical.byContradiction` discharges the assumption ¬P after deriving ⊥ from it together with ¬¬P.{margin}[The classical step marked RAA is *reductio ad absurdum*, Latin for "reduction to absurdity".]
+
+```
+   [¬P]  [¬¬P]
+  ──────────────  ¬E
+        ⊥
+    ──────────  RAA
+        P
+   ───────────────  →I
+     ¬¬P → P
+```
+
+```lean
+example (P : Prop) : ¬¬P → P :=
+  fun h => Classical.byContradiction (fun hnP => h hnP)
+```
+
+```lean
+example (P : Prop) : ¬¬P → P := by
+  intro h
+  apply Classical.byContradiction
+  intro hnP
+  exact h hnP
+```
+
 # Exercises
 
 Prove each statement in Lean, replacing `sorry` with a proof. Download the exercise file [`Lecture01.lean`](../../example-code/Lectures/En/Lecture01.lean) and open it in VS Code.
@@ -392,5 +1262,42 @@ Exercise 5. Peirce's law.{margin}[C. S. Peirce, *On the Algebra of Logic: A Cont
 
 ```savedLean -keep
 theorem exercise5 (P Q : Prop) : ((P → Q) → P) → P := by
+  sorry
+```
+
+Exercise 6. Disjunction distributes over conjunction.
+
+```savedLean -keep
+theorem exercise6 (P Q R : Prop) :
+    P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) := by
+  sorry
+```
+
+Exercise 7. An implication into a conjunction splits into two implications.
+
+```savedLean -keep
+theorem exercise7 (P Q R : Prop) :
+    (P → Q ∧ R) ↔ (P → Q) ∧ (P → R) := by
+  sorry
+```
+
+Exercise 8. From a disjunction and the negation of one disjunct, the other holds.
+
+```savedLean -keep
+theorem exercise8 (P Q : Prop) : (P ∨ Q) → ¬P → Q := by
+  sorry
+```
+
+Exercise 9. No proposition is equivalent to its own negation.
+
+```savedLean -keep
+theorem exercise9 (P : Prop) : ¬(P ↔ ¬P) := by
+  sorry
+```
+
+Exercise 10. Of any two propositions, one implies the other. It requires classical reasoning; consider a case analysis on `Classical.em P`.
+
+```savedLean -keep
+theorem exercise10 (P Q : Prop) : (P → Q) ∨ (Q → P) := by
   sorry
 ```

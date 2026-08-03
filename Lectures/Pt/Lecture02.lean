@@ -18,6 +18,8 @@ tag := "aula-2"
 
 Esta aula estende a lógica proposicional com quantificadores e introduz conjuntos, seguindo os capítulos 2 e 3 de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta as regras de prova dos quantificadores universal e existencial, as leis que os relacionam sob negação e conjuntos como predicados em Lean.
 
+*Esta aula também está disponível como [slides de apresentação](../../slides/lecture-2.pt.html).*
+
 # Predicados e Quantificadores
 
 A Aula 1 excluiu "x é par" das proposições porque a sua verdade depende da variável livre x. Um *predicado* torna essa dependência explícita. Um predicado sobre um tipo α atribui uma proposição a cada elemento de α, então em Lean um predicado é uma função de tipo `α → Prop`.
