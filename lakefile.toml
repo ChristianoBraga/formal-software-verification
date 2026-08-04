@@ -16,3 +16,11 @@ root = "LecturesEnMain"
 [[lean_exe]]
 name = "lectures-pt"
 root = "LecturesPtMain"
+
+[[lean_exe]]
+name = "slides-en"
+root = "SlidesEnMain"
+
+[[lean_exe]]
+name = "slides-pt"
+root = "SlidesPtMain"
