@@ -1,0 +1,35 @@
+/-
+Entry point for the English slide-deck build. Emits every English
+deck into one directory.
+Run with: lake exe slides-en --output _out/slides-en
+-/
+
+import VersoManual
+import Lectures.Meta.SlideDeck
+import Lectures.SlidesEn.Lecture01
+import Lectures.SlidesEn.Lecture02
+
+open Verso Doc
+open Verso.Genre Manual
+
+open Lectures
+
+def lecture1Deck : SlideDeck where
+  fileName := "lecture-1.en.html"
+  pageTitle := "Lecture 1: Motivation and Propositional Logic · Slides"
+  kicker := "Lecture 1 · Formal Software Verification"
+  label := "Lecture 1 · Motivation and Propositional Logic"
+  notesLink := some ("../en/Lecture-1___-Motivation-and-Propositional-Logic/", "↩ Notes")
+  nextLink := some ("lecture-2.en.html", "Next lecture ›")
+
+def lecture2Deck : SlideDeck where
+  fileName := "lecture-2.en.html"
+  pageTitle := "Lecture 2: Predicate Logic and Sets · Slides"
+  kicker := "Lecture 2 · Formal Software Verification"
+  label := "Lecture 2 · Predicate Logic and Sets"
+  notesLink := some ("../en/Lecture-2___-Predicate-Logic-and-Sets/", "↩ Notes")
+  prevLink := some ("lecture-1.en.html", "‹ Previous lecture")
+
+def main := slidesMain (decks :=
+  [((%doc Lectures.SlidesEn.Lecture01), lecture1Deck),
+   ((%doc Lectures.SlidesEn.Lecture02), lecture2Deck)])
