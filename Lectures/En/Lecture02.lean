@@ -609,6 +609,13 @@ instance : HasSubset (Set α) :=
   ⟨fun s t => ∀ x, x ∈ s → x ∈ t⟩
 ```
 
+The notation unfolds to its definition. A hypothesis h : s ⊆ t applies to an element and a membership proof.
+
+```lean
+example (α : Type) (s t : Set α) (h : s ⊆ t)
+    (x : α) (hx : x ∈ s) : x ∈ t := h x hx
+```
+
 An inclusion is a universally quantified implication, so its proofs begin by considering an arbitrary element together with the assumption that it belongs to the left side. Union and intersection apply the connectives of Lecture 1 pointwise.
 
 ```savedLean
@@ -617,6 +624,16 @@ instance : Union (Set α) :=
 
 instance : Inter (Set α) :=
   ⟨fun s t => fun x => x ∈ s ∧ x ∈ t⟩
+```
+
+Both notations unfold likewise, so the proof terms of Lecture 1 build and use memberships directly.
+
+```lean
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s) : x ∈ s ∪ t := Or.inl hx
+
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s ∩ t) : x ∈ t := hx.right
 ```
 
 Membership in an intersection is by definition a conjunction, so the projections of Lecture 1 apply to it.
@@ -734,6 +751,87 @@ def UnivSet (α : Type) : Set α := fun _ => True
 example (α : Type) (s : Set α) : s ⊆ UnivSet α := by
   intro x _hx
   exact True.intro
+```
+
+# Worked Examples
+
+Each example below appears two ways, as a proof term and as a tactic proof. The two present the same proof, and Lean checks both scripts when the notes are built. The quantifier rules follow the same introduction and elimination discipline as the connectives of Lecture 1, so we omit the derivation trees and let the terms mirror them. These propositions are disjoint from the examples of the earlier sections and from the exercises.
+
+## Contraposition under quantifiers
+
+The witness of the failure of Q also witnesses the failure of P, since the implication at that element sends a proof of P a to a proof of Q a. The pattern in `intro` destructs the existential.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) : (∃ x, ¬Q x) → ∃ x, ¬P x :=
+  fun ⟨a, hnQa⟩ => ⟨a, fun hPa => hnQa (h a hPa)⟩
+```
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) : (∃ x, ¬Q x) → ∃ x, ¬P x := by
+  intro ⟨a, hnQa⟩
+  exists a
+  intro hPa
+  exact hnQa (h a hPa)
+```
+
+## A disjunction of universals
+
+Whichever side holds, its instance at each element proves the pointwise disjunction. The term eliminates the disjunction with `.elim`, and the tactic proof with `cases`.
+
+```lean
+example (α : Type) (P Q : α → Prop) :
+    (∀ x, P x) ∨ (∀ x, Q x) → ∀ x, P x ∨ Q x :=
+  fun h a =>
+    h.elim (fun hp => Or.inl (hp a))
+      (fun hq => Or.inr (hq a))
+```
+
+```lean
+example (α : Type) (P Q : α → Prop) :
+    (∀ x, P x) ∨ (∀ x, Q x) → ∀ x, P x ∨ Q x := by
+  intro h a
+  cases h with
+  | inl hp => exact Or.inl (hp a)
+  | inr hq => exact Or.inr (hq a)
+```
+
+## Intersection preserves inclusion
+
+The inclusion applies to the left part of the membership, and the right part passes through unchanged.
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h : s ⊆ t) : s ∩ u ⊆ t ∩ u :=
+  fun x hx => ⟨h x hx.left, hx.right⟩
+```
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h : s ⊆ t) : s ∩ u ⊆ t ∩ u := by
+  intro x hx
+  constructor
+  · exact h x hx.left
+  · exact hx.right
+```
+
+## Classical existence
+
+The theorem `not_forall_exists` of the negation laws section produces a witness where ¬P fails, and `Classical.byContradiction` removes the double negation, as in Lecture 1.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ¬∀ x, ¬P x) : ∃ x, P x :=
+  (not_forall_exists α (fun x => ¬P x) h).elim
+    fun a hnnPa => ⟨a, Classical.byContradiction hnnPa⟩
+```
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ¬∀ x, ¬P x) : ∃ x, P x := by
+  obtain ⟨a, hnnPa⟩ := not_forall_exists α (fun x => ¬P x) h
+  exact ⟨a, Classical.byContradiction hnnPa⟩
 ```
 
 # Exercises

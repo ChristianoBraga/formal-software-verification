@@ -609,6 +609,13 @@ instance : HasSubset (Set α) :=
   ⟨fun s t => ∀ x, x ∈ s → x ∈ t⟩
 ```
 
+A notação desdobra-se na sua definição. Uma hipótese h : s ⊆ t aplica-se a um elemento e a uma prova de pertinência.
+
+```lean
+example (α : Type) (s t : Set α) (h : s ⊆ t)
+    (x : α) (hx : x ∈ s) : x ∈ t := h x hx
+```
+
 Uma inclusão é uma implicação universalmente quantificada, então as suas provas começam considerando um elemento arbitrário junto com a suposição de que ele pertence ao lado esquerdo. A união e a interseção aplicam os conectivos da Aula 1 ponto a ponto.
 
 ```savedLean
@@ -617,6 +624,16 @@ instance : Union (Set α) :=
 
 instance : Inter (Set α) :=
   ⟨fun s t => fun x => x ∈ s ∧ x ∈ t⟩
+```
+
+As duas notações desdobram-se do mesmo modo, então os termos de prova da Aula 1 constroem e usam pertinências diretamente.
+
+```lean
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s) : x ∈ s ∪ t := Or.inl hx
+
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s ∩ t) : x ∈ t := hx.right
 ```
 
 A pertinência a uma interseção é por definição uma conjunção, então as projeções da Aula 1 se aplicam a ela.
@@ -734,6 +751,87 @@ def UnivSet (α : Type) : Set α := fun _ => True
 example (α : Type) (s : Set α) : s ⊆ UnivSet α := by
   intro x _hx
   exact True.intro
+```
+
+# Exemplos Resolvidos
+
+Cada exemplo abaixo aparece de duas formas, como um termo de prova e como uma prova por táticas. As duas apresentam a mesma prova, e Lean verifica os dois scripts na construção das notas. As regras dos quantificadores seguem a mesma disciplina de introdução e eliminação dos conectivos da Aula 1, então omitimos as árvores de derivação e deixamos os termos espelhá-las. Estas proposições são disjuntas dos exemplos das seções anteriores e dos exercícios.
+
+## Contraposição sob quantificadores
+
+A testemunha da falha de Q também testemunha a falha de P, pois a implicação naquele elemento leva uma prova de P a a uma prova de Q a. O padrão em `intro` destrói o existencial.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) : (∃ x, ¬Q x) → ∃ x, ¬P x :=
+  fun ⟨a, hnQa⟩ => ⟨a, fun hPa => hnQa (h a hPa)⟩
+```
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) : (∃ x, ¬Q x) → ∃ x, ¬P x := by
+  intro ⟨a, hnQa⟩
+  exists a
+  intro hPa
+  exact hnQa (h a hPa)
+```
+
+## Uma disjunção de universais
+
+Qualquer que seja o lado que valha, a sua instância em cada elemento prova a disjunção ponto a ponto. O termo elimina a disjunção com `.elim`, e a prova por táticas com `cases`.
+
+```lean
+example (α : Type) (P Q : α → Prop) :
+    (∀ x, P x) ∨ (∀ x, Q x) → ∀ x, P x ∨ Q x :=
+  fun h a =>
+    h.elim (fun hp => Or.inl (hp a))
+      (fun hq => Or.inr (hq a))
+```
+
+```lean
+example (α : Type) (P Q : α → Prop) :
+    (∀ x, P x) ∨ (∀ x, Q x) → ∀ x, P x ∨ Q x := by
+  intro h a
+  cases h with
+  | inl hp => exact Or.inl (hp a)
+  | inr hq => exact Or.inr (hq a)
+```
+
+## A interseção preserva a inclusão
+
+A inclusão aplica-se à parte esquerda da pertinência, e a parte direita passa sem mudança.
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h : s ⊆ t) : s ∩ u ⊆ t ∩ u :=
+  fun x hx => ⟨h x hx.left, hx.right⟩
+```
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h : s ⊆ t) : s ∩ u ⊆ t ∩ u := by
+  intro x hx
+  constructor
+  · exact h x hx.left
+  · exact hx.right
+```
+
+## Existência clássica
+
+O teorema `not_forall_exists` da seção de leis de negação produz uma testemunha onde ¬P falha, e `Classical.byContradiction` remove a dupla negação, como na Aula 1.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ¬∀ x, ¬P x) : ∃ x, P x :=
+  (not_forall_exists α (fun x => ¬P x) h).elim
+    fun a hnnPa => ⟨a, Classical.byContradiction hnnPa⟩
+```
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ¬∀ x, ¬P x) : ∃ x, P x := by
+  obtain ⟨a, hnnPa⟩ := not_forall_exists α (fun x => ¬P x) h
+  exact ⟨a, Classical.byContradiction hnnPa⟩
 ```
 
 # Exercícios

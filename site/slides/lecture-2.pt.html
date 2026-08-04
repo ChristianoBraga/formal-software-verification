@@ -33,11 +33,12 @@
   .deck { position: relative; height: 100vh; width: 100vw; }
   .slide {
     position: absolute; inset: 0; display: none;
-    flex-direction: column; justify-content: center;
-    padding: clamp(1.5rem, 6vw, 6rem) clamp(1.5rem, 6vw, 6rem) clamp(3.5rem, 8vw, 5rem);
+    flex-direction: column; justify-content: center; align-items: center;
+    padding: clamp(1.5rem, 5vw, 4.5rem) clamp(1.5rem, 6vw, 6rem) clamp(3.5rem, 7vw, 4.5rem);
     opacity: 0; transition: opacity 0.3s ease;
   }
   .slide.active { display: flex; opacity: 1; }
+  .inner { width: 100%; max-width: 66rem; max-height: 100%; overflow-y: auto; }
   .kicker {
     text-transform: uppercase; letter-spacing: 0.12em;
     font-size: clamp(0.7rem, 1.6vw, 0.95rem); font-weight: 600;
@@ -50,19 +51,19 @@
     -webkit-text-fill-color: transparent; color: transparent;
   }
   h2 {
-    font-size: clamp(1.4rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 1.5rem;
-    padding-bottom: 0.5rem; border-bottom: 3px solid;
+    font-size: clamp(1.3rem, 3.6vw, 2.4rem); line-height: 1.15; margin: 0 0 1.1rem;
+    padding-bottom: 0.4rem; border-bottom: 3px solid;
     border-image: linear-gradient(90deg, var(--accent), var(--accent2)) 1;
   }
   ul { margin: 0; padding: 0; list-style: none; }
   li {
-    position: relative; padding-left: 1.6rem; margin: 0.8rem 0;
-    font-size: clamp(1rem, 2.5vw, 1.6rem); line-height: 1.45; color: var(--muted);
+    position: relative; padding-left: 1.5rem; margin: 0.65rem 0;
+    font-size: clamp(0.95rem, 2.2vw, 1.45rem); line-height: 1.4; color: var(--muted);
   }
   li strong { color: var(--text); }
   li::before {
-    content: ""; position: absolute; left: 0; top: 0.62em;
-    width: 0.6rem; height: 0.6rem; border-radius: 2px;
+    content: ""; position: absolute; left: 0; top: 0.6em;
+    width: 0.55rem; height: 0.55rem; border-radius: 2px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
   }
   code {
@@ -77,6 +78,28 @@
     .hl-kw { color: #c678dd; }
     .hl-tac { color: #5eead4; }
     .hl-const { color: #61afef; }
+  }
+  pre.tree, pre.code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(0.68rem, 1.55vw, 1rem); line-height: 1.35;
+    margin: 0.5rem 0; padding: 0.8rem 1rem; white-space: pre; overflow-x: auto;
+    background: var(--code-bg); border-radius: 0.5rem; color: var(--text);
+  }
+  table.tt { border-collapse: collapse; margin: 0.5rem 0; font-size: clamp(0.8rem, 1.7vw, 1.1rem); }
+  table.tt th, table.tt td { border: 1px solid var(--border); padding: 0.22rem 0.7rem; text-align: center; color: var(--text); }
+  table.tt th { background: var(--code-bg); }
+  table.tt .l { text-align: left; }
+  .cols { display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: flex-start; }
+  .cols > div { flex: 1 1 22rem; min-width: min(100%, 22rem); }
+  .note { color: var(--muted); font-size: clamp(0.9rem, 1.9vw, 1.2rem); line-height: 1.4; margin: 0.7rem 0 0; }
+  .exh { font-weight: 700; color: var(--text); font-size: clamp(1rem, 2.3vw, 1.45rem); margin: 1rem 0 0.3rem; }
+  ul.brk { margin: 0.6rem 0 0; padding: 0; }
+  ul.brk li { font-size: clamp(0.85rem, 1.7vw, 1.05rem); color: var(--muted); margin: 0.35rem 0; padding-left: 1.3rem; line-height: 1.4; }
+  .lbl { text-transform: uppercase; letter-spacing: 0.08em; font-size: clamp(0.68rem, 1.3vw, 0.85rem); font-weight: 700; color: var(--accent2); margin: 0.5rem 0 0.15rem; }
+  blockquote {
+    margin: 0.5rem 0 1rem; padding: 0.75rem 0 0.75rem 1.5rem;
+    border-left: 5px solid; border-image: linear-gradient(180deg, var(--accent), var(--accent2)) 1;
+    font-size: clamp(1.3rem, 3.4vw, 2.3rem); font-style: italic; line-height: 1.35; color: var(--text);
   }
   .cite { font-size: clamp(0.8rem, 1.8vw, 1.05rem); color: var(--muted); }
   .subtitle { font-size: clamp(1.1rem, 3vw, 2rem); color: var(--muted); margin: 0 0 1.5rem; }
@@ -116,7 +139,7 @@
     border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.25rem 0.7rem; line-height: 1;
   }
   footer button:hover { border-color: var(--accent2); }
-  .zone { position: fixed; top: 0; bottom: 2.8rem; width: 22%; z-index: 4; cursor: pointer; }
+  .zone { position: fixed; top: 0; bottom: 2.8rem; width: 20%; z-index: 4; cursor: pointer; }
   .zone.prev { left: 0; } .zone.next { right: 0; }
   @media print {
     .slide { display: flex !important; opacity: 1 !important; position: relative; page-break-after: always; height: 100vh; }
@@ -128,69 +151,277 @@
 <div class="progress" id="progress"></div>
 <div class="deck" id="deck">
 
-  <section class="slide slide--title">
+  <section class="slide slide--title"><div class="inner">
     <div class="kicker">Aula 2 · Verificação Formal de Software</div>
     <h1>Lógica de Predicados e Conjuntos</h1>
-    <p class="subtitle">Quantificadores, suas leis de negação e conjuntos como predicados em Lean</p>
+    <p class="subtitle">Quantificadores, leis de negação, ordem dos quantificadores e conjuntos como predicados em Lean</p>
     <p class="byline">Christiano Braga · Mestrado em Sistemas e Computação · IME</p>
     <p class="notelink"><a href="../pt/Aula-2___-L___gica-de-Predicados-e-Conjuntos/">↩ Abrir as notas de aula</a></p>
     <p class="refs">Baseada em <a href="https://djvelleman.github.io/HTPIwL/" target="_blank" rel="noopener">How To Prove It with Lean</a> (HTPIwL), capítulos <a href="https://djvelleman.github.io/HTPIwL/Chap2.html" target="_blank" rel="noopener">2</a> e <a href="https://djvelleman.github.io/HTPIwL/Chap3.html" target="_blank" rel="noopener">3</a>.</p>
-  </section>
+  </div></section>
 
-  <section class="slide">
-    <h2>Predicados e quantificadores</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.1 Predicados e quantificadores</h2>
     <ul>
       <li>Um <strong>predicado</strong> sobre um tipo α atribui uma proposição a cada elemento, então em Lean é uma função <code>α → Prop</code>.</li>
-      <li>Quantificadores ligam a variável e produzem uma proposição: <code>∀ x, P x</code> (para todo x) e <code>∃ x, P x</code> (para algum x).</li>
-      <li>Uma variável ligada não deixa variável livre, então <code>∀ x, P x</code> é ela própria uma proposição que percorre um tipo.</li>
     </ul>
-  </section>
-
-  <section class="slide">
-    <h2>O quantificador universal</h2>
+    <pre class="code">#check fun n : Nat => n > 3   -- fun n => n > 3 : Nat → Prop</pre>
     <ul>
-      <li><strong>Introduza</strong> <code>∀ x, P x</code> tomando um elemento arbitrário com <code>intro</code> e provando a proposição nele.</li>
-      <li><strong>Elimine</strong> por instanciação: <code>h a</code> aplica a hipótese em <code>a</code>; a tática <code>specialize</code> faz isso no contexto.</li>
-      <li>Distribui sobre a conjunção: <code>(∀ x, P x ∧ Q x) ↔ (∀ x, P x) ∧ (∀ x, Q x)</code>.</li>
+      <li>Quantificadores <strong>ligam</strong> a variável de um predicado e produzem uma proposição (Frege, 1879). A variável percorre um tipo, inferido quando o contexto o determina.</li>
     </ul>
-  </section>
+    <table class="tt">
+      <tr><th>Símbolo</th><th class="l">Nome</th><th class="l">Leitura</th></tr>
+      <tr><td>∀ x, P x</td><td class="l">quantificador universal</td><td class="l">P x vale para todo x</td></tr>
+      <tr><td>∃ x, P x</td><td class="l">quantificador existencial</td><td class="l">P x vale para algum x</td></tr>
+    </table>
+    <pre class="code">#check ∃ n : Nat, n > 3   -- ∃ n, n > 3 : Prop
+#check ∀ n : Nat, n > 3   -- ∀ (n : Nat), n > 3 : Prop</pre>
+    <p class="note">O quantificador leva o predicado, de tipo <code>Nat → Prop</code>, a uma proposição, de tipo <code>Prop</code>.</p>
+  </div></section>
 
-  <section class="slide">
-    <h2>O quantificador existencial</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.2 O quantificador universal</h2>
     <ul>
-      <li><strong>Introduza</strong> <code>∃ x, P x</code> exibindo uma <strong>testemunha</strong> com a sua prova: <code>⟨3, rfl⟩</code>, ou a tática <code>exists</code>.</li>
-      <li><strong>Elimine</strong> nomeando uma testemunha e a sua prova, com <code>cases</code> ou <code>obtain ⟨a, ha⟩ := h</code>.</li>
-      <li>Uma implicação ponto a ponto leva a existência de P a Q com a mesma testemunha.</li>
+      <li><strong>Introduza</strong> ∀ x, P x considerando um elemento arbitrário: <code>intro</code>, a mesma tática que introduz implicações.</li>
+      <li><strong>Elimine</strong> por instanciação. Uma hipótese universal é uma <strong>função</strong>, então <code>h a</code> a instancia em <code>a</code>; <code>specialize</code> faz isso no lugar.</li>
     </ul>
-  </section>
+    <div class="cols">
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x ∧ Q x) : ∀ x, P x := by
+  intro a
+  exact (h a).left</pre>
+      </div>
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x)
+    (a : α) (hPa : P a) : Q a := by
+  specialize h a
+  exact h hPa</pre>
+      </div>
+    </div>
+  </div></section>
 
-  <section class="slide">
-    <h2>Leis de negação dos quantificadores</h2>
-    <ul>
-      <li><code>¬(∃ x, P x) ≡ ∀ x, ¬P x</code>, construtiva nas duas direções.</li>
-      <li><code>¬(∀ x, P x) ≡ ∃ x, ¬P x</code>; produzir a testemunha requer <strong>raciocínio clássico</strong>, como a primeira lei de De Morgan.</li>
-      <li>Elas trocam a negação com os quantificadores, estendendo as leis de De Morgan da Aula 1.</li>
-    </ul>
-  </section>
+  <section class="slide"><div class="inner">
+    <h2>§2.2 Distribuição sobre a conjunção</h2>
+    <p class="note">O quantificador universal distribui sobre a conjunção. A prova combina as regras do quantificador com as regras da Aula 1 para conjunção e bicondicional.</p>
+    <pre class="code">theorem forall_and_distrib (α : Type) (P Q : α → Prop) :
+    (∀ x, P x ∧ Q x) ↔ (∀ x, P x) ∧ (∀ x, Q x) := by
+  constructor
+  · intro h
+    constructor
+    · intro a
+      exact (h a).left
+    · intro a
+      exact (h a).right
+  · intro h a
+    exact ⟨h.left a, h.right a⟩</pre>
+  </div></section>
 
-  <section class="slide">
-    <h2>A ordem dos quantificadores</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.3 O quantificador existencial</h2>
     <ul>
-      <li>Quantificadores consecutivos do <strong>mesmo tipo</strong> comutam; de <strong>tipos diferentes</strong> não.</li>
-      <li>Uma direção vale: <code>(∃ x, ∀ y, R x y) → (∀ y, ∃ x, R x y)</code>.</li>
-      <li>A recíproca falha. Sobre ℕ com R x y sendo x ≥ y, todo y tem algum x, mas nenhum x é ≥ todo y.</li>
+      <li><strong>Introduza</strong> ∃ x, P x exibindo uma <strong>testemunha</strong> com a sua prova: o construtor anônimo <code>⟨3, rfl⟩</code>, ou a tática <code>exists</code>.</li>
+      <li><strong>Elimine</strong> nomeando uma testemunha e a sua prova: <code>cases</code> (um caso, construtor <code>intro</code>) ou <code>obtain ⟨a, ha⟩ := h</code> num só passo.</li>
     </ul>
-  </section>
+    <pre class="code">example : ∃ n : Nat, n * n = 9 := ⟨3, rfl⟩</pre>
+    <div class="cols">
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : ∃ x, P x := by
+  cases h with
+  | intro a ha => exact ⟨a, ha.left⟩</pre>
+      </div>
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : ∃ x, Q x := by
+  obtain ⟨a, ha⟩ := h
+  exact ⟨a, ha.right⟩</pre>
+      </div>
+    </div>
+  </div></section>
 
-  <section class="slide">
-    <h2>Conjuntos</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.3 Implicação ponto a ponto</h2>
+    <p class="note">O teorema abaixo combina os dois quantificadores. Uma implicação ponto a ponto transporta a existência de P para Q, e a testemunha não muda.</p>
+    <pre class="code">theorem exists_imp_exists (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) : (∃ x, P x) → ∃ x, Q x := by
+  intro hex
+  obtain ⟨a, hPa⟩ := hex
+  exact ⟨a, h a hPa⟩</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.4 Leis de negação dos quantificadores</h2>
+    <table class="tt">
+      <tr><th class="l">Nome</th><th class="l">Equivalência</th></tr>
+      <tr><td class="l">Negação de ∃</td><td class="l">¬(∃ x, P x) ≡ ∀ x, ¬P x</td></tr>
+      <tr><td class="l">Negação de ∀</td><td class="l">¬(∀ x, P x) ≡ ∃ x, ¬P x</td></tr>
+    </table>
     <ul>
-      <li>Um conjunto é o seu predicado de pertinência: <code>Set α := α → Prop</code>, com <code>x ∈ s</code> reduzindo a <code>s x</code>.</li>
-      <li>O cenário tipado bloqueia o paradoxo de Russell: a coleção dos conjuntos que não se contêm não pode ser escrita.</li>
-      <li>A inclusão <code>s ⊆ t</code> é uma implicação universalmente quantificada; união e interseção aplicam <code>∨</code> e <code>∧</code> ponto a ponto.</li>
-      <li>Identidades de conjuntos são enunciadas como <strong>inclusões</strong>, pois a igualdade exige extensionalidade além desta lógica.</li>
+      <li>Elas trocam a negação com os quantificadores, estendendo as <strong>leis de De Morgan</strong> da Aula 1.</li>
+      <li>A primeira lei é <strong>construtiva</strong> nas duas direções.</li>
+      <li>Na segunda, produzir a testemunha exige <strong>raciocínio clássico</strong>, como na primeira lei de De Morgan: duas aplicações de <code>Classical.byContradiction</code>.</li>
     </ul>
-  </section>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.4 As duas leis em Lean</h2>
+    <div class="cols">
+      <div>
+        <pre class="code">theorem not_exists_iff
+    (α : Type) (P : α → Prop) :
+    ¬(∃ x, P x) ↔ ∀ x, ¬P x := by
+  constructor
+  · intro h a hPa
+    exact h ⟨a, hPa⟩
+  · intro h hex
+    obtain ⟨a, hPa⟩ := hex
+    exact h a hPa</pre>
+      </div>
+      <div>
+        <pre class="code">theorem not_forall_exists
+    (α : Type) (P : α → Prop)
+    (h : ¬∀ x, P x) : ∃ x, ¬P x := by
+  apply Classical.byContradiction
+  intro hne
+  apply h
+  intro a
+  apply Classical.byContradiction
+  intro hnPa
+  exact hne ⟨a, hnPa⟩</pre>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.4 Além de intro, obtain e exact</h2>
+    <ul>
+      <li><code>intro</code> aceita o <strong>padrão de construtor anônimo</strong>, introduzindo o existencial e o destruindo num só passo.</li>
+      <li>Uma meta negada é uma <strong>função em False</strong>, então um termo de prova com um <code>fun</code> que casa padrões a prova, sem táticas.</li>
+    </ul>
+    <div class="cols">
+      <div>
+        <p class="lbl">Intro com padrão</p>
+        <pre class="code">example (α : Type) (P : α → Prop)
+    (h : ∀ x, ¬P x) : ¬∃ x, P x := by
+  intro ⟨a, hPa⟩
+  exact h a hPa</pre>
+      </div>
+      <div>
+        <p class="lbl">Termo de prova</p>
+        <pre class="code">example (α : Type) (P : α → Prop)
+    (h : ∀ x, P x) : ¬∃ x, ¬P x :=
+  fun ⟨a, hnPa⟩ => hnPa (h a)</pre>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.5 A ordem dos quantificadores</h2>
+    <ul>
+      <li>A ordem <strong>determina o que um enunciado afirma</strong>.</li>
+      <li>Em ∀ y, ∃ x, R x y, a testemunha x pode <strong>depender de y</strong>; em ∃ x, ∀ y, R x y, uma única testemunha serve para todo y. A <strong>testemunha uniforme</strong> é o enunciado mais forte.</li>
+      <li>Quantificadores do <strong>mesmo tipo</strong> comutam; as trocas para ∀ e ∃ apareceram como exemplos nas §2.2 e §2.3.</li>
+      <li>Quantificadores de <strong>tipos distintos</strong> não comutam. Só uma direção vale: a ordem mais forte implica a mais fraca.</li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.5 A troca e o contraexemplo</h2>
+    <pre class="code">theorem exists_forall_swap (α β : Type) (R : α → β → Prop)
+    (h : ∃ x, ∀ y, R x y) : ∀ y, ∃ x, R x y := by
+  intro b
+  obtain ⟨a, ha⟩ := h
+  exact ⟨a, ha b⟩</pre>
+    <p class="note">A recíproca falha. Sobre ℕ tome R x y como x ≥ y. As duas afirmações do contraexemplo valem em Lean.</p>
+    <div class="cols">
+      <div>
+        <pre class="code">example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
+  intro b
+  exact ⟨b, Nat.le_refl b⟩</pre>
+      </div>
+      <div>
+        <pre class="code">example : ¬∃ x : Nat, ∀ y : Nat, x ≥ y := by
+  intro ⟨a, ha⟩
+  exact absurd (ha (a + 1))
+    (Nat.not_succ_le_self a)</pre>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Conjuntos como predicados</h2>
+    <ul>
+      <li>Um conjunto de elementos de α é determinado por <strong>quais elementos pertencem a ele</strong>, então o predicado de pertinência determina o conjunto. Tomamos isso como definição.</li>
+      <li>Um conjunto dado por uma propriedade <strong>é</strong> o predicado, e uma prova de pertinência é uma prova da propriedade.</li>
+    </ul>
+    <pre class="code">def Set (α : Type) : Type := α → Prop
+
+def Evens : Set Nat := fun n => ∃ k, n = 2 * k
+
+example : (6 : Nat) ∈ Evens := ⟨3, rfl⟩</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Classes de tipos e instâncias</h2>
+    <ul>
+      <li>Lean resolve notações como <code>x ∈ s</code> por <strong>classes de tipos</strong>. A classe declara a notação; uma <code>instance</code> dá o seu significado num tipo particular.</li>
+      <li><code>Set α</code> é uma definição desta aula, então nenhuma instância registrada a cobre. As instâncias abaixo fornecem o significado: <code>x ∈ s</code> desdobra-se em <code>s x</code>.</li>
+    </ul>
+    <pre class="code">instance : Membership α (Set α) := ⟨fun s a => s a⟩
+
+instance : HasSubset (Set α) := ⟨fun s t => ∀ x, x ∈ s → x ∈ t⟩
+
+instance : Union (Set α) := ⟨fun s t => fun x => x ∈ s ∨ x ∈ t⟩
+
+instance : Inter (Set α) := ⟨fun s t => fun x => x ∈ s ∧ x ∈ t⟩</pre>
+    <p class="lbl">Cada notação desdobra-se na sua definição</p>
+    <pre class="code">example (α : Type) (s t : Set α) (h : s ⊆ t)
+    (x : α) (hx : x ∈ s) : x ∈ t := h x hx
+
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s) : x ∈ s ∪ t := Or.inl hx
+
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s ∩ t) : x ∈ t := hx.right</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 O paradoxo de Russell</h2>
+    <ul>
+      <li>A teoria ingênua de conjuntos admite um conjunto para <strong>cada propriedade</strong>. Tome R como o conjunto de todos os conjuntos que não são elementos de si mesmos.</li>
+      <li>Então <strong>R ∈ R vale exatamente quando R ∉ R</strong>, uma contradição, e a teoria colapsa.</li>
+      <li>Em Lean, s : Set α contém apenas elementos de α, e o próprio s tem tipo Set α, não α, então <code>s ∈ s</code> <strong>não é bem tipado</strong>. Não há como enunciar a propriedade que define R, e o paradoxo não ocorre.</li>
+    </ul>
+    <p class="cite">B. Russell, carta a Frege, 16 de junho de 1902.</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Inclusão, união e interseção</h2>
+    <ul>
+      <li>A inclusão s ⊆ t é uma <strong>implicação universalmente quantificada</strong>, então as suas provas começam com <code>intro x hx</code>.</li>
+      <li>A pertinência a ∩ é uma <strong>conjunção</strong> e a ∪ uma <strong>disjunção</strong>; as regras dos conectivos da Aula 1 aplicam-se. Identidades de conjuntos são enunciadas como <strong>inclusões</strong>, pois a igualdade exige extensionalidade.</li>
+    </ul>
+    <div class="cols">
+      <div>
+        <pre class="code">theorem inter_subset_left
+    (α : Type) (s t : Set α) :
+    s ∩ t ⊆ s := by
+  intro x hx
+  exact hx.left</pre>
+      </div>
+      <div>
+        <pre class="code">theorem union_subset_swap
+    (α : Type) (s t : Set α) :
+    s ∪ t ⊆ t ∪ s := by
+  intro x hx
+  cases hx with
+  | inl h => exact Or.inr h
+  | inr h => exact Or.inl h</pre>
+      </div>
+    </div>
+  </div></section>
 
 </div>
 
@@ -206,14 +437,14 @@
   <span class="label">Aula 2 · Lógica de Predicados e Conjuntos</span>
   <span class="nav">
     <button id="bprev" aria-label="Slide anterior">‹</button>
-    <span id="counter">1 / 7</span>
+    <span id="counter">1 / 15</span>
     <button id="bnext" aria-label="Próximo slide">›</button>
   </span>
 </footer>
 
 <script>
   // Minimal Lean syntax highlighter for the code blocks and inline code.
-  const LEAN_KW = new Set(['example','theorem','def','fun','by','match','with','let','have','show','if','then','else','do']);
+  const LEAN_KW = new Set(['example','theorem','def','fun','by','match','with','let','have','show','if','then','else','do','instance']);
   const LEAN_TAC = new Set(['intro','exact','apply','cases','constructor','exists','obtain','specialize','rfl','sorry','refine','rintro']);
   function leanEsc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function leanClass(id) {

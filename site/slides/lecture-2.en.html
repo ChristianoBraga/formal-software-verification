@@ -33,11 +33,12 @@
   .deck { position: relative; height: 100vh; width: 100vw; }
   .slide {
     position: absolute; inset: 0; display: none;
-    flex-direction: column; justify-content: center;
-    padding: clamp(1.5rem, 6vw, 6rem) clamp(1.5rem, 6vw, 6rem) clamp(3.5rem, 8vw, 5rem);
+    flex-direction: column; justify-content: center; align-items: center;
+    padding: clamp(1.5rem, 5vw, 4.5rem) clamp(1.5rem, 6vw, 6rem) clamp(3.5rem, 7vw, 4.5rem);
     opacity: 0; transition: opacity 0.3s ease;
   }
   .slide.active { display: flex; opacity: 1; }
+  .inner { width: 100%; max-width: 66rem; max-height: 100%; overflow-y: auto; }
   .kicker {
     text-transform: uppercase; letter-spacing: 0.12em;
     font-size: clamp(0.7rem, 1.6vw, 0.95rem); font-weight: 600;
@@ -50,19 +51,19 @@
     -webkit-text-fill-color: transparent; color: transparent;
   }
   h2 {
-    font-size: clamp(1.4rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 1.5rem;
-    padding-bottom: 0.5rem; border-bottom: 3px solid;
+    font-size: clamp(1.3rem, 3.6vw, 2.4rem); line-height: 1.15; margin: 0 0 1.1rem;
+    padding-bottom: 0.4rem; border-bottom: 3px solid;
     border-image: linear-gradient(90deg, var(--accent), var(--accent2)) 1;
   }
   ul { margin: 0; padding: 0; list-style: none; }
   li {
-    position: relative; padding-left: 1.6rem; margin: 0.8rem 0;
-    font-size: clamp(1rem, 2.5vw, 1.6rem); line-height: 1.45; color: var(--muted);
+    position: relative; padding-left: 1.5rem; margin: 0.65rem 0;
+    font-size: clamp(0.95rem, 2.2vw, 1.45rem); line-height: 1.4; color: var(--muted);
   }
   li strong { color: var(--text); }
   li::before {
-    content: ""; position: absolute; left: 0; top: 0.62em;
-    width: 0.6rem; height: 0.6rem; border-radius: 2px;
+    content: ""; position: absolute; left: 0; top: 0.6em;
+    width: 0.55rem; height: 0.55rem; border-radius: 2px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
   }
   code {
@@ -77,6 +78,28 @@
     .hl-kw { color: #c678dd; }
     .hl-tac { color: #5eead4; }
     .hl-const { color: #61afef; }
+  }
+  pre.tree, pre.code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(0.68rem, 1.55vw, 1rem); line-height: 1.35;
+    margin: 0.5rem 0; padding: 0.8rem 1rem; white-space: pre; overflow-x: auto;
+    background: var(--code-bg); border-radius: 0.5rem; color: var(--text);
+  }
+  table.tt { border-collapse: collapse; margin: 0.5rem 0; font-size: clamp(0.8rem, 1.7vw, 1.1rem); }
+  table.tt th, table.tt td { border: 1px solid var(--border); padding: 0.22rem 0.7rem; text-align: center; color: var(--text); }
+  table.tt th { background: var(--code-bg); }
+  table.tt .l { text-align: left; }
+  .cols { display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: flex-start; }
+  .cols > div { flex: 1 1 22rem; min-width: min(100%, 22rem); }
+  .note { color: var(--muted); font-size: clamp(0.9rem, 1.9vw, 1.2rem); line-height: 1.4; margin: 0.7rem 0 0; }
+  .exh { font-weight: 700; color: var(--text); font-size: clamp(1rem, 2.3vw, 1.45rem); margin: 1rem 0 0.3rem; }
+  ul.brk { margin: 0.6rem 0 0; padding: 0; }
+  ul.brk li { font-size: clamp(0.85rem, 1.7vw, 1.05rem); color: var(--muted); margin: 0.35rem 0; padding-left: 1.3rem; line-height: 1.4; }
+  .lbl { text-transform: uppercase; letter-spacing: 0.08em; font-size: clamp(0.68rem, 1.3vw, 0.85rem); font-weight: 700; color: var(--accent2); margin: 0.5rem 0 0.15rem; }
+  blockquote {
+    margin: 0.5rem 0 1rem; padding: 0.75rem 0 0.75rem 1.5rem;
+    border-left: 5px solid; border-image: linear-gradient(180deg, var(--accent), var(--accent2)) 1;
+    font-size: clamp(1.3rem, 3.4vw, 2.3rem); font-style: italic; line-height: 1.35; color: var(--text);
   }
   .cite { font-size: clamp(0.8rem, 1.8vw, 1.05rem); color: var(--muted); }
   .subtitle { font-size: clamp(1.1rem, 3vw, 2rem); color: var(--muted); margin: 0 0 1.5rem; }
@@ -116,7 +139,7 @@
     border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.25rem 0.7rem; line-height: 1;
   }
   footer button:hover { border-color: var(--accent2); }
-  .zone { position: fixed; top: 0; bottom: 2.8rem; width: 22%; z-index: 4; cursor: pointer; }
+  .zone { position: fixed; top: 0; bottom: 2.8rem; width: 20%; z-index: 4; cursor: pointer; }
   .zone.prev { left: 0; } .zone.next { right: 0; }
   @media print {
     .slide { display: flex !important; opacity: 1 !important; position: relative; page-break-after: always; height: 100vh; }
@@ -128,69 +151,277 @@
 <div class="progress" id="progress"></div>
 <div class="deck" id="deck">
 
-  <section class="slide slide--title">
+  <section class="slide slide--title"><div class="inner">
     <div class="kicker">Lecture 2 · Formal Software Verification</div>
     <h1>Predicate Logic and Sets</h1>
-    <p class="subtitle">Quantifiers, their negation laws, and sets as predicates in Lean</p>
+    <p class="subtitle">Quantifiers, negation laws, quantifier order, and sets as predicates in Lean</p>
     <p class="byline">Christiano Braga · Mestrado em Sistemas e Computação · IME</p>
     <p class="notelink"><a href="../en/Lecture-2___-Predicate-Logic-and-Sets/">↩ Open the lecture notes</a></p>
     <p class="refs">Based on <a href="https://djvelleman.github.io/HTPIwL/" target="_blank" rel="noopener">How To Prove It with Lean</a> (HTPIwL), chapters <a href="https://djvelleman.github.io/HTPIwL/Chap2.html" target="_blank" rel="noopener">2</a> and <a href="https://djvelleman.github.io/HTPIwL/Chap3.html" target="_blank" rel="noopener">3</a>.</p>
-  </section>
+  </div></section>
 
-  <section class="slide">
-    <h2>Predicates and quantifiers</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.1 Predicates and quantifiers</h2>
     <ul>
       <li>A <strong>predicate</strong> on a type α assigns a proposition to each element, so in Lean it is a function <code>α → Prop</code>.</li>
-      <li>Quantifiers bind the variable and produce a proposition: <code>∀ x, P x</code> (for every x) and <code>∃ x, P x</code> (for some x).</li>
-      <li>A bound variable leaves no free variable, so <code>∀ x, P x</code> is itself a proposition ranging over a type.</li>
     </ul>
-  </section>
-
-  <section class="slide">
-    <h2>The universal quantifier</h2>
+    <pre class="code">#check fun n : Nat => n > 3   -- fun n => n > 3 : Nat → Prop</pre>
     <ul>
-      <li><strong>Introduce</strong> <code>∀ x, P x</code> by taking an arbitrary element with <code>intro</code> and proving the proposition at it.</li>
-      <li><strong>Eliminate</strong> it by instantiation: <code>h a</code> applies the hypothesis at <code>a</code>; the tactic <code>specialize</code> does this in place.</li>
-      <li>It distributes over conjunction: <code>(∀ x, P x ∧ Q x) ↔ (∀ x, P x) ∧ (∀ x, Q x)</code>.</li>
+      <li>Quantifiers <strong>bind</strong> the variable of a predicate and produce a proposition (Frege, 1879). The variable ranges over a type, inferred when the context determines it.</li>
     </ul>
-  </section>
+    <table class="tt">
+      <tr><th>Symbol</th><th class="l">Name</th><th class="l">Reading</th></tr>
+      <tr><td>∀ x, P x</td><td class="l">universal quantifier</td><td class="l">P x holds for every x</td></tr>
+      <tr><td>∃ x, P x</td><td class="l">existential quantifier</td><td class="l">P x holds for some x</td></tr>
+    </table>
+    <pre class="code">#check ∃ n : Nat, n > 3   -- ∃ n, n > 3 : Prop
+#check ∀ n : Nat, n > 3   -- ∀ (n : Nat), n > 3 : Prop</pre>
+    <p class="note">A quantifier takes the predicate, of type <code>Nat → Prop</code>, to a proposition, of type <code>Prop</code>.</p>
+  </div></section>
 
-  <section class="slide">
-    <h2>The existential quantifier</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.2 The universal quantifier</h2>
     <ul>
-      <li><strong>Introduce</strong> <code>∃ x, P x</code> by exhibiting a <strong>witness</strong> with its proof: <code>⟨3, rfl⟩</code>, or the <code>exists</code> tactic.</li>
-      <li><strong>Eliminate</strong> it by naming a witness and its proof, with <code>cases</code> or <code>obtain ⟨a, ha⟩ := h</code>.</li>
-      <li>A pointwise implication carries existence from P to Q with the same witness.</li>
+      <li><strong>Introduce</strong> ∀ x, P x by considering an arbitrary element: <code>intro</code>, the same tactic that introduces implications.</li>
+      <li><strong>Eliminate</strong> it by instantiation. A universal hypothesis is a <strong>function</strong>, so <code>h a</code> instantiates it at <code>a</code>; <code>specialize</code> does it in place.</li>
     </ul>
-  </section>
+    <div class="cols">
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x ∧ Q x) : ∀ x, P x := by
+  intro a
+  exact (h a).left</pre>
+      </div>
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x)
+    (a : α) (hPa : P a) : Q a := by
+  specialize h a
+  exact h hPa</pre>
+      </div>
+    </div>
+  </div></section>
 
-  <section class="slide">
-    <h2>Quantifier negation laws</h2>
-    <ul>
-      <li><code>¬(∃ x, P x) ≡ ∀ x, ¬P x</code>, constructive in both directions.</li>
-      <li><code>¬(∀ x, P x) ≡ ∃ x, ¬P x</code>; producing the witness needs <strong>classical reasoning</strong>, as the first De Morgan law did.</li>
-      <li>These exchange negation with the quantifiers, extending the De Morgan laws of Lecture 1.</li>
-    </ul>
-  </section>
+  <section class="slide"><div class="inner">
+    <h2>§2.2 Distribution over conjunction</h2>
+    <p class="note">The universal quantifier distributes over conjunction. The proof combines the quantifier rules with the Lecture 1 rules for conjunction and the biconditional.</p>
+    <pre class="code">theorem forall_and_distrib (α : Type) (P Q : α → Prop) :
+    (∀ x, P x ∧ Q x) ↔ (∀ x, P x) ∧ (∀ x, Q x) := by
+  constructor
+  · intro h
+    constructor
+    · intro a
+      exact (h a).left
+    · intro a
+      exact (h a).right
+  · intro h a
+    exact ⟨h.left a, h.right a⟩</pre>
+  </div></section>
 
-  <section class="slide">
-    <h2>The order of quantifiers</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.3 The existential quantifier</h2>
     <ul>
-      <li>Consecutive quantifiers of the <strong>same kind</strong> commute; quantifiers of <strong>different kinds</strong> do not.</li>
-      <li>One direction holds: <code>(∃ x, ∀ y, R x y) → (∀ y, ∃ x, R x y)</code>.</li>
-      <li>The converse fails. Over ℕ with R x y as x ≥ y, every y has some x, but no x is ≥ every y.</li>
+      <li><strong>Introduce</strong> ∃ x, P x by exhibiting a <strong>witness</strong> with its proof: the anonymous constructor <code>⟨3, rfl⟩</code>, or the <code>exists</code> tactic.</li>
+      <li><strong>Eliminate</strong> it by naming a witness and its proof: <code>cases</code> (one case, constructor <code>intro</code>) or <code>obtain ⟨a, ha⟩ := h</code> in one step.</li>
     </ul>
-  </section>
+    <pre class="code">example : ∃ n : Nat, n * n = 9 := ⟨3, rfl⟩</pre>
+    <div class="cols">
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : ∃ x, P x := by
+  cases h with
+  | intro a ha => exact ⟨a, ha.left⟩</pre>
+      </div>
+      <div>
+        <pre class="code">example (α : Type) (P Q : α → Prop)
+    (h : ∃ x, P x ∧ Q x) : ∃ x, Q x := by
+  obtain ⟨a, ha⟩ := h
+  exact ⟨a, ha.right⟩</pre>
+      </div>
+    </div>
+  </div></section>
 
-  <section class="slide">
-    <h2>Sets</h2>
+  <section class="slide"><div class="inner">
+    <h2>§2.3 A pointwise implication</h2>
+    <p class="note">The theorem below combines the two quantifiers. A pointwise implication carries existence from P to Q, and the witness does not change.</p>
+    <pre class="code">theorem exists_imp_exists (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) : (∃ x, P x) → ∃ x, Q x := by
+  intro hex
+  obtain ⟨a, hPa⟩ := hex
+  exact ⟨a, h a hPa⟩</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.4 Quantifier negation laws</h2>
+    <table class="tt">
+      <tr><th class="l">Name</th><th class="l">Equivalence</th></tr>
+      <tr><td class="l">Negation of ∃</td><td class="l">¬(∃ x, P x) ≡ ∀ x, ¬P x</td></tr>
+      <tr><td class="l">Negation of ∀</td><td class="l">¬(∀ x, P x) ≡ ∃ x, ¬P x</td></tr>
+    </table>
     <ul>
-      <li>A set is its membership predicate: <code>Set α := α → Prop</code>, with <code>x ∈ s</code> unfolding to <code>s x</code>.</li>
-      <li>The typed setting blocks Russell's paradox: the collection of sets not containing themselves cannot be written.</li>
-      <li>Inclusion <code>s ⊆ t</code> is a universally quantified implication; union and intersection apply <code>∨</code> and <code>∧</code> pointwise.</li>
-      <li>Set identities are stated as <strong>inclusions</strong>, since equality needs extensionality beyond this logic.</li>
+      <li>They exchange negation with the quantifiers, extending the <strong>De Morgan laws</strong> of Lecture 1.</li>
+      <li>The first law is <strong>constructive</strong> in both directions.</li>
+      <li>In the second, producing the witness needs <strong>classical reasoning</strong>, as the first De Morgan law did: two applications of <code>Classical.byContradiction</code>.</li>
     </ul>
-  </section>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.4 The two laws in Lean</h2>
+    <div class="cols">
+      <div>
+        <pre class="code">theorem not_exists_iff
+    (α : Type) (P : α → Prop) :
+    ¬(∃ x, P x) ↔ ∀ x, ¬P x := by
+  constructor
+  · intro h a hPa
+    exact h ⟨a, hPa⟩
+  · intro h hex
+    obtain ⟨a, hPa⟩ := hex
+    exact h a hPa</pre>
+      </div>
+      <div>
+        <pre class="code">theorem not_forall_exists
+    (α : Type) (P : α → Prop)
+    (h : ¬∀ x, P x) : ∃ x, ¬P x := by
+  apply Classical.byContradiction
+  intro hne
+  apply h
+  intro a
+  apply Classical.byContradiction
+  intro hnPa
+  exact hne ⟨a, hnPa⟩</pre>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.4 Beyond intro, obtain, exact</h2>
+    <ul>
+      <li><code>intro</code> accepts the <strong>anonymous constructor pattern</strong>, introducing the existential and destructing it in one step.</li>
+      <li>A negated goal is a <strong>function into False</strong>, so a proof term with a pattern-matching <code>fun</code> proves it, with no tactics.</li>
+    </ul>
+    <div class="cols">
+      <div>
+        <p class="lbl">Pattern intro</p>
+        <pre class="code">example (α : Type) (P : α → Prop)
+    (h : ∀ x, ¬P x) : ¬∃ x, P x := by
+  intro ⟨a, hPa⟩
+  exact h a hPa</pre>
+      </div>
+      <div>
+        <p class="lbl">Proof term</p>
+        <pre class="code">example (α : Type) (P : α → Prop)
+    (h : ∀ x, P x) : ¬∃ x, ¬P x :=
+  fun ⟨a, hnPa⟩ => hnPa (h a)</pre>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.5 The order of quantifiers</h2>
+    <ul>
+      <li>The order <strong>determines what a statement asserts</strong>.</li>
+      <li>In ∀ y, ∃ x, R x y, the witness x may <strong>depend on y</strong>; in ∃ x, ∀ y, R x y, a single witness serves every y. The <strong>uniform witness</strong> is the stronger statement.</li>
+      <li>Quantifiers of the <strong>same kind</strong> commute; the exchanges for ∀ and ∃ appeared as examples in §2.2 and §2.3.</li>
+      <li>Quantifiers of <strong>different kinds</strong> do not commute. Only one direction holds: the stronger order implies the weaker one.</li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.5 The swap and the counterexample</h2>
+    <pre class="code">theorem exists_forall_swap (α β : Type) (R : α → β → Prop)
+    (h : ∃ x, ∀ y, R x y) : ∀ y, ∃ x, R x y := by
+  intro b
+  obtain ⟨a, ha⟩ := h
+  exact ⟨a, ha b⟩</pre>
+    <p class="note">The converse fails. Over ℕ take R x y as x ≥ y. Both claims of the counterexample hold in Lean.</p>
+    <div class="cols">
+      <div>
+        <pre class="code">example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
+  intro b
+  exact ⟨b, Nat.le_refl b⟩</pre>
+      </div>
+      <div>
+        <pre class="code">example : ¬∃ x : Nat, ∀ y : Nat, x ≥ y := by
+  intro ⟨a, ha⟩
+  exact absurd (ha (a + 1))
+    (Nat.not_succ_le_self a)</pre>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Sets as predicates</h2>
+    <ul>
+      <li>A set of elements of α is determined by <strong>which elements belong to it</strong>, so the membership predicate determines the set. We take this as the definition.</li>
+      <li>A set given by a property <strong>is</strong> the predicate, and a membership proof is a proof of the property.</li>
+    </ul>
+    <pre class="code">def Set (α : Type) : Type := α → Prop
+
+def Evens : Set Nat := fun n => ∃ k, n = 2 * k
+
+example : (6 : Nat) ∈ Evens := ⟨3, rfl⟩</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Type classes and instances</h2>
+    <ul>
+      <li>Lean resolves notations such as <code>x ∈ s</code> through <strong>type classes</strong>. The class declares the notation; an <code>instance</code> provides its meaning at a particular type.</li>
+      <li><code>Set α</code> is a definition of this lecture, so no registered instance covers it. The instances below supply the meaning: <code>x ∈ s</code> unfolds to <code>s x</code>.</li>
+    </ul>
+    <pre class="code">instance : Membership α (Set α) := ⟨fun s a => s a⟩
+
+instance : HasSubset (Set α) := ⟨fun s t => ∀ x, x ∈ s → x ∈ t⟩
+
+instance : Union (Set α) := ⟨fun s t => fun x => x ∈ s ∨ x ∈ t⟩
+
+instance : Inter (Set α) := ⟨fun s t => fun x => x ∈ s ∧ x ∈ t⟩</pre>
+    <p class="lbl">Each notation unfolds to its definition</p>
+    <pre class="code">example (α : Type) (s t : Set α) (h : s ⊆ t)
+    (x : α) (hx : x ∈ s) : x ∈ t := h x hx
+
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s) : x ∈ s ∪ t := Or.inl hx
+
+example (α : Type) (s t : Set α) (x : α)
+    (hx : x ∈ s ∩ t) : x ∈ t := hx.right</pre>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Russell's paradox</h2>
+    <ul>
+      <li>Naive set theory admits a set for <strong>every property</strong>. Take R to be the set of all sets that are not elements of themselves.</li>
+      <li>Then <strong>R ∈ R holds exactly when R ∉ R</strong>, a contradiction, and the theory collapses.</li>
+      <li>In Lean, s : Set α contains only elements of α, and s itself has type Set α, not α, so <code>s ∈ s</code> is <strong>not well typed</strong>. There is no way to state the property that defines R, and the paradox does not arise.</li>
+    </ul>
+    <p class="cite">B. Russell, letter to Frege, 16 June 1902.</p>
+  </div></section>
+
+  <section class="slide"><div class="inner">
+    <h2>§2.6 Inclusion, union, intersection</h2>
+    <ul>
+      <li>The inclusion s ⊆ t is a <strong>universally quantified implication</strong>, so its proofs begin with <code>intro x hx</code>.</li>
+      <li>Membership in ∩ is a <strong>conjunction</strong> and in ∪ a <strong>disjunction</strong>; the connective rules of Lecture 1 apply. Set identities are stated as <strong>inclusions</strong>, since equality needs extensionality.</li>
+    </ul>
+    <div class="cols">
+      <div>
+        <pre class="code">theorem inter_subset_left
+    (α : Type) (s t : Set α) :
+    s ∩ t ⊆ s := by
+  intro x hx
+  exact hx.left</pre>
+      </div>
+      <div>
+        <pre class="code">theorem union_subset_swap
+    (α : Type) (s t : Set α) :
+    s ∪ t ⊆ t ∪ s := by
+  intro x hx
+  cases hx with
+  | inl h => exact Or.inr h
+  | inr h => exact Or.inl h</pre>
+      </div>
+    </div>
+  </div></section>
 
 </div>
 
@@ -206,14 +437,14 @@
   <span class="label">Lecture 2 · Predicate Logic and Sets</span>
   <span class="nav">
     <button id="bprev" aria-label="Previous slide">‹</button>
-    <span id="counter">1 / 7</span>
+    <span id="counter">1 / 15</span>
     <button id="bnext" aria-label="Next slide">›</button>
   </span>
 </footer>
 
 <script>
   // Minimal Lean syntax highlighter for the code blocks and inline code.
-  const LEAN_KW = new Set(['example','theorem','def','fun','by','match','with','let','have','show','if','then','else','do']);
+  const LEAN_KW = new Set(['example','theorem','def','fun','by','match','with','let','have','show','if','then','else','do','instance']);
   const LEAN_TAC = new Set(['intro','exact','apply','cases','constructor','exists','obtain','specialize','rfl','sorry','refine','rintro']);
   function leanEsc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function leanClass(id) {
