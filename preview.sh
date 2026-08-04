@@ -10,6 +10,8 @@ port="${PORT:-8000}"
 if [ "$1" != "--no-build" ]; then
   lake exe lectures-en --output _out/en
   lake exe lectures-pt --output _out/pt
+  lake exe slides-en --output _out/slides-en
+  lake exe slides-pt --output _out/slides-pt
 fi
 
 staging=$(mktemp -d)
@@ -21,6 +23,8 @@ cp -r site/. "$staging"/
 sed "s/__SITE_VERSION__/$version/" site/index.html > "$staging"/index.html
 cp -r _out/en/html-multi "$staging"/en
 cp -r _out/pt/html-multi "$staging"/pt
+mkdir -p "$staging"/slides
+cp _out/slides-en/*.html _out/slides-pt/*.html "$staging"/slides/
 
 echo "Serving assembled site at http://localhost:$port/"
 echo "  English notes:  http://localhost:$port/en/"

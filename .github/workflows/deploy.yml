@@ -37,6 +37,11 @@ jobs:
       - name: Build Portuguese site
         run: lake exe lectures-pt --output _out/pt
 
+      - name: Build slide decks
+        run: |
+          lake exe slides-en --output _out/slides-en
+          lake exe slides-pt --output _out/slides-pt
+
       - name: Assemble site
         run: |
           mkdir -p _site
@@ -45,6 +50,8 @@ jobs:
           sed -i "s/__SITE_VERSION__/$version/" _site/index.html
           cp -r _out/en/html-multi _site/en
           cp -r _out/pt/html-multi _site/pt
+          mkdir -p _site/slides
+          cp _out/slides-en/*.html _out/slides-pt/*.html _site/slides/
 
       - uses: actions/upload-pages-artifact@v3
         with:
