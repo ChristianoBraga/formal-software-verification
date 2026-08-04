@@ -54,9 +54,15 @@ fun n => n > 3 : Nat → Prop
   * P x holds for some x
 :::
 
-```lean
-#check ∃ n : Nat, n > 3   -- ∃ n, n > 3 : Prop
-#check ∀ n : Nat, n > 3   -- ∀ (n : Nat), n > 3 : Prop
+```lean (name := checkQuant)
+#check ∃ n : Nat, n > 3
+#check ∀ n : Nat, n > 3
+```
+```leanOutput checkQuant
+∃ n, n > 3 : Prop
+```
+```leanOutput checkQuant
+∀ (n : Nat), n > 3 : Prop
 ```
 
 A quantifier takes the predicate, of type `Nat → Prop`, to a proposition, of type `Prop`.
@@ -203,7 +209,7 @@ theorem not_forall_exists (α : Type) (P : α → Prop)
 
 ::::cols
 :::col
-*Pattern intro*
+{lbl}[Pattern intro]
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -213,7 +219,7 @@ example (α : Type) (P : α → Prop)
 ```
 :::
 :::col
-*Proof term*
+{lbl}[Proof term]
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -303,7 +309,7 @@ instance : Inter (Set α) :=
   ⟨fun s t => fun x => x ∈ s ∧ x ∈ t⟩
 ```
 
-*Each notation unfolds to its definition*
+{lbl}[Each notation unfolds to its definition]
 
 ```lean
 example (α : Type) (s t : Set α) (h : s ⊆ t)
@@ -324,7 +330,7 @@ example (α : Type) (s t : Set α) (x : α)
 
 * In Lean, s : Set α contains only elements of α, and s itself has type Set α, not α, so `s ∈ s` is *not well typed*. There is no way to state the property that defines R, and the paradox does not arise.
 
-B. Russell, letter to Frege, 16 June 1902.
+{cite}[B. Russell, letter to Frege, 16 June 1902.]
 
 # §2.6 Inclusion, union, intersection
 

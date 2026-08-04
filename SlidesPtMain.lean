@@ -6,6 +6,7 @@ Run with: lake exe slides-pt --output _out/slides-pt
 import VersoManual
 import Lectures.Meta.SlideDeck
 import Lectures.SlidesPt.Lecture01
+import Lectures.SlidesPt.Lecture02
 
 open Verso Doc
 open Verso.Genre Manual
@@ -24,5 +25,18 @@ def aula1Deck : SlideDeck where
   prevSlideLabel := "Slide anterior"
   nextSlideLabel := "Próximo slide"
 
+def aula2Deck : SlideDeck where
+  fileName := "lecture-2.pt.html"
+  pageTitle := "Aula 2: Lógica de Predicados e Conjuntos · Slides"
+  htmlLang := "pt"
+  kicker := "Aula 2 · Verificação Formal de Software"
+  label := "Aula 2 · Lógica de Predicados e Conjuntos"
+  notesLink := some ("../pt/Aula-2___-L___gica-de-Predicados-e-Conjuntos/", "↩ Notas")
+  prevLink := some ("lecture-1.pt.html", "‹ Aula anterior")
+  startLabel := "⇤ Início"
+  prevSlideLabel := "Slide anterior"
+  nextSlideLabel := "Próximo slide"
+
 def main := slidesMain (decks :=
-  [((%doc Lectures.SlidesPt.Lecture01), aula1Deck)])
+  [((%doc Lectures.SlidesPt.Lecture01), aula1Deck),
+   ((%doc Lectures.SlidesPt.Lecture02), aula2Deck)])
