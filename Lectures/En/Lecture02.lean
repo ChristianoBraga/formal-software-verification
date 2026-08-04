@@ -16,6 +16,10 @@ set_option pp.rawOnError true
 tag := "lecture-2"
 %%%
 
+```lean -show
+namespace Lecture2
+```
+
 This lecture extends propositional logic with quantifiers and introduces sets, following chapters [2](https://djvelleman.github.io/HTPIwL/Chap2.html) and [3](https://djvelleman.github.io/HTPIwL/Chap3.html) of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the proof rules for the universal and existential quantifiers, the laws that relate them under negation, and sets as predicates in Lean.
 
 *This lecture is also available as [presentation slides](../slides/lecture-2.en.html).*
@@ -882,4 +886,8 @@ Exercise 5. Intersection distributes over union.
 theorem exercise5 (α : Type) (s t u : Set α) :
     s ∩ (t ∪ u) ⊆ (s ∩ t) ∪ (s ∩ u) := by
   sorry
+```
+
+```lean -show
+end Lecture2
 ```

@@ -16,6 +16,10 @@ set_option pp.rawOnError true
 tag := "aula-2"
 %%%
 
+```lean -show
+namespace Lecture2
+```
+
 Esta aula estende a lógica proposicional com quantificadores e introduz conjuntos, seguindo os capítulos [2](https://djvelleman.github.io/HTPIwL/Chap2.html) e [3](https://djvelleman.github.io/HTPIwL/Chap3.html) de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta as regras de prova dos quantificadores universal e existencial, as leis que os relacionam sob negação e conjuntos como predicados em Lean.
 
 *Esta aula também está disponível como [slides de apresentação](../slides/lecture-2.pt.html).*
@@ -882,4 +886,8 @@ Exercício 5. A interseção distribui sobre a união.
 theorem exercise5 (α : Type) (s t u : Set α) :
     s ∩ (t ∪ u) ⊆ (s ∩ t) ∪ (s ∩ u) := by
   sorry
+```
+
+```lean -show
+end Lecture2
 ```

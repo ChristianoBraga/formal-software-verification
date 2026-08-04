@@ -17,6 +17,10 @@ set_option pp.rawOnError true
 tag := "lecture-1"
 %%%
 
+```lean -show
+namespace Lecture1
+```
+
 This lecture motivates formal software verification and reviews propositional logic, following chapter 1 of [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). It presents the connectives, the classical equivalences, the natural deduction rules, their encoding in Lean as proof terms, and proofs with tactics.
 
 *This lecture is also available as [presentation slides](../slides/lecture-1.en.html).*
@@ -1307,4 +1311,8 @@ Exercise 10. Of any two propositions, one implies the other. It requires classic
 ```savedLean -keep
 theorem exercise10 (P Q : Prop) : (P → Q) ∨ (Q → P) := by
   sorry
+```
+
+```lean -show
+end Lecture1
 ```

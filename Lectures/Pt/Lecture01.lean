@@ -17,6 +17,10 @@ set_option pp.rawOnError true
 tag := "aula-1"
 %%%
 
+```lean -show
+namespace Lecture1
+```
+
 Esta aula motiva a verificação formal de software e revisa a lógica proposicional, seguindo o capítulo 1 de [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL). Ela apresenta os conectivos, as equivalências clássicas, as regras de dedução natural, a sua codificação em Lean como termos de prova e as provas com táticas.
 
 *Esta aula também está disponível como [slides de apresentação](../slides/lecture-1.pt.html).*
@@ -1307,4 +1311,8 @@ Exercício 10. De duas proposições quaisquer, uma implica a outra. Requer raci
 ```savedLean -keep
 theorem exercise10 (P Q : Prop) : (P → Q) ∨ (Q → P) := by
   sorry
+```
+
+```lean -show
+end Lecture1
 ```
