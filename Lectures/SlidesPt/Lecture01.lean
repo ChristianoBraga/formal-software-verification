@@ -636,3 +636,19 @@ example (P : Prop) : ¬¬P → P := by
 * `intro hnP` e então `exact h hnP` derivam ⊥ por ¬E
 :::
 ::::
+
+# Resumo
+
+* Uma *proposição* é classificada por `Prop`; os conectivos ¬, ∧, ∨, →, ↔ constroem proposições compostas.
+
+* Tabelas-verdade decidem questões proposicionais, mas crescem exponencialmente; a *dedução natural* aplica regras um passo por vez e generaliza.
+
+* Cada conectivo tem regras de *introdução* e *eliminação*; algumas regras descartam suposições.
+
+* Uma prova é um *termo* cujo tipo é a proposição (Curry-Howard): `fun h => e` para →I, aplicação para →E, `⟨_, _⟩` para ∧I, `Or.inl`/`Or.inr` para ∨I.
+
+* *Táticas* transformam o estado de prova: `intro`, `exact`, `apply`, `cases`, `constructor`, `have`; `by` as elabora para o mesmo termo de prova.
+
+* O *raciocínio clássico* acrescenta `Classical.byContradiction` e `Classical.em`, necessários para ¬¬P → P e uma lei de De Morgan.
+
+Exercícios: veja as [notas de aula](../pt/Aula-1___-Motiva______o-e-L___gica-Proposicional/).

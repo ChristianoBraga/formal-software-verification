@@ -358,3 +358,21 @@ theorem union_subset_swap (α : Type) (s t : Set α) :
 ```
 :::
 ::::
+
+# Summary
+
+* A *predicate* is a function `α → Prop`; quantifiers bind its variable and yield a proposition.
+
+* ∀: introduce with `intro`; eliminate by instantiation, `h a` or `specialize`.
+
+* ∃: introduce with a *witness*, `⟨3, rfl⟩` or `exists`; eliminate with `obtain ⟨a, ha⟩ := h`.
+
+* The negation laws exchange ¬ with the quantifiers; ¬∃ is constructive in both directions, ¬∀ needs `Classical.byContradiction`.
+
+* Quantifier order matters: the uniform witness ∃ x, ∀ y is stronger, and only (∃ x, ∀ y) → (∀ y, ∃ x) holds.
+
+* A set is its membership predicate, `Set α := α → Prop`, with `Membership`, `HasSubset`, `Union`, `Inter` instances giving the notation.
+
+* Inclusion proofs start with `intro x hx`; membership in ∩ is a conjunction and in ∪ a disjunction, pointwise.
+
+Exercises: see the [lecture notes](../en/Lecture-2___-Predicate-Logic-and-Sets/).

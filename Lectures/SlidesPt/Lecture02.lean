@@ -358,3 +358,21 @@ theorem union_subset_swap (α : Type) (s t : Set α) :
 ```
 :::
 ::::
+
+# Resumo
+
+* Um *predicado* é uma função `α → Prop`; quantificadores ligam a sua variável e produzem uma proposição.
+
+* ∀: introduza com `intro`; elimine por instanciação, `h a` ou `specialize`.
+
+* ∃: introduza com uma *testemunha*, `⟨3, rfl⟩` ou `exists`; elimine com `obtain ⟨a, ha⟩ := h`.
+
+* As leis de negação trocam ¬ com os quantificadores; ¬∃ é construtiva nas duas direções, ¬∀ exige `Classical.byContradiction`.
+
+* A ordem dos quantificadores importa: a testemunha uniforme ∃ x, ∀ y é mais forte, e só vale (∃ x, ∀ y) → (∀ y, ∃ x).
+
+* Um conjunto é o seu predicado de pertinência, `Set α := α → Prop`, com instâncias `Membership`, `HasSubset`, `Union`, `Inter` dando a notação.
+
+* Provas de inclusão começam com `intro x hx`; a pertinência a ∩ é uma conjunção e a ∪ uma disjunção, ponto a ponto.
+
+Exercícios: veja as [notas de aula](../pt/Aula-2___-L___gica-de-Predicados-e-Conjuntos/).

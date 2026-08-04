@@ -636,3 +636,19 @@ example (P : Prop) : ¬¬P → P := by
 * `intro hnP` then `exact h hnP` derive ⊥ by ¬E
 :::
 ::::
+
+# Summary
+
+* A *proposition* is classified by `Prop`; the connectives ¬, ∧, ∨, →, ↔ build compound propositions.
+
+* Truth tables decide propositional questions but grow exponentially; *natural deduction* applies rules one step at a time and generalizes.
+
+* Each connective has *introduction* and *elimination* rules; some rules discharge assumptions.
+
+* A proof is a *term* whose type is the proposition (Curry-Howard): `fun h => e` for →I, application for →E, `⟨_, _⟩` for ∧I, `Or.inl`/`Or.inr` for ∨I.
+
+* *Tactics* transform the proof state: `intro`, `exact`, `apply`, `cases`, `constructor`, `have`; `by` elaborates them to the same proof term.
+
+* *Classical reasoning* adds `Classical.byContradiction` and `Classical.em`, needed for ¬¬P → P and one De Morgan law.
+
+Exercises: see the [lecture notes](../en/Lecture-1___-Motivation-and-Propositional-Logic/).
