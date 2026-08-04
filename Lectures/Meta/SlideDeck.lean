@@ -371,6 +371,28 @@ def slideDeckCss : String := r##"
   .hl.lean .case-label:has(input[type="checkbox"])::before {
     background-color: var(--accent2);
   }
+  /* Interactive highlights: Verso hardcodes light grays that erase
+     the light token colors in dark mode. var(--border) is a subtle
+     tint in both palettes (#e2e8f0 light, #334155 dark), and every
+     token color stays readable against it. */
+  @media (hover: hover) {
+    .hl.lean .tactic:has(> .tactic-toggle:not(:checked)) > label:hover:not(:has(.tactic > label:hover)) {
+      background-color: var(--border);
+    }
+    .hl.lean .token.binding-hl, .hl.lean .literal:hover, .hl.lean .token.typed:hover {
+      background-color: var(--border);
+      border-radius: 2px;
+    }
+    .hl.lean .has-info.error:hover, .hl.lean .has-info.warning:hover {
+      background-color: transparent;
+    }
+  }
+  /* The expansion pill after a tactic label. */
+  .hl.lean .tactic > label::after { border-color: var(--muted); }
+  .hl.lean .tactic > label:has(+ .tactic-toggle:checked)::after {
+    border: 1px solid var(--accent2);
+    background-color: var(--accent2);
+  }
   /* An expanded state inside a column scrolls in its code block
      instead of widening the column. */
   .cols > div > code.hl.lean.block { max-width: 100%; }
