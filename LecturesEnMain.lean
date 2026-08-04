@@ -27,6 +27,7 @@ def config : RenderConfig where
   extraHead := codeHighlightHead
   logo := some "logo.svg"
   logoLink := some "../"
-  extraFilesHtml := [("site/logo.svg", "logo.svg")]
+  extraFilesHtml := [("site/logo.svg", "logo.svg"),
+    ("site/verifier-architecture.svg", "verifier-architecture.svg")]
 
 def main := manualMain (%doc Lectures.En) (extraSteps := [buildExercisesFrom mainFileName]) (config := config)

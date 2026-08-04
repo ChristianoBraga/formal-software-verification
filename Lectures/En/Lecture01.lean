@@ -1,6 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
+import Lectures.Meta.Figure
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -35,6 +36,12 @@ Language models now write a growing share of code. A model produces plausible te
 Formal verification, in particular when automated, changes how we can trust such code.{margin}[L. de Moura, [*The Lean Programming Language and Theorem Prover*](https://leodemoura.github.io/static/etaps2026/), ETAPS 2026.] When generated code arrives with a machine-checked proof that it satisfies its specification, the proof assistant checks the proof independently of how the code came to be, so hallucinated or simply wrong code cannot pass. The burden of correctness moves from reading the code to writing the right specification. The techniques of this course apply unchanged to generated code, and the automation of the final lectures, with the `mvcgen` tactic, points toward verification at the pace of code generation.
 
 In this course we use [Lean](https://lean-lang.org). Lean is at once a programming language and a proof assistant, so we can write a program and prove its properties in the same system. Lectures 1 and 2 review classical logic while introducing Lean's proof language, following HTPIwL. Lectures 3 to 8 follow [LoVe](https://github.com/lean-forward/logical_verification_2026) through interactive proving, functional programming, and inductive predicates. The final block treats the semantics of an imperative language, Hoare logic, and practical verification with the `mvcgen` tactic.
+
+{figref "fig-verifier-architecture"}[Figure 1.1] shows the architecture of the verifier that the course builds. A program and its specification form a Hoare triple. The big-step operational semantics gives the triple its meaning. The `mvcgen` tactic generates the verification conditions, which are purely logical goals. Tactic proofs discharge them, and the Lean kernel checks every proof.
+
+{figureAnchor "fig-verifier-architecture"}[![Architecture of a program verifier in Lean: a program and a specification form a Hoare triple, whose meaning comes from the big-step semantics; the mvcgen tactic generates verification conditions, tactic proofs discharge them, and the Lean kernel checks every proof](verifier-architecture.svg)]
+
+*Figure 1.1. Architecture of a program verifier in Lean.*
 
 # Propositions
 

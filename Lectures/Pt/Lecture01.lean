@@ -1,6 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
+import Lectures.Meta.Figure
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -28,13 +29,19 @@ Software controla aeronaves, dispositivos médicos, sistemas financeiros e redes
 
 A verificação formal segue o caminho complementar. Enunciamos uma propriedade de um programa como uma proposição matemática e provamos que toda execução a satisfaz. A prova cobre todas as entradas de uma vez, o que nenhum conjunto finito de testes alcança.
 
-Provas sobre programas reais crescem muito, então delegamos a sua checagem a uma máquina. Um *assistente de prova* é um programa que checa cada passo de uma prova com respeito às regras de uma lógica formal e que ajuda o usuário a construir a prova interativamente. Lean, Rocq (antigo Coq), Isabelle/HOL e Agda são assistentes de prova em uso corrente. Resultados marcantes incluem a verificação do micronúcleo de sistema operacional seL4{margin}[G. Klein et al., *seL4: Formal Verification of an OS Kernel*, Proceedings of SOSP 2009, pp. 207–220.] e do compilador otimizante de C CompCert.{margin}[X. Leroy, *Formal Verification of a Realistic Compiler*, Communications of the ACM 52(7), 2009, pp. 107–115.]
+Provas sobre programas reais crescem muito, então delegamos a sua verificação a uma máquina. Um *assistente de prova* é um programa que verifica cada passo de uma prova com respeito às regras de uma lógica formal e que ajuda o usuário a construir a prova interativamente. Lean, Rocq (antigo Coq), Isabelle/HOL e Agda são assistentes de prova em uso corrente. Resultados marcantes incluem a verificação do micronúcleo de sistema operacional seL4{margin}[G. Klein et al., *seL4: Formal Verification of an OS Kernel*, Proceedings of SOSP 2009, pp. 207–220.] e do compilador otimizante de C CompCert.{margin}[X. Leroy, *Formal Verification of a Realistic Compiler*, Communications of the ACM 52(7), 2009, pp. 107–115.]
 
 Modelos de linguagem escrevem hoje uma parcela crescente do código. Um modelo produz texto plausível, e plausível não é o mesmo que correto. Código gerado pode invocar funções que não existem, tratar apenas os casos que o seu prompt sugere ou desviar do requisito enunciado de maneiras que sobrevivem à revisão de código. A literatura chama esse modo de falha de alucinação.
 
-A verificação formal, em particular quando automatizada, muda o modo como podemos confiar nesse código.{margin}[L. de Moura, [*The Lean Programming Language and Theorem Prover*](https://leodemoura.github.io/static/etaps2026/), ETAPS 2026.] Quando o código gerado chega com uma prova, checada por máquina, de que satisfaz a sua especificação, o assistente de prova checa a prova independentemente de como o código surgiu, então código alucinado ou simplesmente errado não passa. O ônus da correção move-se de ler o código para escrever a especificação certa. As técnicas desta disciplina aplicam-se sem mudança a código gerado, e a automação das aulas finais, com a tática `mvcgen`, aponta para verificação no ritmo da geração de código.
+A verificação formal, em particular quando automatizada, muda a maneira como podemos confiar nesse código.{margin}[L. de Moura, [*The Lean Programming Language and Theorem Prover*](https://leodemoura.github.io/static/etaps2026/), ETAPS 2026.] Quando o código gerado chega com uma prova, verificada por máquina, de que satisfaz a sua especificação, o assistente de prova verifica a prova independentemente de como o código surgiu, então código alucinado ou simplesmente errado não passa. O ônus da correção move-se de ler o código para escrever a especificação certa. As técnicas desta disciplina aplicam-se sem mudança a código gerado, e a automação das aulas finais, com a tática `mvcgen`, aponta para verificação no ritmo da geração de código.
 
 Nesta disciplina usamos [Lean](https://lean-lang.org). Lean é ao mesmo tempo uma linguagem de programação e um assistente de prova, então podemos escrever um programa e provar as suas propriedades no mesmo sistema. As aulas 1 e 2 revisam a lógica clássica e introduzem a linguagem de provas de Lean, seguindo HTPIwL. As aulas 3 a 8 seguem [LoVe](https://github.com/lean-forward/logical_verification_2026) por prova interativa, programação funcional e predicados indutivos. O bloco final trata a semântica de uma linguagem imperativa, a lógica de Hoare e a verificação prática com a tática `mvcgen`.
+
+A {figref "fig-verifier-architecture"}[Figura 1.1] mostra a arquitetura do verificador que a disciplina constrói. Um programa e a sua especificação formam uma tripla de Hoare. A semântica operacional big-step dá o significado da tripla. A tática `mvcgen` gera as condições de verificação, que são metas (_goals_) puramente lógicas. Provas por táticas as fecham, e o kernel de Lean verifica cada prova.
+
+{figureAnchor "fig-verifier-architecture"}[![Arquitetura de um verificador de programas em Lean: um programa e uma especificação formam uma tripla de Hoare, cujo significado vem da semântica big-step; a tática mvcgen gera as condições de verificação, provas por táticas as fecham e o kernel de Lean verifica cada prova](verifier-architecture.svg)]
+
+*Figura 1.1. Arquitetura de um verificador de programas em Lean.*
 
 # Proposições
 
@@ -699,7 +706,7 @@ Exemplo 10. O currying transforma uma hipótese conjuntiva em implicações anin
 
 Em Lean, enunciamos uma proposição e a provamos em uma única declaração. A palavra-chave `example` introduz um enunciado anônimo, e `theorem` introduz um enunciado com nome. As hipóteses aparecem antes dos dois-pontos como suposições nomeadas, e a proposição a provar, o *objetivo*, aparece depois.
 
-Lean codifica a dedução natural diretamente. Uma prova de uma proposição é um *termo* cujo tipo é aquela proposição, uma suposição aberta é uma variável daquele tipo, e cada regra de dedução torna-se um modo de construir ou desmontar tal termo. A prova mais simples usa uma suposição diretamente, a regra de suposição da dedução natural.
+Lean codifica a dedução natural diretamente. Uma prova de uma proposição é um *termo* cujo tipo é aquela proposição, uma suposição aberta é uma variável daquele tipo, e cada regra de dedução torna-se um modo de construir ou desmontar termos. A prova mais simples usa uma suposição diretamente, a regra de suposição da dedução natural.
 
 ```lean
 example (P : Prop) (h : P) : P := h
@@ -1088,7 +1095,7 @@ example (P Q R : Prop) : (P ∧ Q → R) → (P → (Q → R)) := by
 
 # Exemplos Resolvidos
 
-Cada exemplo abaixo aparece de três formas, como uma derivação em dedução natural, como um termo de prova e como uma prova por táticas. As três apresentam a mesma prova, e Lean checa os dois scripts de prova na construção das notas. Estas proposições são disjuntas dos exemplos das seções anteriores e dos exercícios.
+Cada exemplo abaixo aparece de três formas, como uma derivação em dedução natural, como um termo de prova e como uma prova por táticas. As três apresentam a mesma prova, e Lean verifica os dois scripts de prova na construção das notas. Estas proposições são disjuntas dos exemplos das seções anteriores e dos exercícios.
 
 ## Uma Conjunção Implica uma das suas Partes
 

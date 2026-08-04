@@ -86,8 +86,25 @@
   }
   @media (prefers-color-scheme: dark) {
     .links a { color: #0f172a; }
+    .arch .tactic-title, .arch .tactic-sub { fill: #0f172a; }
   }
   .links a:hover { filter: brightness(1.1); }
+  figure.arch { margin: 2.25rem 0 0; }
+  .arch svg { width: 100%; height: auto; display: block; }
+  .arch figcaption {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.6rem;
+    text-align: center;
+  }
+  .arch .box { fill: var(--bg); stroke: var(--border); }
+  .arch .title { fill: var(--text); font-size: 13px; font-weight: 600; text-anchor: middle; }
+  .arch .sub { fill: var(--muted); font-size: 11px; text-anchor: middle; }
+  .arch .edge { stroke: var(--muted); stroke-width: 1.4; fill: none; marker-end: url(#arr); }
+  .arch .elabel { fill: var(--muted); font-size: 10px; font-style: italic; text-anchor: middle; }
+  .arch .arrhead { fill: var(--muted); }
+  .arch .tactic-title { fill: #ffffff; font-size: 14px; font-weight: 700; text-anchor: middle; }
+  .arch .tactic-sub { fill: #ffffff; opacity: 0.85; font-size: 11px; text-anchor: middle; }
   footer {
     margin-top: 2rem;
     font-size: 0.85rem;
@@ -111,8 +128,75 @@
   propriedades de programas imperativos em <a href="https://lean-lang.org">Lean</a>. A
   disciplina vai da lógica clássica e das provas estruturadas, passando por programação
   funcional, predicados indutivos e semântica operacional big-step, até a lógica de Hoare
-  e a verificação automatizada com a tática <code>mvcgen</code>. O compilador checa todo o
+  e a verificação automatizada com a tática <code>mvcgen</code>. O compilador verifica todo o
   código Lean das notas na construção do site.</p>
+  <figure class="arch">
+    <svg viewBox="0 0 640 460" role="img"
+         aria-label="Architecture of a program verifier in Lean: a program and a specification form a Hoare triple, whose meaning comes from the big-step semantics; the mvcgen tactic generates verification conditions, discharged by tactic proofs and checked by the Lean kernel.">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path class="arrhead" d="M 0 0 L 10 5 L 0 10 z"/>
+        </marker>
+        <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" style="stop-color: var(--accent)"/>
+          <stop offset="100%" style="stop-color: var(--accent2)"/>
+        </linearGradient>
+      </defs>
+
+      <rect class="box" x="40" y="8" width="250" height="56" rx="10"/>
+      <text class="title" x="165" y="31">Programa · Program</text>
+      <text class="sub" x="165" y="49">código imperativo · imperative code</text>
+
+      <rect class="box" x="350" y="8" width="250" height="56" rx="10"/>
+      <text class="title" x="475" y="31">Especificação · Specification</text>
+      <text class="sub" x="475" y="49">pré P, pós Q · pre P, post Q</text>
+
+      <line class="edge" x1="165" y1="64" x2="205" y2="106"/>
+      <line class="edge" x1="475" y1="64" x2="295" y2="106"/>
+
+      <rect class="box" x="100" y="112" width="280" height="56" rx="10"/>
+      <text class="title" x="240" y="135">Tripla de Hoare · Hoare triple</text>
+      <text class="sub" x="240" y="153">⦃P⦄ C ⦃Q⦄</text>
+
+      <rect class="box" x="440" y="112" width="180" height="56" rx="10"/>
+      <text class="title" x="530" y="127">Semântica big-step</text>
+      <text class="sub" x="530" y="143">big-step semantics</text>
+      <text class="sub" x="530" y="159">(C, s) ⟹ s′</text>
+
+      <line class="edge" x1="440" y1="140" x2="384" y2="140"/>
+      <text class="elabel" x="412" y="128">significado</text>
+      <text class="elabel" x="412" y="156">meaning</text>
+
+      <line class="edge" x1="240" y1="168" x2="240" y2="208"/>
+
+      <rect x="145" y="212" width="190" height="48" rx="10" fill="url(#grad)"/>
+      <text class="tactic-title" x="240" y="233">mvcgen</text>
+      <text class="tactic-sub" x="240" y="250">gera as VCs · generates VCs</text>
+
+      <line class="edge" x1="240" y1="260" x2="240" y2="300"/>
+
+      <rect class="box" x="90" y="304" width="300" height="56" rx="10"/>
+      <text class="title" x="240" y="327">Condições de verificação · VCs</text>
+      <text class="sub" x="240" y="345">metas puramente lógicas · purely logical goals</text>
+
+      <line class="edge" x1="240" y1="360" x2="176" y2="392"/>
+
+      <rect class="box" x="40" y="396" width="250" height="56" rx="10"/>
+      <text class="title" x="165" y="419">Provas por táticas · Tactic proofs</text>
+      <text class="sub" x="165" y="437">grind, simp, omega, …</text>
+
+      <line class="edge" x1="290" y1="424" x2="344" y2="424"/>
+
+      <rect class="box" x="350" y="396" width="250" height="56" rx="10"/>
+      <text class="title" x="475" y="419">Kernel de Lean · Lean kernel ✓</text>
+      <text class="sub" x="475" y="437">verifica cada prova · checks every proof</text>
+    </svg>
+    <figcaption>
+      Arquitetura de um verificador de programas em Lean ·
+      Architecture of a program verifier in Lean
+    </figcaption>
+  </figure>
   <nav class="links">
     <a href="en/">English</a>
     <a href="pt/">Português</a>
@@ -120,6 +204,7 @@
   <footer>
     Mestrado em Sistemas e Computação · Instituto Militar de Engenharia (IME) ·
     Christiano Braga
+    <br>v. __SITE_VERSION__
   </footer>
 </main>
 </body>

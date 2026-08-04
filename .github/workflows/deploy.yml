@@ -41,6 +41,8 @@ jobs:
         run: |
           mkdir -p _site
           cp -r site/. _site/
+          version="$(git log -1 --format='%cs+%h')"
+          sed -i "s/__SITE_VERSION__/$version/" _site/index.html
           cp -r _out/en/html-multi _site/en
           cp -r _out/pt/html-multi _site/pt
 

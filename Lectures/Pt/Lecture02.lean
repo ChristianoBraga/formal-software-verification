@@ -362,9 +362,111 @@ theorem not_forall_exists (α : Type) (P : α → Prop)
   exact hne ⟨a, hnPa⟩
 ```
 
+## Exemplos
+
+Os exemplos abaixo aplicam as duas leis de negação e as combinam com os conectivos da Aula 1. Os Exemplos 6 e 10 raciocinam classicamente.
+
+Exemplo 1. Uma propriedade que falha em toda parte não admite testemunha. Esta é a direção construtiva da primeira lei. O padrão de construtor anônimo em `intro` introduz o existencial e o destrói num só passo, então nenhum `obtain` é necessário.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ∀ x, ¬P x) : ¬∃ x, P x := by
+  intro ⟨a, hPa⟩
+  exact h a hPa
+```
+
+Exemplo 2. Reciprocamente, se não existe testemunha, a propriedade falha em cada elemento.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ¬∃ x, P x) : ∀ x, ¬P x := by
+  intro a hPa
+  exact h ⟨a, hPa⟩
+```
+
+Exemplo 3. Uma testemunha refuta a negação do existencial.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (a : α) (hPa : P a) : ¬¬∃ x, P x := by
+  intro hn
+  exact hn ⟨a, hPa⟩
+```
+
+Exemplo 4. Uma propriedade que vale em toda parte exclui qualquer contraexemplo. A prova é um termo de prova, como na Aula 1. Como a meta negada é uma função em `False`, um `fun` que casa o padrão da testemunha do contraexemplo prova a meta.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ∀ x, P x) : ¬∃ x, ¬P x :=
+  fun ⟨a, hnPa⟩ => hnPa (h a)
+```
+
+Exemplo 5. Um contraexemplo refuta o enunciado universal. Esta é a direção construtiva da segunda lei.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ∃ x, ¬P x) : ¬∀ x, P x := by
+  intro hall
+  obtain ⟨a, hnPa⟩ := h
+  exact hnPa (hall a)
+```
+
+Exemplo 6. A recíproca do Exemplo 4 exige raciocínio clássico. Dada a ausência de contraexemplos, `Classical.byContradiction` prova a propriedade em cada elemento.
+
+```lean
+example (α : Type) (P : α → Prop)
+    (h : ¬∃ x, ¬P x) : ∀ x, P x := by
+  intro a
+  apply Classical.byContradiction
+  intro hnPa
+  exact h ⟨a, hnPa⟩
+```
+
+Exemplo 7. Uma implicação ponto a ponto transporta a ausência de testemunhas da conclusão para a premissa. O padrão em `intro` de novo destrói o existencial na introdução.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ∀ x, P x → Q x) (hn : ¬∃ x, Q x) : ¬∃ x, P x := by
+  intro ⟨a, hPa⟩
+  exact hn ⟨a, h a hPa⟩
+```
+
+Exemplo 8. Quando nenhum elemento satisfaz as duas propriedades, cada elemento que satisfaz a primeira não satisfaz a segunda.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ¬∃ x, P x ∧ Q x) : ∀ x, P x → ¬Q x := by
+  intro a hPa hQa
+  exact h ⟨a, hPa, hQa⟩
+```
+
+Exemplo 9. A negação de um existencial de uma disjunção dá, em cada elemento, a conjunção das negações, o que combina a primeira lei com uma lei de De Morgan.
+
+```lean
+example (α : Type) (P Q : α → Prop)
+    (h : ¬∃ x, P x ∨ Q x) : ∀ x, ¬P x ∧ ¬Q x := by
+  intro a
+  constructor
+  · intro hPa
+    exact h ⟨a, Or.inl hPa⟩
+  · intro hQa
+    exact h ⟨a, Or.inr hQa⟩
+```
+
+Exemplo 10. O teorema `not_forall_exists` desta seção extrai um contraexemplo, e a implicação ponto a ponto o converte em testemunha.
+
+```lean
+example (α : Type) (P Q : α → Prop) (h : ¬∀ x, P x)
+    (hq : ∀ x, ¬P x → Q x) : ∃ x, Q x := by
+  obtain ⟨a, hnPa⟩ := not_forall_exists α P h
+  exact ⟨a, hq a hnPa⟩
+```
+
 # A Ordem dos Quantificadores
 
-Quantificadores consecutivos do mesmo tipo comutam, e quantificadores de tipos distintos não comutam. Uma direção da troca vale. Uma testemunha que satisfaz R com todo y em particular satisfaz R com cada y dado.
+A ordem dos quantificadores determina o que um enunciado afirma. Em ∀ y, ∃ x, R x y, a testemunha x pode depender de y, e valores distintos de y podem exigir testemunhas distintas. Em ∃ x, ∀ y, R x y, uma única testemunha x satisfaz R com todo y de uma vez. A segunda forma afirma uma testemunha uniforme, então é o enunciado mais forte.
+
+Quantificadores do mesmo tipo comutam, e os exemplos das duas seções anteriores provaram as trocas para ∀ e para ∃. Quantificadores de tipos distintos não comutam, e apenas uma direção da troca vale. A ordem mais forte implica a mais fraca. Uma testemunha que satisfaz R com todo y em particular satisfaz R com cada y dado.
 
 ```lean
 theorem exists_forall_swap (α β : Type) (R : α → β → Prop)
@@ -376,6 +478,105 @@ theorem exists_forall_swap (α β : Type) (R : α → β → Prop)
 
 A recíproca falha. Sobre os números naturais, tome R x y como x ≥ y. Então ∀ y, ∃ x, R x y vale, pois cada y satisfaz y ≥ y, e ∃ x, ∀ y, R x y afirma que algum número natural é maior ou igual a todo número natural, o que é falso.
 
+## Exemplos
+
+Os exemplos abaixo movem quantificadores uns sobre os outros. Os dois últimos provam em Lean as duas afirmações do contraexemplo acima.
+
+Exemplo 1. Uma testemunha que se relaciona com todo elemento em particular se relaciona consigo mesma.
+
+```lean
+example (α : Type) (R : α → α → Prop)
+    (h : ∃ x, ∀ y, R x y) : ∃ x, R x x := by
+  obtain ⟨a, ha⟩ := h
+  exact ⟨a, ha a⟩
+```
+
+Exemplo 2. Um enunciado existencial-universal dá o duplamente existencial quando o tipo interno tem um elemento.
+
+```lean
+example (α β : Type) (R : α → β → Prop) (b : β)
+    (h : ∃ x, ∀ y, R x y) : ∃ x, ∃ y, R x y := by
+  obtain ⟨a, ha⟩ := h
+  exact ⟨a, b, ha b⟩
+```
+
+Exemplo 3. Um enunciado duplamente universal dá a ordem mista quando o tipo das testemunhas tem um elemento.
+
+```lean
+example (α β : Type) (R : α → β → Prop) (a : α)
+    (h : ∀ x, ∀ y, R x y) : ∀ y, ∃ x, R x y := by
+  intro b
+  exact ⟨a, h a b⟩
+```
+
+Exemplo 4. O teorema `exists_forall_swap` é uma função, e aplicá-lo a uma hipótese e a um elemento dá a conclusão instanciada. A prova é a própria aplicação.
+
+```lean
+example (α β : Type) (R : α → β → Prop)
+    (h : ∃ x, ∀ y, R x y) (b : β) : ∃ x, R x b :=
+  exists_forall_swap α β R h b
+```
+
+Exemplo 5. Uma conjunção sob os dois quantificadores projeta-se na sua parte esquerda, preservando a testemunha.
+
+```lean
+example (α β : Type) (R S : α → β → Prop)
+    (h : ∃ x, ∀ y, R x y ∧ S x y) : ∃ x, ∀ y, R x y := by
+  obtain ⟨a, ha⟩ := h
+  exists a
+  intro b
+  exact (ha b).left
+```
+
+Exemplo 6. Duas hipóteses existencial-universais combinam-se numa conjunção duplamente existencial, e cada testemunha instancia o universal da outra.
+
+```lean
+example (α β : Type) (R S : α → β → Prop)
+    (h1 : ∃ x, ∀ y, R x y) (h2 : ∃ y, ∀ x, S x y) :
+    ∃ x, ∃ y, R x y ∧ S x y := by
+  obtain ⟨a, ha⟩ := h1
+  obtain ⟨b, hb⟩ := h2
+  exact ⟨a, b, ha b, hb a⟩
+```
+
+Exemplo 7. Com três quantificadores, a testemunha existencial serve para todo z, então o universal externo move-se para a frente.
+
+```lean
+example (α β γ : Type) (T : α → β → γ → Prop)
+    (h : ∃ x, ∀ y, ∀ z, T x y z) :
+    ∀ z, ∃ x, ∀ y, T x y z := by
+  intro c
+  obtain ⟨a, ha⟩ := h
+  exists a
+  intro b
+  exact ha b c
+```
+
+Exemplo 8. A contraposição de `exists_forall_swap` transporta a negação na direção oposta.
+
+```lean
+example (α β : Type) (R : α → β → Prop)
+    (h : ¬∀ y, ∃ x, R x y) : ¬∃ x, ∀ y, R x y := by
+  intro hex
+  exact h (exists_forall_swap α β R hex)
+```
+
+Exemplo 9. A primeira afirmação do contraexemplo acima. Cada número natural é maior ou igual a si mesmo.
+
+```lean
+example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
+  intro b
+  exact ⟨b, Nat.le_refl b⟩
+```
+
+Exemplo 10. A segunda afirmação. Nenhum número natural é maior ou igual a todo número natural, pois a + 1 excede a. O lema `Nat.not_succ_le_self` refuta a ≥ a + 1.
+
+```lean
+example : ¬∃ x : Nat, ∀ y : Nat, x ≥ y := by
+  intro ⟨a, ha⟩
+  exact absurd (ha (a + 1)) (Nat.not_succ_le_self a)
+```
+
 # Conjuntos
 
 O [capítulo 3](https://djvelleman.github.io/HTPIwL/Chap3.html) de HTPIwL desenvolve provas sobre conjuntos. Um conjunto de elementos de um tipo α é determinado por quais elementos pertencem a ele, então o predicado de pertinência determina o conjunto. Em Lean, tomamos essa propriedade como a definição.
@@ -384,16 +585,16 @@ O [capítulo 3](https://djvelleman.github.io/HTPIwL/Chap3.html) de HTPIwL desenv
 def Set (α : Type) : Type := α → Prop
 ```
 
-Todo elemento de um conjunto vem do tipo fixo α. Nesse cenário tipado, a coleção de todos os conjuntos que não contêm a si mesmos não pode ser escrita, então o paradoxo de Russell não surge.{margin}[B. Russell, carta a Frege, 16 de junho de 1902. Em J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.]
+Todo elemento de um conjunto vem do tipo fixo α, e essa disciplina de tipos bloqueia o *paradoxo de Russell*.{margin}[B. Russell, carta a Frege, 16 de junho de 1902. Em J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.] A teoria ingênua de conjuntos admite um conjunto para cada propriedade. Tome R como o conjunto de todos os conjuntos que não são elementos de si mesmos. Então R ∈ R vale exatamente quando R ∉ R, o que é uma contradição, e a teoria colapsa. Em Lean, um conjunto s : Set α contém apenas elementos de α, e o próprio s tem tipo Set α, não α, então a expressão s ∈ s não é bem tipada. Não há como enunciar a propriedade que define R nem formar a coleção, então o paradoxo não ocorre.
 
-A instância abaixo registra a notação x ∈ s, que se desdobra por definição na aplicação s x. Nesta instância e nas seguintes, Lean liga a variável de tipo livre α automaticamente.
+Lean resolve notações como x ∈ s por meio de *classes de tipos*. A classe `Membership` declara a notação, e uma declaração `instance` dá o seu significado num tipo particular. Quando Lean elabora x ∈ s, ele procura entre as instâncias registradas uma que cubra o tipo de s. `Set α` é uma definição desta aula, então nenhuma instância a cobre ainda, e a notação falharia. A instância abaixo fornece o significado que falta, e x ∈ s desdobra-se por definição na aplicação s x. Nesta instância e nas seguintes, Lean liga a variável de tipo livre α automaticamente.
 
 ```savedLean
 instance : Membership α (Set α) :=
   ⟨fun s a => s a⟩
 ```
 
-Um conjunto dado por uma propriedade é o próprio predicado, e uma prova de pertinência é uma prova da propriedade. A notação matemática escreve tal conjunto por compreensão, como o conjunto de todos os n tais que `∃ k, n = 2 * k`. O núcleo de Lean não tem notação por compreensão, então escrevemos o predicado diretamente.
+Um conjunto dado por uma propriedade é o próprio predicado, e uma prova de pertinência é uma prova da propriedade. A notação matemática escreve esse conjunto por compreensão, como o conjunto de todos os n que satisfazem `∃ k, n = 2 * k`. O núcleo de Lean não tem notação por compreensão, então escrevemos o predicado diretamente.
 
 ```lean
 def Evens : Set Nat := fun n => ∃ k, n = 2 * k
@@ -438,7 +639,102 @@ theorem union_subset_swap (α : Type) (s t : Set α) :
   | inr h => exact Or.inl h
 ```
 
-Dois conjuntos com os mesmos elementos são iguais. Provar tal igualdade requer princípios de extensionalidade além da lógica apresentada até aqui, então enunciamos identidades de conjuntos como inclusões.
+Dois conjuntos com os mesmos elementos são iguais. Provar essa igualdade requer princípios de extensionalidade além da lógica apresentada até aqui, então enunciamos identidades de conjuntos como inclusões.
+
+## Exemplos
+
+Os exemplos abaixo provam pertinências e inclusões diretamente a partir das definições. Cada prova de inclusão começa introduzindo um elemento e a sua hipótese de pertinência, e as notações desdobram-se nos conectivos e quantificadores das seções anteriores.
+
+Exemplo 1. Um conjunto dado por um predicado contém um elemento exatamente quando o predicado vale nele. A testemunha 3 prova que 9 é um quadrado.
+
+```lean
+def Squares : Set Nat := fun n => ∃ k, n = k * k
+
+example : (9 : Nat) ∈ Squares := ⟨3, rfl⟩
+```
+
+Exemplo 2. A inclusão é reflexiva. A prova introduz um elemento e a sua hipótese de pertinência e devolve a hipótese sem mudança.
+
+```lean
+example (α : Type) (s : Set α) : s ⊆ s := by
+  intro x hx
+  exact hx
+```
+
+Exemplo 3. A união contém o seu lado esquerdo. A pertinência à união é uma disjunção, e `Or.inl` escolhe o lado esquerdo.
+
+```lean
+example (α : Type) (s t : Set α) : s ⊆ s ∪ t := by
+  intro x hx
+  exact Or.inl hx
+```
+
+Exemplo 4. A interseção comuta como inclusão. A pertinência à interseção é uma conjunção, e o construtor anônimo troca as suas partes.
+
+```lean
+example (α : Type) (s t : Set α) : s ∩ t ⊆ t ∩ s := by
+  intro x hx
+  exact ⟨hx.right, hx.left⟩
+```
+
+Exemplo 5. A união contém a interseção.
+
+```lean
+example (α : Type) (s t : Set α) : s ∩ t ⊆ s ∪ t := by
+  intro x hx
+  exact Or.inl hx.left
+```
+
+Exemplo 6. Quando t e u contêm s, a sua interseção contém s.
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h1 : s ⊆ t) (h2 : s ⊆ u) : s ⊆ t ∩ u := by
+  intro x hx
+  exact ⟨h1 x hx, h2 x hx⟩
+```
+
+Exemplo 7. Quando u contém os dois lados de uma união, u contém a união. A tática `cases` divide a disjunção.
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h1 : s ⊆ u) (h2 : t ⊆ u) : s ∪ t ⊆ u := by
+  intro x hx
+  cases hx with
+  | inl hs => exact h1 x hs
+  | inr ht => exact h2 x ht
+```
+
+Exemplo 8. A união com um conjunto fixo preserva a inclusão.
+
+```lean
+example (α : Type) (s t u : Set α)
+    (h : s ⊆ t) : s ∪ u ⊆ t ∪ u := by
+  intro x hx
+  cases hx with
+  | inl hs => exact Or.inl (h x hs)
+  | inr hu => exact Or.inr hu
+```
+
+Exemplo 9. O conjunto vazio, cujo predicado de pertinência é `False` em cada elemento, é subconjunto de todo conjunto. `False.elim` fecha a meta.
+
+```lean
+def EmptySet (α : Type) : Set α := fun _ => False
+
+example (α : Type) (s : Set α) : EmptySet α ⊆ s := by
+  intro x hx
+  exact False.elim hx
+```
+
+Exemplo 10. Todo conjunto é subconjunto do conjunto universo, cujo predicado de pertinência é `True` em cada elemento.
+
+```lean
+def UnivSet (α : Type) : Set α := fun _ => True
+
+example (α : Type) (s : Set α) : s ⊆ UnivSet α := by
+  intro x _hx
+  exact True.intro
+```
 
 # Exercícios
 
