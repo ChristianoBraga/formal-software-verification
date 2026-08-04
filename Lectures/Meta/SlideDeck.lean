@@ -339,6 +339,41 @@ def slideDeckCss : String := r##"
     text-decoration-line: none;
   }
   .hl.lean .has-info.information:hover { background-color: transparent; }
+  /* Proof states (tactic-state boxes) in the deck's design system.
+     Verso hardcodes a white box with a gray border and sans-serif
+     text; these rules follow it in the stylesheet, so at equal
+     specificity they win, and the theme variables keep the box
+     legible in both light and dark mode. */
+  .hl.lean .tactic-state {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    margin: 0.3rem 0;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(0.68rem, 1.55vw, 1rem);
+    line-height: 1.45;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .hl.lean .tactic-state .goal-name,
+  .hl.lean .hypotheses .name,
+  .hl.lean .hypotheses .colon,
+  .hl.lean .hypotheses .type,
+  .hl.lean .conclusion .prefix,
+  .hl.lean .conclusion .type {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--text);
+  }
+  .hl.lean .goal-name::before { color: var(--muted); }
+  .hl.lean .conclusion .prefix { color: var(--accent2); font-weight: 600; }
+  .hl.lean .case-label:has(input[type="checkbox"])::before {
+    background-color: var(--accent2);
+  }
+  /* An expanded state inside a column scrolls in its code block
+     instead of widening the column. */
+  .cols > div > code.hl.lean.block { max-width: 100%; }
   pre.hl.lean.lean-output {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: clamp(0.62rem, 1.4vw, 0.9rem); line-height: 1.35;
