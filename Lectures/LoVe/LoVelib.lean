@@ -1,6 +1,13 @@
 /- Copyright © 2018–2026 Anne Baanen, Alexander Bentkamp, Jasmin Blanchette,
 Xavier Généreux, Johannes Hölzl, and Jannis Limperg. See `LICENSE.txt`. -/
 
+/- Vendored from lean-forward/logical_verification_2026,
+`lean/LoVe/LoVelib.lean` (fetched 2026-08-04), together with its
+`LICENSE.txt` (BSD 3-clause). Changes from the original: this header, and
+`@[reducible]` on `Set.PartialOrder` (required by the definition linter of
+Lean v4.32.0; the original targets Lean v4.24.0). Everything else, including
+imports, is verbatim. -/
+
 import Aesop
 import Mathlib.Algebra.BigOperators.Group.List.Defs
 import Mathlib.Algebra.BigOperators.Group.Multiset.Defs
@@ -142,7 +149,7 @@ theorem Nat.two_mul (n : ℕ) :
     A ⊆ B ↔ ∀a, a ∈ A → a ∈ B :=
   by rfl
 
-def Set.PartialOrder {α : Type} : PartialOrder (Set α) :=
+@[reducible] def Set.PartialOrder {α : Type} : PartialOrder (Set α) :=
   inferInstance
 
 @[simp] theorem Set.le_def {α : Type} (A B : Set α) :

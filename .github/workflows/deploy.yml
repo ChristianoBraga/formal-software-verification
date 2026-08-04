@@ -25,11 +25,33 @@ jobs:
           curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
+      - name: Read Mathlib rev from manifest
+        id: mathlib-rev
+        run: |
+          rev="$(jq -r '.packages[] | select(.name == "mathlib") | .rev' lake-manifest.json)"
+          echo "rev=$rev" >> "$GITHUB_OUTPUT"
+
+      # Compressed Mathlib olean archives (~3.6 GB). `lake exe cache get`
+      # decompresses them into .lake/packages/mathlib/.lake, so those
+      # artifacts (~6.4 GB) are excluded from the Lake cache below.
+      - name: Cache Mathlib cache archives
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mathlib
+          key: mathlib-${{ steps.mathlib-rev.outputs.rev }}
+          restore-keys: |
+            mathlib-
+
       - name: Cache Lake build
         uses: actions/cache@v4
         with:
-          path: .lake
+          path: |
+            .lake
+            !.lake/packages/mathlib/.lake
           key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Get Mathlib build cache
+        run: lake exe cache get
 
       - name: Build English site
         run: lake exe lectures-en --output _out/en
