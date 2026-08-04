@@ -256,6 +256,13 @@ def slideDeckCss : String := r##"
   }
   .cols div > p { margin: 0.4rem 0 0.15rem; }
   .cite { display: block; font-size: clamp(0.8rem, 1.8vw, 1.05rem); color: var(--muted); }
+  .note a, .inner li a, .inner p:not([class]) a {
+    color: var(--accent); font-weight: 600;
+    text-decoration: underline; text-decoration-color: var(--accent2);
+  }
+  .note a:hover, .inner li a:hover, .inner p:not([class]) a:hover {
+    color: var(--accent2);
+  }
   .subtitle { font-size: clamp(1.1rem, 3vw, 2rem); color: var(--muted); }
   .byline { font-size: clamp(0.9rem, 2vw, 1.2rem); color: var(--muted); }
   .notelink a {
