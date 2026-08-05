@@ -343,10 +343,16 @@ example (P Q : Prop) : P → P ∨ Q :=
 :::
 ::::
 
-{exh}[3. P → ¬¬P]
+# §1.7 O exemplo `P → ¬¬P` em detalhe
+
+* `¬A` é `A → False`. Duas vezes: `¬¬P` é `(P → False) → False`, e o enunciado é `P → ((P → False) → False)`.
+
+* Os parênteses são obrigatórios. Como → associa à direita, `P → P → P → False` é outra proposição, e falsa.
 
 ::::cols
 :::col
+{lbl}[A derivação e o objetivo a cada passo]
+
 ```tree
    [¬P]   [P]
   ────────────  ¬E
@@ -356,18 +362,31 @@ example (P Q : Prop) : P → P ∨ Q :=
    ─────────────  →I
      P → ¬¬P
 ```
+
+```tree
+⊢ P → ¬¬P
+
+hP : P
+⊢ ¬¬P
+
+hP : P, hnP : ¬P
+⊢ False
+```
 :::
 :::col
+{lbl}[Uma função por seta]
+
 ```lean
 example (P : Prop) : P → ¬¬P :=
-  fun hP hnP => hnP hP
+  fun (hP : P) =>
+    fun (hnP : ¬P) => hnP hP
 ```
 
-* `fun hP =>` é o →I que descarta P
+* o primeiro `fun` é o →I que descarta P
 
-* `fun hnP =>` é o ¬I que descarta ¬P, pois ¬¬P é ¬P → False
+* o segundo é o ¬I que descarta ¬P; o seu parâmetro tem tipo `¬P`, e não `P`
 
-* `hnP hP` é o ¬E, aplicando ¬P a P para chegar a ⊥
+* `hnP hP` é o ¬E: uma hipótese negativa é uma função em `False`, e aplicá-la a `hP` dá ⊥
 :::
 ::::
 
@@ -375,15 +394,28 @@ example (P : Prop) : P → ¬¬P :=
 
 * Uma *tática* transforma o estado de prova, o objetivo junto com as hipóteses em escopo, um passo por vez.
 
-* `by` entra no modo de táticas, e a sequência de táticas elabora para um termo de prova, então uma prova por táticas e uma por termos produzem o *mesmo objeto*.
+* `by` entra no modo de táticas, e a sequência elabora para um termo de prova, então prova por táticas e prova por termos produzem o *mesmo objeto*.
 
-* `exact` fecha um objetivo com um termo; um passo *regressivo* (`apply`) reduz o objetivo, um passo *progressivo* (`have`) acrescenta uma hipótese.
+* `exact e` fecha o objetivo quando o tipo de `e` é o objetivo, e `have h : A := e` é o passo *progressivo*, que acrescenta `h : A` ao contexto sem mexer no objetivo.
 
+* `apply f` é o passo *regressivo*. Ela aplica `f` a argumentos em aberto, unifica a *conclusão* do tipo de `f` com o objetivo e deixa cada premissa não resolvida como novo objetivo. Com objetivo `Q` e `f : P → Q`, o objetivo passa a `P`, e o termo em construção é `hPQ ?p`, que `exact hP` completa em `hPQ hP`.
+
+::::cols
+:::col
 ```lean
-example (P Q : Prop) (hPQ : P → Q) (hP : P) : Q := by
+example (P Q : Prop) (hPQ : P → Q)
+    (hP : P) : Q := by
   apply hPQ
   exact hP
 ```
+:::
+:::col
+```tree
+⊢ Q       apply hPQ
+⊢ P       exact hP
+```
+:::
+::::
 
 # §1.8 Táticas por conectivo
 

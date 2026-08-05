@@ -343,10 +343,16 @@ example (P Q : Prop) : P → P ∨ Q :=
 :::
 ::::
 
-{exh}[3. P → ¬¬P]
+# §1.7 The example `P → ¬¬P` in detail
+
+* `¬A` is `A → False`. Twice over: `¬¬P` is `(P → False) → False`, and the statement is `P → ((P → False) → False)`.
+
+* The parentheses are needed. Since → associates to the right, `P → P → P → False` is a different proposition, and a false one.
 
 ::::cols
 :::col
+{lbl}[The derivation and the goal at each step]
+
 ```tree
    [¬P]   [P]
   ────────────  ¬E
@@ -356,18 +362,31 @@ example (P Q : Prop) : P → P ∨ Q :=
    ─────────────  →I
      P → ¬¬P
 ```
+
+```tree
+⊢ P → ¬¬P
+
+hP : P
+⊢ ¬¬P
+
+hP : P, hnP : ¬P
+⊢ False
+```
 :::
 :::col
+{lbl}[One function per arrow]
+
 ```lean
 example (P : Prop) : P → ¬¬P :=
-  fun hP hnP => hnP hP
+  fun (hP : P) =>
+    fun (hnP : ¬P) => hnP hP
 ```
 
-* `fun hP =>` is the →I discharging P
+* the first `fun` is the →I that discharges P
 
-* `fun hnP =>` is the ¬I discharging ¬P, since ¬¬P is ¬P → False
+* the second is the ¬I that discharges ¬P; its parameter has type `¬P`, not `P`
 
-* `hnP hP` is the ¬E, applying ¬P to P to reach ⊥
+* `hnP hP` is the ¬E: a negative hypothesis is a function into `False`, and applying it to `hP` gives ⊥
 :::
 ::::
 
@@ -375,15 +394,28 @@ example (P : Prop) : P → ¬¬P :=
 
 * A *tactic* transforms the proof state, the goal together with the hypotheses in scope, one step at a time.
 
-* `by` enters tactic mode, and the tactic sequence elaborates to a proof term, so a tactic proof and a term proof yield the *same object*.
+* `by` enters tactic mode, and the sequence elaborates to a proof term, so a tactic proof and a term proof yield the *same object*.
 
-* `exact` closes a goal with a term; a *backward* step (`apply`) reduces the goal, a *forward* step (`have`) adds a hypothesis.
+* `exact e` closes the goal when the type of `e` is the goal, and `have h : A := e` is the *forward* step, which adds `h : A` to the context without touching the goal.
 
+* `apply f` is the *backward* step. It applies `f` to open arguments, unifies the *conclusion* of the type of `f` with the goal, and leaves every unsolved premise as a new goal. With goal `Q` and `f : P → Q`, the goal becomes `P`, and the term under construction is `hPQ ?p`, which `exact hP` completes into `hPQ hP`.
+
+::::cols
+:::col
 ```lean
-example (P Q : Prop) (hPQ : P → Q) (hP : P) : Q := by
+example (P Q : Prop) (hPQ : P → Q)
+    (hP : P) : Q := by
   apply hPQ
   exact hP
 ```
+:::
+:::col
+```tree
+⊢ Q       apply hPQ
+⊢ P       exact hP
+```
+:::
+::::
 
 # §1.8 Tactics per connective
 

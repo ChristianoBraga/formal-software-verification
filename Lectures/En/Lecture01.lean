@@ -1037,6 +1037,16 @@ example (P : Prop) : P → ¬¬P :=
   fun hP hnP => hnP hP
 ```
 
+This example deserves the full unfolding, because its proof has two functions where the statement seems to have one implication. Since ¬A is A → False, the double negation unfolds twice, from the outside in. First ¬¬P is ¬P → False, then it is (P → False) → False, and the whole statement is P → ((P → False) → False). The parentheses around the inner negation are needed. The arrow associates to the right, so P → P → P → False is the proposition P → (P → (P → False)), which is a different one, and a false one.
+
+The term therefore has one function per arrow, and `fun hP hnP => hnP hP` abbreviates `fun hP => fun hnP => hnP hP`. The first function is the →I that discharges P and returns a proof of ¬¬P. That proof is itself a function, and the second function is the ¬I that discharges ¬P. Its parameter has type ¬P, not P, which is the easy place to slip. The context then holds hP of type P and hnP of type P → False, and False remains to be proved. A negative hypothesis is a function into False, so applying it to what it denies is the ¬E, and `hnP hP` closes the proof. The other order does not typecheck, because hP is not a function.
+
+```lean
+example (P : Prop) : P → ¬¬P :=
+  fun (hP : P) =>
+    fun (hnP : ¬P) => hnP hP
+```
+
 {ex "ex-natural-deduction-lean-contraposition"}[] Contraposition.
 
 ```lean

@@ -1038,6 +1038,16 @@ example (P : Prop) : P → ¬¬P :=
   fun hP hnP => hnP hP
 ```
 
+Este exemplo merece o desdobramento completo, porque a sua prova tem duas funções onde o enunciado parece ter uma implicação só. Como ¬A é A → False, a dupla negação desdobra-se duas vezes, de fora para dentro. Primeiro ¬¬P é ¬P → False, depois é (P → False) → False, e o enunciado inteiro é P → ((P → False) → False). Os parênteses da negação interna são obrigatórios. A seta associa à direita, então P → P → P → False é a proposição P → (P → (P → False)), que é outra e é falsa.
+
+O termo tem então uma função por seta, e `fun hP hnP => hnP hP` abrevia `fun hP => fun hnP => hnP hP`. A primeira função é o →I que descarta P e devolve uma prova de ¬¬P. Essa prova é ela mesma uma função, e a segunda função é o ¬I que descarta ¬P. O parâmetro dela tem tipo ¬P, e não P, ponto em que é fácil se enganar. Restam no contexto hP de tipo P e hnP de tipo P → False, e sobra provar False. Uma hipótese negativa é uma função em False, então aplicá-la ao que ela nega é o ¬E, e `hnP hP` fecha a prova. A ordem inversa não tipa, porque hP não é função.
+
+```lean
+example (P : Prop) : P → ¬¬P :=
+  fun (hP : P) =>
+    fun (hnP : ¬P) => hnP hP
+```
+
 {ex "ex-natural-deduction-lean-contraposition"}[] Contraposição.
 
 ```lean
