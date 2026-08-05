@@ -48,7 +48,7 @@ A {figref "fig-lean-components"}[Figura 1.1] mostra os componentes de Lean que a
 
 *Figura 1.1. Principais componentes de Lean.*
 
-Esses componentes servem a qualquer desenvolvimento em Lean, e a disciplina os põe a um uso específico. A linguagem imperativa das últimas aulas, a sua semântica e a sua lógica de Hoare são definições Lean comuns, as condições de verificação são objetivos (_goals_) que as táticas fecham, e o kernel verifica o resultado como verifica qualquer outra prova. A figura abaixo não acrescenta nenhum mecanismo aos da figura acima. Ela nomeia os artefatos que passam por esses componentes quando o objeto de estudo é um programa e a sua especificação.
+Esses componentes servem a qualquer desenvolvimento em Lean, e a disciplina os usa para um fim específico. A linguagem imperativa das últimas aulas, a sua semântica e a sua lógica de Hoare são definições Lean comuns, as condições de verificação são objetivos (_goals_) que as táticas fecham, e o kernel verifica o resultado como verifica qualquer outra prova. A figura seguinte usa esses mesmos componentes e mostra o que escrevemos com eles para verificar um programa.
 
 A {figref "fig-verifier-architecture"}[Figura 1.2] mostra a arquitetura do verificador que a disciplina constrói. Um programa e a sua especificação formam uma tripla de Hoare. A semântica operacional big-step dá o significado da tripla. A tática `mvcgen` gera as condições de verificação, que são objetivos (_goals_) puramente lógicos. Provas por táticas as fecham, e o kernel de Lean verifica cada prova.
 
