@@ -1,6 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
+import Lectures.Meta.Figure
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -35,7 +36,7 @@ Lecture 1 excluded "x is even" from the propositions because its truth depends o
 fun n => n > 3 : Nat → Prop
 ```
 
-Quantifiers bind the variable of a predicate and produce a proposition.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] We write P x for the proposition that the predicate P yields at x.
+Quantifiers bind the variable of a predicate and produce a proposition, and {tabref "tbl-quantifiers"}[Table 2.1.1] names the two.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] We write P x for the proposition that the predicate P yields at x.
 
 :::table +header
 *
@@ -51,6 +52,8 @@ Quantifiers bind the variable of a predicate and produce a proposition.{margin}[
   * existential quantifier
   * P x holds for some x
 :::
+
+*{tableAnchor "tbl-quantifiers"}[Table 2.1.1. The two quantifiers, with their symbols and readings.]*
 
 The quantifier *binds* its variable, so ∀ x, P x depends on no free variable and is a proposition. The variable ranges over a type. For example, `∃ n : Nat, n * n = 9` states that some natural number squares to 9. When the context determines the type, Lean infers it and we omit the annotation.
 
@@ -325,7 +328,7 @@ example (α : Type) (P Q : α → Prop)
 
 # Quantifier Negation Laws
 
-The De Morgan laws of Lecture 1 exchange negation with conjunction and disjunction. The laws below exchange negation with the quantifiers.
+The De Morgan laws of Lecture 1 exchange negation with conjunction and disjunction. The laws of {tabref "tbl-quantifier-negation"}[Table 2.4.1] exchange negation with the quantifiers.
 
 :::table +header
 *
@@ -338,6 +341,8 @@ The De Morgan laws of Lecture 1 exchange negation with conjunction and disjuncti
   * Negation of ∀
   * ¬(∀ x, P x) ≡ ∃ x, ¬P x
 :::
+
+*{tableAnchor "tbl-quantifier-negation"}[Table 2.4.1. The quantifier negation laws.]*
 
 The first law is constructive in both directions.
 

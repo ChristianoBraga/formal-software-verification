@@ -79,7 +79,7 @@ Escrevemos P, Q, R para *variáveis proposicionais*, que representam proposiçõ
 
 # Conectivos
 
-Conectivos constroem proposições compostas a partir de proposições mais simples.
+Conectivos constroem proposições compostas a partir de proposições mais simples, e a {tabref "tbl-connectives"}[Tabela 1.3.1] nomeia os cinco.
 
 :::table +header
 *
@@ -108,7 +108,9 @@ Conectivos constroem proposições compostas a partir de proposições mais simp
   * P se e somente se Q
 :::
 
-O valor de verdade de uma proposição composta depende apenas dos valores de verdade das suas partes. A tabela abaixo define os cinco conectivos, com V para verdadeiro e F para falso.
+*{tableAnchor "tbl-connectives"}[Tabela 1.3.1. Os cinco conectivos, com os seus símbolos e leituras.]*
+
+O valor de verdade de uma proposição composta depende apenas dos valores de verdade das suas partes. A {tabref "tbl-truth-values"}[Tabela 1.3.2] define os cinco conectivos, com V para verdadeiro e F para falso.
 
 :::table +header
 *
@@ -153,13 +155,15 @@ O valor de verdade de uma proposição composta depende apenas dos valores de ve
   * V
 :::
 
+*{tableAnchor "tbl-truth-values"}[Tabela 1.3.2. Os valores de verdade dos cinco conectivos.]*
+
 Duas linhas da coluna da implicação merecem atenção. Quando P é falso, P → Q é verdadeira independentemente de Q. Uma implicação nada afirma sobre os casos em que o seu antecedente falha, então esses casos não podem refutá-la. A disjunção é *inclusiva*, então P ∨ Q é verdadeira quando os dois disjuntos o são.
 
 # Equivalência Lógica
 
 Uma *valoração* atribui um valor de verdade a cada variável proposicional. Uma proposição é uma *tautologia* quando é verdadeira sob toda valoração. Duas proposições A e B são *logicamente equivalentes*, escrito A ≡ B, quando têm o mesmo valor de verdade sob toda valoração, isto é, quando A ↔ B é uma tautologia.
 
-As equivalências clássicas abaixo aparecem constantemente em provas.
+As equivalências clássicas da {tabref "tbl-equivalences"}[Tabela 1.4.1] aparecem constantemente em provas.
 
 :::table +header
 *
@@ -182,7 +186,9 @@ As equivalências clássicas abaixo aparecem constantemente em provas.
   * P → Q ≡ ¬P ∨ Q
 :::
 
-Uma tabela-verdade verifica cada equivalência. Para a segunda lei de De Morgan, as colunas de ¬(P ∨ Q) e de ¬P ∧ ¬Q coincidem nas quatro valorações.
+*{tableAnchor "tbl-equivalences"}[Tabela 1.4.1. As equivalências clássicas.]*
+
+Uma tabela-verdade verifica cada equivalência. Para a segunda lei de De Morgan, as colunas de ¬(P ∨ Q) e de ¬P ∧ ¬Q coincidem nas quatro valorações, como mostra a {tabref "tbl-demorgan-check"}[Tabela 1.4.2].
 
 :::table +header
 *
@@ -227,11 +233,13 @@ Uma tabela-verdade verifica cada equivalência. Para a segunda lei de De Morgan,
   * V
 :::
 
+*{tableAnchor "tbl-demorgan-check"}[Tabela 1.4.2. Tabela-verdade da segunda lei de De Morgan.]*
+
 ## Exemplos
 
 Cada equivalência abaixo é verificada por uma tabela-verdade. Duas proposições são equivalentes quando as suas colunas finais coincidem em toda linha, e uma tautologia tem uma coluna verdadeira em toda linha.
 
-Exemplo 1. A dupla negação devolve a proposição original.
+Exemplo 1. A dupla negação devolve a proposição original, verificada na {tabref "tbl-double-negation"}[Tabela 1.4.3].
 
 :::table +header
 *
@@ -248,7 +256,9 @@ Exemplo 1. A dupla negação devolve a proposição original.
   * F
 :::
 
-Exemplo 2. O terceiro excluído P ∨ ¬P é uma tautologia.
+*{tableAnchor "tbl-double-negation"}[Tabela 1.4.3. Tabela-verdade de ¬¬P ≡ P.]*
+
+Exemplo 2. O terceiro excluído P ∨ ¬P é uma tautologia, verificada na {tabref "tbl-excluded-middle"}[Tabela 1.4.4].
 
 :::table +header
 *
@@ -265,7 +275,9 @@ Exemplo 2. O terceiro excluído P ∨ ¬P é uma tautologia.
   * V
 :::
 
-Exemplo 3. A não contradição ¬(P ∧ ¬P) é uma tautologia.
+*{tableAnchor "tbl-excluded-middle"}[Tabela 1.4.4. Tabela-verdade de P ∨ ¬P.]*
+
+Exemplo 3. A não contradição ¬(P ∧ ¬P) é uma tautologia, verificada na {tabref "tbl-non-contradiction"}[Tabela 1.4.5].
 
 :::table +header
 *
@@ -285,7 +297,9 @@ Exemplo 3. A não contradição ¬(P ∧ ¬P) é uma tautologia.
   * V
 :::
 
-Exemplo 4. A primeira lei de De Morgan.
+*{tableAnchor "tbl-non-contradiction"}[Tabela 1.4.5. Tabela-verdade de ¬(P ∧ ¬P).]*
+
+Exemplo 4. A primeira lei de De Morgan, verificada na {tabref "tbl-demorgan-first"}[Tabela 1.4.6].
 
 :::table +header
 *
@@ -330,7 +344,9 @@ Exemplo 4. A primeira lei de De Morgan.
   * V
 :::
 
-Exemplo 5. A disjunção comuta.
+*{tableAnchor "tbl-demorgan-first"}[Tabela 1.4.6. Tabela-verdade de ¬(P ∧ Q) ≡ ¬P ∨ ¬Q.]*
+
+Exemplo 5. A disjunção comuta, verificada na {tabref "tbl-or-comm"}[Tabela 1.4.7].
 
 :::table +header
 *
@@ -360,7 +376,9 @@ Exemplo 5. A disjunção comuta.
   * F
 :::
 
-Exemplo 6. A disjunção é idempotente.
+*{tableAnchor "tbl-or-comm"}[Tabela 1.4.7. Tabela-verdade de P ∨ Q ≡ Q ∨ P.]*
+
+Exemplo 6. A disjunção é idempotente, verificada na {tabref "tbl-or-idem"}[Tabela 1.4.8].
 
 :::table +header
 *
@@ -374,7 +392,9 @@ Exemplo 6. A disjunção é idempotente.
   * F
 :::
 
-Exemplo 7. A contrapositiva.
+*{tableAnchor "tbl-or-idem"}[Tabela 1.4.8. Tabela-verdade de P ∨ P ≡ P.]*
+
+Exemplo 7. A contrapositiva, verificada na {tabref "tbl-contrapositive"}[Tabela 1.4.9].
 
 :::table +header
 *
@@ -414,7 +434,9 @@ Exemplo 7. A contrapositiva.
   * V
 :::
 
-Exemplo 8. A implicação material.
+*{tableAnchor "tbl-contrapositive"}[Tabela 1.4.9. Tabela-verdade de P → Q ≡ ¬Q → ¬P.]*
+
+Exemplo 8. A implicação material, verificada na {tabref "tbl-material-implication"}[Tabela 1.4.10].
 
 :::table +header
 *
@@ -449,7 +471,9 @@ Exemplo 8. A implicação material.
   * V
 :::
 
-Exemplo 9. O bicondicional é a conjunção das suas duas implicações.
+*{tableAnchor "tbl-material-implication"}[Tabela 1.4.10. Tabela-verdade de P → Q ≡ ¬P ∨ Q.]*
+
+Exemplo 9. O bicondicional é a conjunção das suas duas implicações, verificada na {tabref "tbl-iff-split"}[Tabela 1.4.11].
 
 :::table +header
 *
@@ -489,7 +513,9 @@ Exemplo 9. O bicondicional é a conjunção das suas duas implicações.
   * V
 :::
 
-Exemplo 10. A negação de uma implicação.
+*{tableAnchor "tbl-iff-split"}[Tabela 1.4.11. Tabela-verdade de P ↔ Q ≡ (P → Q) ∧ (Q → P).]*
+
+Exemplo 10. A negação de uma implicação, verificada na {tabref "tbl-not-implication"}[Tabela 1.4.12].
 
 :::table +header
 *
@@ -528,6 +554,8 @@ Exemplo 10. A negação de uma implicação.
   * V
   * F
 :::
+
+*{tableAnchor "tbl-not-implication"}[Tabela 1.4.12. Tabela-verdade de ¬(P → Q) ≡ P ∧ ¬Q.]*
 
 Tabelas-verdade decidem qualquer questão proposicional, mas o seu tamanho cresce exponencialmente no número de variáveis, e elas não se estendem aos quantificadores da Aula 2. Regras de dedução, aplicadas um passo por vez, escalam e generalizam. A próxima seção as apresenta, e o restante da aula desenvolve as provas correspondentes em Lean.
 
@@ -846,7 +874,7 @@ example (P : Prop) (h : P) : P := h
 
 Aqui `h` nomeia a suposição de que P vale, e a prova é o próprio `h`. A Aula 3 desenvolve essa correspondência entre proposições e tipos.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, em *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
 
-A tabela mapeia cada regra da seção de dedução natural ao termo de Lean que a realiza. Uma regra de introdução constrói um termo, e uma regra de eliminação o desmonta.
+A {tabref "tbl-rules-to-lean"}[Tabela 1.7.1] mapeia cada regra da seção de dedução natural ao termo de Lean que a realiza. Uma regra de introdução constrói um termo, e uma regra de eliminação o desmonta.
 
 :::table +header
 *
@@ -894,6 +922,8 @@ A tabela mapeia cada regra da seção de dedução natural ao termo de Lean que 
   * `False.elim` ou `absurd`
   * `False.elim h`
 :::
+
+*{tableAnchor "tbl-rules-to-lean"}[Tabela 1.7.1. As regras de dedução natural e os termos de Lean que as realizam.]*
 
 Como ¬P abrevia P → False, as regras da negação reutilizam os termos da implicação. Para ver a correspondência em uma derivação completa, tome P ∧ Q → Q ∧ P. Ela descarta a suposição P ∧ Q, projeta cada uma das partes e as remonta na ordem oposta.
 

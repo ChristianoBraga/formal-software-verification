@@ -79,7 +79,7 @@ We write P, Q, R for *propositional variables*, which stand for arbitrary propos
 
 # Connectives
 
-Connectives build compound propositions from simpler ones.
+Connectives build compound propositions from simpler ones, and {tabref "tbl-connectives"}[Table 1.3.1] names the five.
 
 :::table +header
 *
@@ -108,7 +108,9 @@ Connectives build compound propositions from simpler ones.
   * P if and only if Q
 :::
 
-The truth value of a compound proposition depends only on the truth values of its parts. The table below defines the five connectives, with T for true and F for false.
+*{tableAnchor "tbl-connectives"}[Table 1.3.1. The five connectives, with their symbols and readings.]*
+
+The truth value of a compound proposition depends only on the truth values of its parts. {tabref "tbl-truth-values"}[Table 1.3.2] defines the five connectives, with T for true and F for false.
 
 :::table +header
 *
@@ -153,13 +155,15 @@ The truth value of a compound proposition depends only on the truth values of it
   * T
 :::
 
+*{tableAnchor "tbl-truth-values"}[Table 1.3.2. The truth values of the five connectives.]*
+
 Two rows of the implication column deserve attention. When P is false, P → Q is true regardless of Q. An implication claims nothing about cases where its antecedent fails, so those cases cannot refute it. Disjunction is *inclusive*, so P ∨ Q is true when both disjuncts are.
 
 # Logical Equivalence
 
 A *valuation* assigns a truth value to each propositional variable. A proposition is a *tautology* when it is true under every valuation. Two propositions A and B are *logically equivalent*, written A ≡ B, when they have the same truth value under every valuation, that is, when A ↔ B is a tautology.
 
-The classical equivalences below appear constantly in proofs.
+The classical equivalences of {tabref "tbl-equivalences"}[Table 1.4.1] appear constantly in proofs.
 
 :::table +header
 *
@@ -182,7 +186,9 @@ The classical equivalences below appear constantly in proofs.
   * P → Q ≡ ¬P ∨ Q
 :::
 
-A truth table verifies each equivalence. For the second De Morgan law, the columns for ¬(P ∨ Q) and ¬P ∧ ¬Q agree on all four valuations.
+*{tableAnchor "tbl-equivalences"}[Table 1.4.1. The classical equivalences.]*
+
+A truth table verifies each equivalence. For the second De Morgan law, the columns for ¬(P ∨ Q) and ¬P ∧ ¬Q agree on all four valuations, as {tabref "tbl-demorgan-check"}[Table 1.4.2] shows.
 
 :::table +header
 *
@@ -227,11 +233,13 @@ A truth table verifies each equivalence. For the second De Morgan law, the colum
   * T
 :::
 
+*{tableAnchor "tbl-demorgan-check"}[Table 1.4.2. Truth table for the second De Morgan law.]*
+
 ## Examples
 
 Each equivalence below is verified by a truth table. Two propositions are equivalent when their final columns agree in every row, and a tautology has a column that is true in every row.
 
-Example 1. Double negation returns the original proposition.
+Example 1. Double negation returns the original proposition, verified in {tabref "tbl-double-negation"}[Table 1.4.3].
 
 :::table +header
 *
@@ -248,7 +256,9 @@ Example 1. Double negation returns the original proposition.
   * F
 :::
 
-Example 2. The excluded middle P ∨ ¬P is a tautology.
+*{tableAnchor "tbl-double-negation"}[Table 1.4.3. Truth table for ¬¬P ≡ P.]*
+
+Example 2. The excluded middle P ∨ ¬P is a tautology, verified in {tabref "tbl-excluded-middle"}[Table 1.4.4].
 
 :::table +header
 *
@@ -265,7 +275,9 @@ Example 2. The excluded middle P ∨ ¬P is a tautology.
   * T
 :::
 
-Example 3. Non-contradiction ¬(P ∧ ¬P) is a tautology.
+*{tableAnchor "tbl-excluded-middle"}[Table 1.4.4. Truth table for P ∨ ¬P.]*
+
+Example 3. Non-contradiction ¬(P ∧ ¬P) is a tautology, verified in {tabref "tbl-non-contradiction"}[Table 1.4.5].
 
 :::table +header
 *
@@ -285,7 +297,9 @@ Example 3. Non-contradiction ¬(P ∧ ¬P) is a tautology.
   * T
 :::
 
-Example 4. The first De Morgan law.
+*{tableAnchor "tbl-non-contradiction"}[Table 1.4.5. Truth table for ¬(P ∧ ¬P).]*
+
+Example 4. The first De Morgan law, verified in {tabref "tbl-demorgan-first"}[Table 1.4.6].
 
 :::table +header
 *
@@ -330,7 +344,9 @@ Example 4. The first De Morgan law.
   * T
 :::
 
-Example 5. Disjunction commutes.
+*{tableAnchor "tbl-demorgan-first"}[Table 1.4.6. Truth table for ¬(P ∧ Q) ≡ ¬P ∨ ¬Q.]*
+
+Example 5. Disjunction commutes, verified in {tabref "tbl-or-comm"}[Table 1.4.7].
 
 :::table +header
 *
@@ -360,7 +376,9 @@ Example 5. Disjunction commutes.
   * F
 :::
 
-Example 6. Disjunction is idempotent.
+*{tableAnchor "tbl-or-comm"}[Table 1.4.7. Truth table for P ∨ Q ≡ Q ∨ P.]*
+
+Example 6. Disjunction is idempotent, verified in {tabref "tbl-or-idem"}[Table 1.4.8].
 
 :::table +header
 *
@@ -374,7 +392,9 @@ Example 6. Disjunction is idempotent.
   * F
 :::
 
-Example 7. The contrapositive.
+*{tableAnchor "tbl-or-idem"}[Table 1.4.8. Truth table for P ∨ P ≡ P.]*
+
+Example 7. The contrapositive, verified in {tabref "tbl-contrapositive"}[Table 1.4.9].
 
 :::table +header
 *
@@ -414,7 +434,9 @@ Example 7. The contrapositive.
   * T
 :::
 
-Example 8. Material implication.
+*{tableAnchor "tbl-contrapositive"}[Table 1.4.9. Truth table for P → Q ≡ ¬Q → ¬P.]*
+
+Example 8. Material implication, verified in {tabref "tbl-material-implication"}[Table 1.4.10].
 
 :::table +header
 *
@@ -449,7 +471,9 @@ Example 8. Material implication.
   * T
 :::
 
-Example 9. The biconditional is the conjunction of its two implications.
+*{tableAnchor "tbl-material-implication"}[Table 1.4.10. Truth table for P → Q ≡ ¬P ∨ Q.]*
+
+Example 9. The biconditional is the conjunction of its two implications, verified in {tabref "tbl-iff-split"}[Table 1.4.11].
 
 :::table +header
 *
@@ -489,7 +513,9 @@ Example 9. The biconditional is the conjunction of its two implications.
   * T
 :::
 
-Example 10. The negation of an implication.
+*{tableAnchor "tbl-iff-split"}[Table 1.4.11. Truth table for P ↔ Q ≡ (P → Q) ∧ (Q → P).]*
+
+Example 10. The negation of an implication, verified in {tabref "tbl-not-implication"}[Table 1.4.12].
 
 :::table +header
 *
@@ -528,6 +554,8 @@ Example 10. The negation of an implication.
   * T
   * F
 :::
+
+*{tableAnchor "tbl-not-implication"}[Table 1.4.12. Truth table for ¬(P → Q) ≡ P ∧ ¬Q.]*
 
 Truth tables decide any propositional question, but their size grows exponentially in the number of variables, and they do not extend to the quantifiers of Lecture 2. Deduction rules, applied one step at a time, scale and generalize. The next section presents them, and the rest of the lecture develops the corresponding proofs in Lean.
 
@@ -846,7 +874,7 @@ example (P : Prop) (h : P) : P := h
 
 Here `h` names the assumption that P holds, and the proof is `h` itself. Lecture 3 develops this correspondence between propositions and types.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, in *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
 
-The table maps each rule of the section on natural deduction to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
+{tabref "tbl-rules-to-lean"}[Table 1.7.1] maps each rule of the section on natural deduction to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
 
 :::table +header
 *
@@ -894,6 +922,8 @@ The table maps each rule of the section on natural deduction to the Lean term th
   * `False.elim` or `absurd`
   * `False.elim h`
 :::
+
+*{tableAnchor "tbl-rules-to-lean"}[Table 1.7.1. The natural deduction rules and the Lean terms that realize them.]*
 
 Because ¬P abbreviates P → False, the negation rules reuse the terms for implication. To see the correspondence on a full derivation, take P ∧ Q → Q ∧ P. It discharges the assumption P ∧ Q, projects each conjunct, and reassembles them in the opposite order.
 

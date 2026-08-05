@@ -1,6 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
+import Lectures.Meta.Figure
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -35,7 +36,7 @@ A Aula 1 excluiu "x é par" das proposições porque a sua verdade depende da va
 fun n => n > 3 : Nat → Prop
 ```
 
-Quantificadores ligam a variável de um predicado e produzem uma proposição.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] Escrevemos P x para a proposição que o predicado P produz em x.
+Quantificadores ligam a variável de um predicado e produzem uma proposição, e a {tabref "tbl-quantifiers"}[Tabela 2.1.1] nomeia os dois.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] Escrevemos P x para a proposição que o predicado P produz em x.
 
 :::table +header
 *
@@ -51,6 +52,8 @@ Quantificadores ligam a variável de um predicado e produzem uma proposição.{m
   * quantificador existencial
   * P x vale para algum x
 :::
+
+*{tableAnchor "tbl-quantifiers"}[Tabela 2.1.1. Os dois quantificadores, com os seus símbolos e leituras.]*
 
 O quantificador *liga* a sua variável, então ∀ x, P x não depende de variável livre e é uma proposição. A variável percorre um tipo. Por exemplo, `∃ n : Nat, n * n = 9` afirma que algum número natural elevado ao quadrado dá 9. Quando o contexto determina o tipo, Lean o infere e omitimos a anotação.
 
@@ -325,7 +328,7 @@ example (α : Type) (P Q : α → Prop)
 
 # Leis de Negação dos Quantificadores
 
-As leis de De Morgan da Aula 1 trocam a negação com a conjunção e a disjunção. As leis abaixo trocam a negação com os quantificadores.
+As leis de De Morgan da Aula 1 trocam a negação com a conjunção e a disjunção. As leis da {tabref "tbl-quantifier-negation"}[Tabela 2.4.1] trocam a negação com os quantificadores.
 
 :::table +header
 *
@@ -338,6 +341,8 @@ As leis de De Morgan da Aula 1 trocam a negação com a conjunção e a disjunç
   * Negação de ∀
   * ¬(∀ x, P x) ≡ ∃ x, ¬P x
 :::
+
+*{tableAnchor "tbl-quantifier-negation"}[Tabela 2.4.1. As leis de negação dos quantificadores.]*
 
 A primeira lei é construtiva nas duas direções.
 
