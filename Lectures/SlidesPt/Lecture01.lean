@@ -26,7 +26,7 @@ Christiano Braga · Mestrado em Sistemas e Computação · IME
 
 Baseada em [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL), capítulo [1](https://djvelleman.github.io/HTPIwL/Chap1.html).
 
-# O teste mostra presença, não ausência
+# §1.1 O teste mostra presença, não ausência
 
 * Software controla aeronaves, dispositivos médicos, sistemas financeiros e redes de comunicação. Erros custam dinheiro e vidas.
 
@@ -34,9 +34,9 @@ Baseada em [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (
 
 > O teste de programas pode ser usado para mostrar a presença de erros, mas nunca para mostrar a sua ausência!
 
-{cite}[E. W. Dijkstra, _Notes on Structured Programming_, EWD249, 1970.]
+{cite}[E. W. Dijkstra, [_Notes on Structured Programming_](https://www.cs.utexas.edu/~EWD/ewd02xx/EWD249.PDF), EWD249, 1970.]
 
-# O caminho complementar
+# §1.1 O caminho complementar
 
 * Enunciamos uma propriedade de um programa como uma *proposição matemática*.
 
@@ -44,9 +44,9 @@ Baseada em [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (
 
 * Um *assistente de prova* verifica cada passo com respeito às regras de uma lógica formal e ajuda a construir a prova interativamente.
 
-* Em uso corrente: *Lean*, Rocq (antigo Coq), Isabelle/HOL, Agda. Marcos: o micronúcleo *seL4* e o compilador *CompCert*.
+* Em uso corrente: *Lean*, Rocq (antigo Coq), Isabelle/HOL, Agda. Marcos: o micronúcleo [seL4](https://trustworthy.systems/publications/nictaabstracts/Klein_EHACDEEKNSTW_09.abstract) e o compilador [CompCert](https://xavierleroy.org/publi/compcert-CACM.pdf).
 
-# Código gerado
+# §1.1 Código gerado
 
 * Modelos de linguagem escrevem hoje uma parcela crescente do código. *Plausível não é o mesmo que correto*; o modo de falha é a alucinação.
 
@@ -54,13 +54,17 @@ Baseada em [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (
 
 * O ônus da correção move-se de *ler o código* para *escrever a especificação certa*.
 
-# Proposições e conectivos
+# §1.2–1.3 Proposições e conectivos
 
 * Uma *proposição* é uma sentença declarativa que é verdadeira ou falsa. Em Lean o tipo `Prop` as classifica.
 
 * Conectivos constroem proposições compostas: `¬P`, `P ∧ Q`, `P ∨ Q`, `P → Q`, `P ↔ Q`.
 
-* São *funções de verdade*. Uma implicação é verdadeira quando o antecedente é falso, e a disjunção é *inclusiva*.
+* São *funções de verdade*, então o valor de uma proposição composta depende apenas dos valores das suas partes.
+
+* Uma implicação de antecedente falso é verdadeira, diga o que disser o consequente, porque uma implicação nada afirma sobre esses casos.
+
+* A disjunção é *inclusiva*, então `P ∨ Q` também vale quando P e Q valem juntas.
 
 # §1.4 Equivalência lógica
 
@@ -128,7 +132,25 @@ Segunda lei de De Morgan: as colunas de ¬(P ∨ Q) e ¬P ∧ ¬Q coincidem nas 
   * V
 :::
 
-Tabelas-verdade decidem qualquer questão proposicional, mas crescem *exponencialmente* no número de variáveis e não se estendem aos quantificadores da Aula 2. Regras de dedução escalam e generalizam.
+Tabelas-verdade decidem qualquer questão proposicional, mas crescem *exponencialmente* no número de variáveis e não se estendem aos quantificadores da Aula 2. Um *cálculo* deriva em vez de computar.
+
+# §1.4 Cálculos lógicos
+
+* Um cálculo fixa *axiomas* e *regras de inferência*. Uma *derivação* aplica as regras, nenhuma valoração aparece nela, e uma máquina pode verificá-la.
+
+* Ele é *correto* quando todo teorema é uma tautologia e *completo* quando toda tautologia é um teorema. Post provou as duas para o cálculo proposicional em 1921.
+
+* Um cálculo *axiomático* tem muitos axiomas e uma regra. Łukasiewicz e Tarski precisam de três esquemas sobre → e ¬, com o modus ponens.
+
+```tree
+   A → (B → A)
+   (A → (B → C)) → ((A → B) → (A → C))
+   (¬A → ¬B) → (B → A)
+```
+
+* A *resolução* mantém uma única regra sobre cláusulas, e é com ela que provadores automáticos buscam (Robinson, 1965).
+
+* A *dedução natural* não tem axiomas e tem duas regras por conectivo, uma que o introduz e outra que o elimina. Esta disciplina a usa.
 
 # §1.5 Dedução natural: as regras do jogo
 
@@ -162,7 +184,7 @@ Tabelas-verdade decidem qualquer questão proposicional, mas crescem *exponencia
 
 # §1.5 Negação e a regra clássica
 
-A constante ⊥ é a absurdidade, e ¬P abrevia P → ⊥.
+A constante ⊥ é o absurdo, e ¬P abrevia P → ⊥.
 
 ```tree
    [P]

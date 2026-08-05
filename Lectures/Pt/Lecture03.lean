@@ -1,7 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
-import Lectures.Meta.Figure
+import Lectures.Meta.Label
 import Lectures.Papers
 import Lectures.LoVe.LoVelib
 
@@ -11,6 +11,7 @@ open Verso.Genre.Manual.InlineLean
 open Lectures
 
 set_option pp.rawOnError true
+set_option lectures.language "pt"
 
 #doc (Manual) "Aula 3: Programas e Teoremas" =>
 
@@ -97,7 +98,7 @@ end MyList
 
 Os exemplos abaixo constroem valores dos tipos indutivos desta seção e os inspecionam com `#check` e `#print`.
 
-Exemplo 1. O numeral três são três aplicações de `succ` a `zero`.
+{ex "ex-inductive-types-numeral-three-three-applications"}[] O numeral três são três aplicações de `succ` a `zero`.
 
 ```lean (name := exThree)
 #check MyNat.Nat.succ
@@ -107,7 +108,7 @@ Exemplo 1. O numeral três são três aplicações de `succ` a `zero`.
 MyNat.Nat.zero.succ.succ.succ : MyNat.Nat
 ```
 
-Exemplo 2. Uma enumeração é um tipo indutivo cujos construtores não carregam dados.
+{ex "ex-inductive-types-enumeration-inductive-type-whose"}[] Uma enumeração é um tipo indutivo cujos construtores não carregam dados.
 
 ```lean (name := exAnswer)
 inductive Answer : Type where
@@ -121,7 +122,7 @@ inductive Answer : Type where
 Answer.maybe : Answer
 ```
 
-Exemplo 3. A expressão `(x + 3) * y` é um valor de `AExp`. As aplicações de construtores espelham a forma da expressão.
+{ex "ex-inductive-types-expression-value-constructor-applications"}[] A expressão `(x + 3) * y` é um valor de `AExp`. As aplicações de construtores espelham a forma da expressão.
 
 ```lean (name := exAExp)
 #check AExp.mul
@@ -132,7 +133,7 @@ Exemplo 3. A expressão `(x + 3) * y` é um valor de `AExp`. As aplicações de 
 ((AExp.var "x").add (AExp.num 3)).mul (AExp.var "y") : AExp
 ```
 
-Exemplo 4. A lista que contém 3 e 7 são duas aplicações de `cons` terminadas em `nil`.
+{ex "ex-inductive-types-list-containing-3-7"}[] A lista que contém 3 e 7 são duas aplicações de `cons` terminadas em `nil`.
 
 ```lean (name := exList)
 #check MyList.List.cons 3
@@ -142,7 +143,7 @@ Exemplo 4. A lista que contém 3 e 7 são duas aplicações de `cons` terminadas
 MyList.List.cons 3 (MyList.List.cons 7 MyList.List.nil) : MyList.List ℕ
 ```
 
-Exemplo 5. Um construtor pode receber vários argumentos. O tipo abaixo empacota dois inteiros.
+{ex "ex-inductive-types-constructor-can-take-several"}[] Um construtor pode receber vários argumentos. O tipo abaixo empacota dois inteiros.
 
 ```lean (name := exInterval)
 inductive Interval : Type where
@@ -154,7 +155,7 @@ inductive Interval : Type where
 Interval.mk 1 5 : Interval
 ```
 
-Exemplo 6. `#print` lista os construtores de um tipo.
+{ex "ex-inductive-types-lists-constructors-type"}[] `#print` lista os construtores de um tipo.
 
 ```lean (name := printList)
 #print MyList.List
@@ -167,7 +168,7 @@ MyList.List.nil : {α : Type} → MyList.List α
 MyList.List.cons : {α : Type} → α → MyList.List α → MyList.List α
 ```
 
-Exemplo 7. Aplicações de construtores se aninham a qualquer profundidade. O valor abaixo é a expressão x / 0, um trecho de sintaxe legítimo cuja avaliação as próximas seções discutem.
+{ex "ex-inductive-types-constructor-applications-nest-any"}[] Aplicações de construtores se aninham a qualquer profundidade. O valor abaixo é a expressão x / 0, um trecho de sintaxe legítimo cuja avaliação as próximas seções discutem.
 
 ```lean (name := exDiv)
 #check AExp.div (AExp.var "x") (AExp.num 0)
@@ -176,7 +177,7 @@ Exemplo 7. Aplicações de construtores se aninham a qualquer profundidade. O va
 (AExp.var "x").div (AExp.num 0) : AExp
 ```
 
-Exemplo 8. Os numerais do próprio Lean elaboram para o `Nat` do núcleo. A reconstrução e o original são tipos distintos.
+{ex "ex-inductive-types-lean-s-own-numerals"}[] Os numerais do próprio Lean elaboram para o `Nat` do núcleo. A reconstrução e o original são tipos distintos.
 
 ```lean (name := exCoreNat)
 #check (3 : ℕ)
@@ -185,7 +186,7 @@ Exemplo 8. Os numerais do próprio Lean elaboram para o `Nat` do núcleo. A reco
 3 : ℕ
 ```
 
-Exemplo 9. A lista vazia sobre ℤ exige uma anotação de tipo, já que `nil` sozinho não determina α.
+{ex "ex-inductive-types-empty-list-over-z"}[] A lista vazia sobre ℤ exige uma anotação de tipo, já que `nil` sozinho não determina α.
 
 ```lean (name := exNil)
 #check (MyList.List.nil : MyList.List ℤ)
@@ -194,7 +195,7 @@ Exemplo 9. A lista vazia sobre ℤ exige uma anotação de tipo, já que `nil` s
 MyList.List.nil : MyList.List ℤ
 ```
 
-Exemplo 10. Os quatro pontos cardeais como uma enumeração, impressos.
+{ex "ex-inductive-types-four-cardinal-directions-enumeration"}[] Os quatro pontos cardeais como uma enumeração, impressos.
 
 ```lean (name := exDirection)
 inductive Direction : Type where
@@ -254,7 +255,7 @@ def powerParam (m : ℕ) : ℕ → ℕ
 
 Os exemplos abaixo definem funções por casamento de padrões e recursão estrutural sobre ℕ e sobre `Bool`.
 
-Exemplo 1. A metade descarta um de cada par, casando a forma n + 2.
+{ex "ex-functions-pattern-matching-halving-discards-one-every"}[] A metade descarta um de cada par, casando a forma n + 2.
 
 ```lean
 def half : ℕ → ℕ
@@ -263,13 +264,13 @@ def half : ℕ → ℕ
   | n + 2 => half n + 1
 ```
 
-Exemplo 2. Uma definição não recursiva dispensa o casamento de padrões. O quadrado reaproveita `mul`.
+{ex "ex-functions-pattern-matching-non-recursive-definition-needs"}[] Uma definição não recursiva dispensa o casamento de padrões. O quadrado reaproveita `mul`.
 
 ```lean
 def square (n : ℕ) : ℕ := mul n n
 ```
 
-Exemplo 3. O teste de zero devolve um `Bool`, e as duas equações cobrem os dois construtores.
+{ex "ex-functions-pattern-matching-testing-zero-returns-two"}[] O teste de zero devolve um `Bool`, e as duas equações cobrem os dois construtores.
 
 ```lean
 def isZero : ℕ → Bool
@@ -277,7 +278,7 @@ def isZero : ℕ → Bool
   | Nat.succ _ => false
 ```
 
-Exemplo 4. O fatorial recursa sobre a forma n + 1, e a forma com parâmetro mantém a multiplicação explícita.
+{ex "ex-functions-pattern-matching-factorial-recurses-shape-n"}[] O fatorial recursa sobre a forma n + 1, e a forma com parâmetro mantém a multiplicação explícita.
 
 ```lean
 def factorial : ℕ → ℕ
@@ -285,7 +286,7 @@ def factorial : ℕ → ℕ
   | n + 1 => mul (n + 1) (factorial n)
 ```
 
-Exemplo 5. Casamento de padrões em dois argumentos ao mesmo tempo. O menor de dois números desce em ambos.
+{ex "ex-functions-pattern-matching-pattern-matching-two-arguments"}[] Casamento de padrões em dois argumentos ao mesmo tempo. O menor de dois números desce em ambos.
 
 ```lean
 def smaller : ℕ → ℕ → ℕ
@@ -294,7 +295,7 @@ def smaller : ℕ → ℕ → ℕ
   | m + 1, n + 1 => smaller m n + 1
 ```
 
-Exemplo 6. Os números de Lucas seguem a recursão de Fibonacci a partir de valores iniciais diferentes.
+{ex "ex-functions-pattern-matching-lucas-numbers-follow-fibonacci"}[] Os números de Lucas seguem a recursão de Fibonacci a partir de valores iniciais diferentes.
 
 ```lean
 def lucas : ℕ → ℕ
@@ -303,7 +304,7 @@ def lucas : ℕ → ℕ
   | n + 2 => lucas (n + 1) + lucas n
 ```
 
-Exemplo 7. A conjunção sobre `Bool` casa apenas o seu primeiro argumento.
+{ex "ex-functions-pattern-matching-conjunction-matches-only-first"}[] A conjunção sobre `Bool` casa apenas o seu primeiro argumento.
 
 ```lean
 def conj : Bool → Bool → Bool
@@ -311,7 +312,7 @@ def conj : Bool → Bool → Bool
   | false, _ => false
 ```
 
-Exemplo 8. A paridade recursa de dois em dois, então a chamada recursiva descasca dois construtores.
+{ex "ex-functions-pattern-matching-evenness-recurses-two-so"}[] A paridade recursa de dois em dois, então a chamada recursiva descasca dois construtores.
 
 ```lean
 def evenb : ℕ → Bool
@@ -320,7 +321,7 @@ def evenb : ℕ → Bool
   | n + 2 => evenb n
 ```
 
-Exemplo 9. A soma dos n primeiros números recursa sobre n + 1.
+{ex "ex-functions-pattern-matching-sum-first-n-numbers"}[] A soma dos n primeiros números recursa sobre n + 1.
 
 ```lean
 def sumTo : ℕ → ℕ
@@ -328,7 +329,7 @@ def sumTo : ℕ → ℕ
   | n + 1 => (n + 1) + sumTo n
 ```
 
-Exemplo 10. As potências de dois como uma instância da recursão de `power`, com a base fixa.
+{ex "ex-functions-pattern-matching-powers-two-instance-recursion"}[] As potências de dois como uma instância da recursão de `power`, com a base fixa.
 
 ```lean
 def twoPow : ℕ → ℕ
@@ -338,7 +339,7 @@ def twoPow : ℕ → ℕ
 
 # Polimorfismo e Argumentos Implícitos
 
-Uma definição pode receber um tipo como argumento. A função abaixo concatena duas listas sobre um tipo α qualquer, dado explicitamente em cada chamada, e o `_` de Lean pede ao elaborador que o infira. O elaborador é a etapa de Lean que transforma o texto que escrevemos em um termo da linguagem núcleo, e a inferência é parte do seu trabalho, junto com a resolução de instâncias de classes de tipos e a execução de táticas. A {figref "fig-lean-components"}[Figura 1.1] o situa entre os demais componentes. Escrever `_` afirma, portanto, que o argumento está determinado pelo resto da chamada, e o elaborador o recupera por unificação.
+Uma definição pode receber um tipo como argumento. A função abaixo concatena duas listas sobre um tipo α qualquer, dado explicitamente em cada chamada, e o `_` de Lean pede ao elaborador que o infira. O elaborador é a etapa de Lean que transforma o texto que escrevemos em um termo da linguagem núcleo, e a inferência é parte do seu trabalho, junto com a resolução de instâncias de classes de tipos e a execução de táticas. A {numref}[fig-lean-components] o situa entre os demais componentes. Escrever `_` afirma, portanto, que o argumento está determinado pelo resto da chamada, e o elaborador o recupera por unificação.
 
 ```lean
 def append (α : Type) : List α → List α → List α
@@ -379,7 +380,7 @@ def reverse {α : Type} : List α → List α
 
 Os exemplos abaixo comparam argumentos de tipo explícitos e implícitos e definem funções polimórficas sobre listas e pares.
 
-Exemplo 1. Com um argumento de tipo explícito, o tipo aparece na assinatura como um argumento comum.
+{ex "ex-polymorphism-implicit-arguments-explicit-type-argument-type"}[] Com um argumento de tipo explícito, o tipo aparece na assinatura como um argumento comum.
 
 ```lean (name := checkAppendPoly)
 #check @append
@@ -388,7 +389,7 @@ Exemplo 1. Com um argumento de tipo explícito, o tipo aparece na assinatura com
 append : (α : Type) → List α → List α → List α
 ```
 
-Exemplo 2. As chaves marcam o argumento como implícito, e `@` o exibe.
+{ex "ex-polymorphism-implicit-arguments-curly-braces-mark-argument"}[] As chaves marcam o argumento como implícito, e `@` o exibe.
 
 ```lean (name := checkAppendPretty)
 #check @appendPretty
@@ -397,7 +398,7 @@ Exemplo 2. As chaves marcam o argumento como implícito, e `@` o exibe.
 @appendPretty : {α : Type} → List α → List α → List α
 ```
 
-Exemplo 3. Na chamada, o argumento implícito vem do tipo das listas.
+{ex "ex-polymorphism-implicit-arguments-call-implicit-argument-comes"}[] Na chamada, o argumento implícito vem do tipo das listas.
 
 ```lean (name := evalAppendNat)
 #eval appendPretty [1, 2] [3]
@@ -406,7 +407,7 @@ Exemplo 3. Na chamada, o argumento implícito vem do tipo das listas.
 [1, 2, 3]
 ```
 
-Exemplo 4. A mesma definição serve a outro tipo sem mudança alguma.
+{ex "ex-polymorphism-implicit-arguments-same-definition-serves-another"}[] A mesma definição serve a outro tipo sem mudança alguma.
 
 ```lean (name := evalAppendStr)
 #eval appendImplicit ["a"] ["b"]
@@ -415,7 +416,7 @@ Exemplo 4. A mesma definição serve a outro tipo sem mudança alguma.
 ["a", "b"]
 ```
 
-Exemplo 5. O prefixo `@` restaura a forma explícita, útil quando a inferência não tem com o que trabalhar.
+{ex "ex-polymorphism-implicit-arguments-prefix-restores-explicit-form"}[] O prefixo `@` restaura a forma explícita, útil quando a inferência não tem com o que trabalhar.
 
 ```lean (name := evalAppendAt)
 #eval @appendImplicit ℕ [1] [2]
@@ -424,7 +425,7 @@ Exemplo 5. O prefixo `@` restaura a forma explícita, útil quando a inferência
 [1, 2]
 ```
 
-Exemplo 6. A função identidade é polimórfica e devolve o seu argumento inalterado.
+{ex "ex-polymorphism-implicit-arguments-identity-function-polymorphic-returns"}[] A função identidade é polimórfica e devolve o seu argumento inalterado.
 
 ```lean (name := checkIdPoly)
 def idPoly {α : Type} (x : α) : α := x
@@ -435,7 +436,7 @@ def idPoly {α : Type} (x : α) : α := x
 @idPoly : {α : Type} → α → α
 ```
 
-Exemplo 7. Construir uma lista de um elemento funciona em todo tipo.
+{ex "ex-polymorphism-implicit-arguments-building-one-element-list"}[] Construir uma lista de um elemento funciona em todo tipo.
 
 ```lean (name := evalSingleton)
 def singletonList {α : Type} (x : α) : List α := [x]
@@ -446,7 +447,7 @@ def singletonList {α : Type} (x : α) : List α := [x]
 [5]
 ```
 
-Exemplo 8. Uma definição pode receber dois argumentos de tipo. A troca das componentes de um par as intercambia.
+{ex "ex-polymorphism-implicit-arguments-definition-can-take-two"}[] Uma definição pode receber dois argumentos de tipo. A troca das componentes de um par as intercambia.
 
 ```lean (name := evalSwap)
 def swapPair {α β : Type} : α × β → β × α
@@ -458,7 +459,7 @@ def swapPair {α β : Type} : α × β → β × α
 ("x", 1)
 ```
 
-Exemplo 9. O comprimento de uma lista ignora os elementos, então o argumento de tipo não aparece no resultado.
+{ex "ex-polymorphism-implicit-arguments-length-list-ignores-elements"}[] O comprimento de uma lista ignora os elementos, então o argumento de tipo não aparece no resultado.
 
 ```lean (name := evalLengthPoly)
 def lengthPoly {α : Type} : List α → ℕ
@@ -471,7 +472,7 @@ def lengthPoly {α : Type} : List α → ℕ
 3
 ```
 
-Exemplo 10. Uma lista vazia não carrega elemento algum do qual inferir, e uma anotação de tipo fixa o argumento implícito.
+{ex "ex-polymorphism-implicit-arguments-empty-list-carries-no"}[] Uma lista vazia não carrega elemento algum do qual inferir, e uma anotação de tipo fixa o argumento implícito.
 
 ```lean (name := checkNilAscribed)
 #check ([] : List ℕ)
@@ -533,7 +534,7 @@ example : eval (fun _ => 7)
 
 Os exemplos abaixo executam as funções desta aula e examinam a aritmética que `eval` herda de ℤ.
 
-Exemplo 1. O décimo número de Fibonacci, computado pelo compilador.
+{ex "ex-evaluation-tenth-fibonacci-number-computed"}[] O décimo número de Fibonacci, computado pelo compilador.
 
 ```lean (name := evalFib)
 #eval fib 10
@@ -542,7 +543,7 @@ Exemplo 1. O décimo número de Fibonacci, computado pelo compilador.
 55
 ```
 
-Exemplo 2. O fatorial de cinco, pela recursão de `mul` e `add`.
+{ex "ex-evaluation-factorial-five-through-recursion"}[] O fatorial de cinco, pela recursão de `mul` e `add`.
 
 ```lean (name := evalFactorial)
 #eval factorial 5
@@ -551,7 +552,7 @@ Exemplo 2. O fatorial de cinco, pela recursão de `mul` e `add`.
 120
 ```
 
-Exemplo 3. Dois elevado a dez, pela recursão de `power`.
+{ex "ex-evaluation-two-tenth-through-recursion"}[] Dois elevado a dez, pela recursão de `power`.
 
 ```lean (name := evalPower)
 #eval power 2 10
@@ -560,7 +561,7 @@ Exemplo 3. Dois elevado a dez, pela recursão de `power`.
 1024
 ```
 
-Exemplo 4. `#reduce` normaliza no kernel e chega ao mesmo valor.
+{ex "ex-evaluation-normalizes-kernel-reaches-same"}[] `#reduce` normaliza no kernel e chega ao mesmo valor.
 
 ```lean (name := reduceHalf)
 #reduce half 7
@@ -569,7 +570,7 @@ Exemplo 4. `#reduce` normaliza no kernel e chega ao mesmo valor.
 3
 ```
 
-Exemplo 5. Uma função em `Bool` avalia para um valor booleano.
+{ex "ex-evaluation-function-evaluates-boolean-value"}[] Uma função em `Bool` avalia para um valor booleano.
 
 ```lean (name := evalEvenb)
 #eval evenb 10
@@ -578,7 +579,7 @@ Exemplo 5. Uma função em `Bool` avalia para um valor booleano.
 true
 ```
 
-Exemplo 6. A avaliação executa funções polimórficas também.
+{ex "ex-evaluation-evaluation-runs-polymorphic-functions"}[] A avaliação executa funções polimórficas também.
 
 ```lean (name := evalReverse)
 #eval reverse [1, 2, 3]
@@ -587,7 +588,7 @@ Exemplo 6. A avaliação executa funções polimórficas também.
 [3, 2, 1]
 ```
 
-Exemplo 7. O ambiente fornece o valor de cada variável, e o resto é aritmética.
+{ex "ex-evaluation-environment-supplies-value-each"}[] O ambiente fornece o valor de cada variável, e o resto é aritmética.
 
 ```lean (name := evalEnvX)
 #eval eval (fun x => if x = "x" then 3 else 0)
@@ -597,7 +598,7 @@ Exemplo 7. O ambiente fornece o valor de cada variável, e o resto é aritmétic
 7
 ```
 
-Exemplo 8. A divisão inteira trunca, então 5 / 2 avalia para 2.
+{ex "ex-evaluation-integer-division-truncates-so"}[] A divisão inteira trunca, então 5 / 2 avalia para 2.
 
 ```lean (name := evalDivTrunc)
 #eval eval (fun _ => 0)
@@ -607,7 +608,7 @@ Exemplo 8. A divisão inteira trunca, então 5 / 2 avalia para 2.
 2
 ```
 
-Exemplo 9. A divisão sobre ℤ segue a convenção euclidiana, cujo resto nunca é negativo, então −7 / 2 avalia para −4, e não para −3.
+{ex "ex-evaluation-division-z-follows-euclidean"}[] A divisão sobre ℤ segue a convenção euclidiana, cujo resto nunca é negativo, então −7 / 2 avalia para −4, e não para −3.
 
 ```lean (name := evalDivNeg)
 #eval eval (fun _ => 0)
@@ -617,7 +618,7 @@ Exemplo 9. A divisão sobre ℤ segue a convenção euclidiana, cujo resto nunca
 -4
 ```
 
-Exemplo 10. Cada avaliação acima serve também como prova, já que `rfl` fecha uma equação cujos lados computam para o mesmo valor.
+{ex "ex-evaluation-every-evaluation-above-also"}[] Cada avaliação acima serve também como prova, já que `rfl` fecha uma equação cujos lados computam para o mesmo valor.
 
 ```lean
 example : sumTo 10 = 55 := rfl
@@ -674,7 +675,7 @@ axiom a_less_b : a < b
 
 Os exemplos abaixo releem os enunciados, separam o que a computação resolve do que ela não resolve e rastreiam de quais axiomas uma prova depende. O espaço de nomes `MoreTheorems` mantém os nomes novos longe dos de Mathlib.
 
-Exemplo 1. Um enunciado com parâmetros nomeados é uma proposição universalmente quantificada.
+{ex "ex-theorem-statements-statement-named-binders-universally"}[] Um enunciado com parâmetros nomeados é uma proposição universalmente quantificada.
 
 ```lean (name := checkAddComm)
 #check @SorryTheorems.add_comm
@@ -683,7 +684,7 @@ Exemplo 1. Um enunciado com parâmetros nomeados é uma proposição universalme
 SorryTheorems.add_comm : ∀ (m n : ℕ), add m n = add n m
 ```
 
-Exemplo 2. Um parâmetro implícito aparece entre chaves, e o enunciado quantifica também sobre o tipo.
+{ex "ex-theorem-statements-implicit-binder-appears-braces"}[] Um parâmetro implícito aparece entre chaves, e o enunciado quantifica também sobre o tipo.
 
 ```lean (name := checkRevRev)
 #check @SorryTheorems.reverse_reverse
@@ -692,7 +693,7 @@ Exemplo 2. Um parâmetro implícito aparece entre chaves, e o enunciado quantifi
 @SorryTheorems.reverse_reverse : ∀ {α : Type} (xs : List α), reverse (reverse xs) = xs
 ```
 
-Exemplo 3. O comando `#print axioms` informa em que uma prova se apoia, e `sorry` deixa o rastro `sorryAx`.
+{ex "ex-theorem-statements-command-reports-what-proof"}[] O comando `#print axioms` informa em que uma prova se apoia, e `sorry` deixa o rastro `sorryAx`.
 
 ```lean (name := axiomsAddComm)
 #print axioms SorryTheorems.add_comm
@@ -701,7 +702,7 @@ Exemplo 3. O comando `#print axioms` informa em que uma prova se apoia, e `sorry
 'SorryTheorems.add_comm' depends on axioms: [sorryAx]
 ```
 
-Exemplo 4. Uma lei que a computação resolve dispensa indução. O zero à direita casa a primeira equação de `add`, então `rfl` a prova para todo n.
+{ex "ex-theorem-statements-law-computation-settles-needs"}[] Uma lei que a computação resolve dispensa indução. O zero à direita casa a primeira equação de `add`, então `rfl` a prova para todo n.
 
 ```lean (name := axiomsAddZero)
 namespace MoreTheorems
@@ -716,7 +717,7 @@ end MoreTheorems
 'MoreTheorems.add_zero_right' does not depend on any axioms
 ```
 
-Exemplo 5. O mesmo vale para a primeira equação de `eval`, qualquer que seja o ambiente.
+{ex "ex-theorem-statements-same-holds-first-equation"}[] O mesmo vale para a primeira equação de `eval`, qualquer que seja o ambiente.
 
 ```lean (name := checkEvalNum)
 namespace MoreTheorems
@@ -732,7 +733,7 @@ end MoreTheorems
 MoreTheorems.eval_num : ∀ (env : String → ℤ) (i : ℤ), eval env (AExp.num i) = i
 ```
 
-Exemplo 6. Uma equação fechada merece um nome tanto quanto uma lei geral.
+{ex "ex-theorem-statements-ground-equation-deserves-name"}[] Uma equação fechada merece um nome tanto quanto uma lei geral.
 
 ```lean
 namespace MoreTheorems
@@ -744,7 +745,7 @@ theorem reverse_nil : reverse ([] : List ℕ) = [] := rfl
 end MoreTheorems
 ```
 
-Exemplo 7. Ligadores à esquerda dos dois-pontos e um ∀ explícito enunciam a mesma proposição.
+{ex "ex-theorem-statements-binders-left-colon-explicit"}[] Ligadores à esquerda dos dois-pontos e um ∀ explícito enunciam a mesma proposição.
 
 ```lean (name := checkAllAddZero)
 namespace MoreTheorems
@@ -760,7 +761,7 @@ end MoreTheorems
 MoreTheorems.all_add_zero : ∀ (n : ℕ), add n 0 = n
 ```
 
-Exemplo 8. Aplicar um teorema enunciado a argumentos instancia o enunciado, exista ou não uma prova.
+{ex "ex-theorem-statements-applying-stated-theorem-arguments"}[] Aplicar um teorema enunciado a argumentos instancia o enunciado, exista ou não uma prova.
 
 ```lean (name := checkAddCommInst)
 #check SorryTheorems.add_comm 2 3
@@ -769,7 +770,7 @@ Exemplo 8. Aplicar um teorema enunciado a argumentos instancia o enunciado, exis
 SorryTheorems.add_comm 2 3 : add 2 3 = add 3 2
 ```
 
-Exemplo 9. `#print axioms` mostra tudo o que uma prova usa. A prova abaixo se apoia no axioma desta seção e em `propext`, usado pelo lema de Mathlib.
+{ex "ex-theorem-statements-whatever-proof-uses-shows"}[] `#print axioms` mostra tudo o que uma prova usa. A prova abaixo se apoia no axioma desta seção e em `propext`, usado pelo lema de Mathlib.
 
 ```lean (name := axiomsANeB)
 namespace MoreTheorems
@@ -784,7 +785,7 @@ end MoreTheorems
 'MoreTheorems.a_ne_b' depends on axioms: [a_less_b, propext]
 ```
 
-Exemplo 10. As variáveis bloqueiam a computação, então a lei abaixo espera pela indução estrutural e carrega `sorryAx` enquanto isso.
+{ex "ex-theorem-statements-variables-block-computation-so"}[] As variáveis bloqueiam a computação, então a lei abaixo espera pela indução estrutural e carrega `sorryAx` enquanto isso.
 
 ```lean (name := axiomsHalfDouble)
 namespace MoreTheorems
@@ -948,7 +949,7 @@ enunciado, conforme cada exercício pede. As definições
 acima vêm da aula.
 ```
 
-Exercício 1. Defina a função predecessor, com `pred 0 = 0`.
+{exercise "exr-define-predecessor-function"}[] Defina a função predecessor, com `pred 0 = 0`.
 
 ```savedLean -keep
 def pred : ℕ → ℕ := sorry
@@ -956,7 +957,7 @@ def pred : ℕ → ℕ := sorry
 -- Esperado: #eval pred 5 dá 4, #eval pred 0 dá 0.
 ```
 
-Exercício 2. Defina a duplicação por recursão, sem `*`, e prove a equação fechada por computação.
+{exercise "exr-define-doubling-recursion-without"}[] Defina a duplicação por recursão, sem `*`, e prove a equação fechada por computação.
 
 ```savedLean -keep
 def double : ℕ → ℕ := sorry
@@ -964,7 +965,7 @@ def double : ℕ → ℕ := sorry
 theorem double_five : double 5 = 10 := sorry
 ```
 
-Exercício 3. Defina o ambiente que leva "x" a 3, "y" a 17 e todo outro nome a 201, e prove as duas avaliações por computação.
+{exercise "exr-define-environment-maps-x"}[] Defina o ambiente que leva "x" a 3, "y" a 17 e todo outro nome a 201, e prove as duas avaliações por computação.
 
 ```savedLean -keep
 def someEnv : String → ℤ := sorry
@@ -980,7 +981,7 @@ theorem eval_div_zero :
   sorry
 ```
 
-Exercício 4. Defina a soma de uma lista de números naturais, e prove a equação fechada por computação.
+{exercise "exr-define-sum-list-natural"}[] Defina a soma de uma lista de números naturais, e prove a equação fechada por computação.
 
 ```savedLean -keep
 def sumList : List ℕ → ℕ := sorry
@@ -988,7 +989,7 @@ def sumList : List ℕ → ℕ := sorry
 theorem sumList_example : sumList [1, 2, 3] = 6 := sorry
 ```
 
-Exercício 5. Defina o comprimento de uma lista, com argumento de tipo implícito, e prove a equação fechada por computação.
+{exercise "exr-define-length-list-implicit"}[] Defina o comprimento de uma lista, com argumento de tipo implícito, e prove a equação fechada por computação.
 
 ```savedLean -keep
 def length {α : Type} : List α → ℕ := sorry
@@ -996,7 +997,7 @@ def length {α : Type} : List α → ℕ := sorry
 theorem length_three : length [1, 2, 3] = 3 := sorry
 ```
 
-Exercício 6. Defina `map`, que aplica uma função a cada elemento, e enuncie, com `sorry`, as suas duas leis funtoriais. Mapear a função identidade não muda nada, e mapear uma composição equivale a compor os mapeamentos.
+{exercise "exr-define-which-applies-function"}[] Defina `map`, que aplica uma função a cada elemento, e enuncie, com `sorry`, as suas duas leis funtoriais. Mapear a função identidade não muda nada, e mapear uma composição equivale a compor os mapeamentos.
 
 ```savedLean -keep
 def map {α β : Type} (f : α → β) : List α → List β :=
@@ -1009,7 +1010,7 @@ def map {α β : Type} (f : α → β) : List α → List β :=
 --             composição das duas sobre xs.
 ```
 
-Exercício 7. Defina `flatten`, que concatena uma lista de listas com `appendPretty`, e enuncie, com `sorry`, que o comprimento do resultado é a soma dos comprimentos das listas internas, usando `length`, `map` e `sumList` dos exercícios acima.
+{exercise "exr-define-which-concatenates-list"}[] Defina `flatten`, que concatena uma lista de listas com `appendPretty`, e enuncie, com `sorry`, que o comprimento do resultado é a soma dos comprimentos das listas internas, usando `length`, `map` e `sumList` dos exercícios acima.
 
 ```savedLean -keep
 def flatten {α : Type} : List (List α) → List α := sorry
@@ -1019,7 +1020,7 @@ def flatten {α : Type} : List (List α) → List α := sorry
 -- sumList (map length xss).
 ```
 
-Exercício 8. Complete `simplify`, que remove as somas com 0, os produtos por 1 e as divisões por 1, seguindo os casos dados, e enuncie, com `sorry`, a sua correção. Simplificar preserva o valor sob todo ambiente.
+{exercise "exr-complete-which-removes-additions"}[] Complete `simplify`, que remove as somas com 0, os produtos por 1 e as divisões por 1, seguindo os casos dados, e enuncie, com `sorry`, a sua correção. Simplificar preserva o valor sob todo ambiente.
 
 ```savedLean -keep
 def simplify : AExp → AExp
@@ -1037,7 +1038,7 @@ def simplify : AExp → AExp
 -- (simplify e) é igual a eval env e.
 ```
 
-Exercício 9. Defina o tamanho de uma expressão, contando cada construtor, e a sua profundidade, contando a maior cadeia de construtores, e enuncie, com `sorry`, que a profundidade nunca excede o tamanho.
+{exercise "exr-define-size-expression-counting"}[] Defina o tamanho de uma expressão, contando cada construtor, e a sua profundidade, contando a maior cadeia de construtores, e enuncie, com `sorry`, que a profundidade nunca excede o tamanho.
 
 ```savedLean -keep
 def size : AExp → ℕ := sorry
@@ -1048,7 +1049,7 @@ theorem depth_le_size (e : AExp) :
     depth e ≤ size e := sorry
 ```
 
-Exercício 10. Defina `mirror`, que troca os operandos de cada soma e de cada produto e deixa o resto inalterado, e enuncie, com `sorry`, que espelhar preserva o valor sob todo ambiente.
+{exercise "exr-define-which-swaps-operands"}[] Defina `mirror`, que troca os operandos de cada soma e de cada produto e deixa o resto inalterado, e enuncie, com `sorry`, que espelhar preserva o valor sob todo ambiente.
 
 ```savedLean -keep
 def mirror : AExp → AExp := sorry

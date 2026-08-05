@@ -1,7 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
-import Lectures.Meta.Figure
+import Lectures.Meta.Label
 import Lectures.Meta.Footnote
 import Lectures.Papers
 
@@ -28,37 +28,47 @@ This lecture motivates formal software verification and reviews propositional lo
 
 # Why Verify Software Formally?
 
-Software controls aircraft, medical devices, financial systems, and communication networks. Errors in such systems cost money and lives. The standard way to find errors is testing, and testing examines finitely many executions of a program that admits infinitely many. Dijkstra stated the limitation precisely.{margin}[E. W. Dijkstra, *Notes on Structured Programming*, EWD249, Technological University Eindhoven, 1970.]
+Software controls aircraft, medical devices, financial systems, and communication networks. Errors in such systems cost money and lives. The standard way to find errors is testing, and testing examines finitely many executions of a program that admits infinitely many. Dijkstra stated the limitation precisely.{margin}[E. W. Dijkstra, [*Notes on Structured Programming*](https://www.cs.utexas.edu/~EWD/ewd02xx/EWD249.PDF), EWD249, Technological University Eindhoven, 1970.]
 
 > Program testing can be used to show the presence of bugs, but never to show their absence!
 
 Formal verification takes the complementary route. We state a property of a program as a mathematical proposition and prove that every execution satisfies it. The proof covers all inputs at once, which no finite test suite achieves.
 
-Proofs about real programs grow large, so we delegate their checking to a machine. A *proof assistant* is a program that checks every step of a proof with respect to the rules of a formal logic, and that helps the user construct the proof interactively. Lean, Rocq (formerly Coq), Isabelle/HOL, and Agda are proof assistants in current use. Landmark results include the verification of the seL4 operating-system microkernel{margin}[G. Klein et al., *seL4: Formal Verification of an OS Kernel*, Proceedings of SOSP 2009, pp. 207–220.] and of the CompCert optimizing C compiler.{margin}[X. Leroy, *Formal Verification of a Realistic Compiler*, Communications of the ACM 52(7), 2009, pp. 107–115.]
+Proofs about real programs grow large, so we delegate their checking to a machine. A *proof assistant* is a program that checks every step of a proof with respect to the rules of a formal logic, and that helps the user construct the proof interactively. Lean, Rocq (formerly Coq), Isabelle/HOL, and Agda are proof assistants in current use. Landmark results include the verification of the seL4 operating-system microkernel{margin}[G. Klein et al., [*seL4: Formal Verification of an OS Kernel*](https://trustworthy.systems/publications/nictaabstracts/Klein_EHACDEEKNSTW_09.abstract), Proceedings of SOSP 2009, pp. 207–220.] and of the CompCert optimizing C compiler.{margin}[X. Leroy, [*Formal Verification of a Realistic Compiler*](https://xavierleroy.org/publi/compcert-CACM.pdf), Communications of the ACM 52(7), 2009, pp. 107–115.]
 
 Language models now write a growing share of code. A model produces plausible text, and plausible is not the same as correct. Generated code can invoke functions that do not exist, handle only the cases that its prompt suggests, or drift from the stated requirement in ways that survive code review. The literature calls this failure mode hallucination.
 
 Formal verification, in particular when automated, changes how we can trust such code.{margin}[L. de Moura, [*The Lean Programming Language and Theorem Prover*](https://leodemoura.github.io/static/etaps2026/), ETAPS 2026.] When generated code arrives with a machine-checked proof that it satisfies its specification, the proof assistant checks the proof independently of how the code came to be, so hallucinated or simply wrong code cannot pass. The burden of correctness moves from reading the code to writing the right specification. The techniques of this course apply unchanged to generated code, and the automation of the final lectures, with the `mvcgen` tactic, points toward verification at the pace of code generation.
 
-In this course we use [Lean](https://lean-lang.org). Lean is at once a programming language and a proof assistant, so we can write a program and prove its properties in the same system. Lectures 1 and 2 review classical logic while introducing Lean's proof language, following HTPIwL. Lectures 3 to 8 follow [LoVe](https://github.com/lean-forward/logical_verification_2026){fnref "lovelib"}[1] through interactive proving, functional programming, and inductive predicates. The final block treats the semantics of an imperative language, Hoare logic, and practical verification with the `mvcgen` tactic.
+In this course we use [Lean](https://lean-lang.org). Lean is at once a programming language and a proof assistant, so we can write a program and prove its properties in the same system. Lectures 1 and 2 review classical logic while introducing Lean's proof language, following HTPIwL. Lectures 3 to 8 follow [LoVe](https://github.com/lean-forward/logical_verification_2026){fnref}[lovelib] through interactive proving, functional programming, and inductive predicates. The final block treats the semantics of an imperative language, Hoare logic, and practical verification with the `mvcgen` tactic.
 
-{figref "fig-lean-components"}[Figure 1.1] shows the components of Lean that the course exercises. The parser reads the text of a `.lean` file into syntax trees, and the macro expander unfolds the notations that libraries and user code define. The elaborator turns those trees into terms of the core language, and it does the work that the surface syntax leaves implicit, inferring omitted arguments, resolving type class instances, and running tactics. Tactics are themselves Lean programs, and they build terms rather than certificates of their own correctness. The kernel rechecks the finished term with respect to the rules of dependent type theory, so a tactic that produces a wrong term fails here, and only the kernel belongs to the trusted base. The compiler takes the same terms to native code, which is what `#eval` runs. The libraries supply notations, instances and lemmas to every stage above the kernel.
+{numref}[fig-lean-components] shows the components of Lean that the course exercises. The parser reads the text of a `.lean` file into syntax trees, and the macro expander unfolds the notations that libraries and user code define. The elaborator turns those trees into terms of the core language, and it does the work that the surface syntax leaves implicit, inferring omitted arguments, resolving type class instances, and running tactics. Tactics are themselves Lean programs, and they build terms rather than certificates of their own correctness. The kernel rechecks the finished term with respect to the rules of dependent type theory, so a tactic that produces a wrong term fails here, and only the kernel belongs to the trusted base. The compiler takes the same terms to native code, which is what `#eval` runs. The libraries supply notations, instances and lemmas to every stage above the kernel.
 
-{figureAnchor "fig-lean-components"}[![Main components of Lean: a .lean file goes through the parser and macro expander to the elaborator, which draws on tactics and libraries and produces core terms; the kernel checks those terms and the compiler turns them into native code](lean-components.svg)]
+![Main components of Lean: a .lean file goes through the parser and macro expander to the elaborator, which draws on tactics and libraries and produces core terms; the kernel checks those terms and the compiler turns them into native code](lean-components.svg)
 
-*Figure 1.1. The main components of Lean.*
+{figcap "fig-lean-components"}[The main components of Lean.]
 
-These components serve any Lean development, and the course uses them for one specific end. The imperative language of the final lectures, its semantics and its Hoare logic are ordinary Lean definitions, the verification conditions are goals that tactics discharge, and the kernel checks the result as it checks any other proof. The objective of this course is to show how to use Lean to verify imperative programs formally, and {figref "fig-verifier-architecture"}[Figure 1.2] describes an architecture for it.
+These components serve any Lean development, and the course uses them for one specific end. The imperative language of the final lectures, its semantics and its Hoare logic are ordinary Lean definitions, the verification conditions are goals{fnref}[goal] that tactics discharge, and the kernel checks the result as it checks any other proof. The objective of this course is to show how to use Lean to verify imperative programs formally, and {numref}[fig-verifier-architecture] describes an architecture for it.
 
 A program and its specification form a Hoare triple. The big-step operational semantics gives the triple its meaning. The `mvcgen` tactic generates the verification conditions, which are purely logical goals. Tactic proofs discharge them, and the Lean kernel checks every proof.
 
-{figureAnchor "fig-verifier-architecture"}[![Architecture of a program verifier in Lean: a program and a specification form a Hoare triple, whose meaning comes from the big-step semantics; the mvcgen tactic generates verification conditions, tactic proofs discharge them, and the Lean kernel checks every proof](verifier-architecture.svg)]
+![Architecture of a program verifier in Lean: a program and a specification form a Hoare triple, whose meaning comes from the big-step semantics; the mvcgen tactic generates verification conditions, tactic proofs discharge them, and the Lean kernel checks every proof](verifier-architecture.svg)
 
-*Figure 1.2. Architecture of a program verifier in Lean.*
+{figcap "fig-verifier-architecture"}[Architecture of a program verifier in Lean.]
 
 :::footnotes
 
-{fnAnchor "lovelib"}[1.] LoVe collects the Lean files that accompany the *Hitchhiker's Guide to Logical Verification*, 2026 edition. Its support library `LoVelib` is not published as a Lake package, so these notes keep a copy of it under `Lectures/LoVe/`, together with its BSD 3-clause licence. The copy is verbatim except for the attribute `@[reducible]` on `Set.PartialOrder`, which the definition linter of Lean v4.32.0 requires and the original, written for Lean v4.24.0, does not carry.
+{fnAnchor "lovelib"}[] LoVe collects the Lean files that accompany the *Hitchhiker's Guide to Logical Verification*, 2026 edition. Its support library `LoVelib` is not published as a Lake package, so these notes keep a copy of it under `Lectures/LoVe/`, together with its BSD 3-clause licence. The copy is verbatim except for the attribute `@[reducible]` on `Set.PartialOrder`, which the definition linter of Lean v4.32.0 requires and the original, written for Lean v4.24.0, does not carry.
+
+{fnAnchor "goal"}[] A *goal* is what remains to be proved at a point in a proof. Lean displays it as the hypotheses in scope, one per line, followed by the symbol ⊢ and the proposition to prove. Every tactic either closes a goal or replaces it with simpler ones, and the proof ends when none remain. Proving `Q ∧ P` from a hypothesis `h : P ∧ Q`, for instance, starts from the goal
+
+```
+P Q : Prop
+h : P ∧ Q
+⊢ Q ∧ P
+```
+
+which the tactic `exact ⟨h.right, h.left⟩` closes. {secref}[tactics] returns to the subject in detail.
 
 :::
 
@@ -79,7 +89,7 @@ We write P, Q, R for *propositional variables*, which stand for arbitrary propos
 
 # Connectives
 
-Connectives build compound propositions from simpler ones, and {tabref "tbl-connectives"}[Table 1.3.1] names the five.
+Connectives build compound propositions from simpler ones, and {numref}[tbl-connectives] names the five.
 
 :::table +header
 *
@@ -108,9 +118,9 @@ Connectives build compound propositions from simpler ones, and {tabref "tbl-conn
   * P if and only if Q
 :::
 
-*{tableAnchor "tbl-connectives"}[Table 1.3.1. The five connectives, with their symbols and readings.]*
+{tabcap "tbl-connectives"}[The five connectives, with their symbols and readings.]
 
-The truth value of a compound proposition depends only on the truth values of its parts. {tabref "tbl-truth-values"}[Table 1.3.2] defines the five connectives, with T for true and F for false.
+The truth value of a compound proposition depends only on the truth values of its parts. {numref}[tbl-truth-values] defines the five connectives, with T for true and F for false.
 
 :::table +header
 *
@@ -155,15 +165,17 @@ The truth value of a compound proposition depends only on the truth values of it
   * T
 :::
 
-*{tableAnchor "tbl-truth-values"}[Table 1.3.2. The truth values of the five connectives.]*
+{tabcap "tbl-truth-values"}[The truth values of the five connectives.]
 
-Two rows of the implication column deserve attention. When P is false, P → Q is true regardless of Q. An implication claims nothing about cases where its antecedent fails, so those cases cannot refute it. Disjunction is *inclusive*, so P ∨ Q is true when both disjuncts are.
+Two rows of the implication column deserve attention. When P is false, P → Q is true regardless of Q. An implication claims nothing about cases where its antecedent fails, so those cases cannot refute it.
+
+The disjunction column deserves the same attention. Disjunction is *inclusive*, so P ∨ Q is true when both disjuncts are.
 
 # Logical Equivalence
 
 A *valuation* assigns a truth value to each propositional variable. A proposition is a *tautology* when it is true under every valuation. Two propositions A and B are *logically equivalent*, written A ≡ B, when they have the same truth value under every valuation, that is, when A ↔ B is a tautology.
 
-The classical equivalences of {tabref "tbl-equivalences"}[Table 1.4.1] appear constantly in proofs.
+The classical equivalences of {numref}[tbl-equivalences] appear constantly in proofs.
 
 :::table +header
 *
@@ -186,9 +198,9 @@ The classical equivalences of {tabref "tbl-equivalences"}[Table 1.4.1] appear co
   * P → Q ≡ ¬P ∨ Q
 :::
 
-*{tableAnchor "tbl-equivalences"}[Table 1.4.1. The classical equivalences.]*
+{tabcap "tbl-equivalences"}[The classical equivalences.]
 
-A truth table verifies each equivalence. For the second De Morgan law, the columns for ¬(P ∨ Q) and ¬P ∧ ¬Q agree on all four valuations, as {tabref "tbl-demorgan-check"}[Table 1.4.2] shows.
+A truth table verifies each equivalence. For the second De Morgan law, the columns for ¬(P ∨ Q) and ¬P ∧ ¬Q agree on all four valuations, as {numref}[tbl-demorgan-check] shows.
 
 :::table +header
 *
@@ -233,13 +245,13 @@ A truth table verifies each equivalence. For the second De Morgan law, the colum
   * T
 :::
 
-*{tableAnchor "tbl-demorgan-check"}[Table 1.4.2. Truth table for the second De Morgan law.]*
+{tabcap "tbl-demorgan-check"}[Truth table for the second De Morgan law.]
 
 ## Examples
 
 Each equivalence below is verified by a truth table. Two propositions are equivalent when their final columns agree in every row, and a tautology has a column that is true in every row.
 
-Example 1. Double negation returns the original proposition, verified in {tabref "tbl-double-negation"}[Table 1.4.3].
+{ex "ex-logical-equivalence-double-negation-returns-original"}[] Double negation returns the original proposition, verified in {numref}[tbl-double-negation].
 
 :::table +header
 *
@@ -256,9 +268,9 @@ Example 1. Double negation returns the original proposition, verified in {tabref
   * F
 :::
 
-*{tableAnchor "tbl-double-negation"}[Table 1.4.3. Truth table for ¬¬P ≡ P.]*
+{tabcap "tbl-double-negation"}[Truth table for ¬¬P ≡ P.]
 
-Example 2. The excluded middle P ∨ ¬P is a tautology, verified in {tabref "tbl-excluded-middle"}[Table 1.4.4].
+{ex "ex-logical-equivalence-excluded-middle-p-p"}[] The excluded middle P ∨ ¬P is a tautology, verified in {numref}[tbl-excluded-middle].
 
 :::table +header
 *
@@ -275,9 +287,9 @@ Example 2. The excluded middle P ∨ ¬P is a tautology, verified in {tabref "tb
   * T
 :::
 
-*{tableAnchor "tbl-excluded-middle"}[Table 1.4.4. Truth table for P ∨ ¬P.]*
+{tabcap "tbl-excluded-middle"}[Truth table for P ∨ ¬P.]
 
-Example 3. Non-contradiction ¬(P ∧ ¬P) is a tautology, verified in {tabref "tbl-non-contradiction"}[Table 1.4.5].
+{ex "ex-logical-equivalence-non-contradiction-p-p"}[] Non-contradiction ¬(P ∧ ¬P) is a tautology, verified in {numref}[tbl-non-contradiction].
 
 :::table +header
 *
@@ -297,9 +309,9 @@ Example 3. Non-contradiction ¬(P ∧ ¬P) is a tautology, verified in {tabref "
   * T
 :::
 
-*{tableAnchor "tbl-non-contradiction"}[Table 1.4.5. Truth table for ¬(P ∧ ¬P).]*
+{tabcap "tbl-non-contradiction"}[Truth table for ¬(P ∧ ¬P).]
 
-Example 4. The first De Morgan law, verified in {tabref "tbl-demorgan-first"}[Table 1.4.6].
+{ex "ex-logical-equivalence-first-de-morgan-law"}[] The first De Morgan law, verified in {numref}[tbl-demorgan-first].
 
 :::table +header
 *
@@ -344,9 +356,9 @@ Example 4. The first De Morgan law, verified in {tabref "tbl-demorgan-first"}[Ta
   * T
 :::
 
-*{tableAnchor "tbl-demorgan-first"}[Table 1.4.6. Truth table for ¬(P ∧ Q) ≡ ¬P ∨ ¬Q.]*
+{tabcap "tbl-demorgan-first"}[Truth table for ¬(P ∧ Q) ≡ ¬P ∨ ¬Q.]
 
-Example 5. Disjunction commutes, verified in {tabref "tbl-or-comm"}[Table 1.4.7].
+{ex "ex-logical-equivalence-disjunction-commutes-verified-numref"}[] Disjunction commutes, verified in {numref}[tbl-or-comm].
 
 :::table +header
 *
@@ -376,9 +388,9 @@ Example 5. Disjunction commutes, verified in {tabref "tbl-or-comm"}[Table 1.4.7]
   * F
 :::
 
-*{tableAnchor "tbl-or-comm"}[Table 1.4.7. Truth table for P ∨ Q ≡ Q ∨ P.]*
+{tabcap "tbl-or-comm"}[Truth table for P ∨ Q ≡ Q ∨ P.]
 
-Example 6. Disjunction is idempotent, verified in {tabref "tbl-or-idem"}[Table 1.4.8].
+{ex "ex-logical-equivalence-disjunction-idempotent-verified-numref"}[] Disjunction is idempotent, verified in {numref}[tbl-or-idem].
 
 :::table +header
 *
@@ -392,9 +404,9 @@ Example 6. Disjunction is idempotent, verified in {tabref "tbl-or-idem"}[Table 1
   * F
 :::
 
-*{tableAnchor "tbl-or-idem"}[Table 1.4.8. Truth table for P ∨ P ≡ P.]*
+{tabcap "tbl-or-idem"}[Truth table for P ∨ P ≡ P.]
 
-Example 7. The contrapositive, verified in {tabref "tbl-contrapositive"}[Table 1.4.9].
+{ex "ex-logical-equivalence-contrapositive-verified-numref-tbl"}[] The contrapositive, verified in {numref}[tbl-contrapositive].
 
 :::table +header
 *
@@ -434,9 +446,9 @@ Example 7. The contrapositive, verified in {tabref "tbl-contrapositive"}[Table 1
   * T
 :::
 
-*{tableAnchor "tbl-contrapositive"}[Table 1.4.9. Truth table for P → Q ≡ ¬Q → ¬P.]*
+{tabcap "tbl-contrapositive"}[Truth table for P → Q ≡ ¬Q → ¬P.]
 
-Example 8. Material implication, verified in {tabref "tbl-material-implication"}[Table 1.4.10].
+{ex "ex-logical-equivalence-material-implication-verified-numref"}[] Material implication, verified in {numref}[tbl-material-implication].
 
 :::table +header
 *
@@ -471,9 +483,9 @@ Example 8. Material implication, verified in {tabref "tbl-material-implication"}
   * T
 :::
 
-*{tableAnchor "tbl-material-implication"}[Table 1.4.10. Truth table for P → Q ≡ ¬P ∨ Q.]*
+{tabcap "tbl-material-implication"}[Truth table for P → Q ≡ ¬P ∨ Q.]
 
-Example 9. The biconditional is the conjunction of its two implications, verified in {tabref "tbl-iff-split"}[Table 1.4.11].
+{ex "ex-logical-equivalence-biconditional-conjunction-two-implications"}[] The biconditional is the conjunction of its two implications, verified in {numref}[tbl-iff-split].
 
 :::table +header
 *
@@ -513,9 +525,9 @@ Example 9. The biconditional is the conjunction of its two implications, verifie
   * T
 :::
 
-*{tableAnchor "tbl-iff-split"}[Table 1.4.11. Truth table for P ↔ Q ≡ (P → Q) ∧ (Q → P).]*
+{tabcap "tbl-iff-split"}[Truth table for P ↔ Q ≡ (P → Q) ∧ (Q → P).]
 
-Example 10. The negation of an implication, verified in {tabref "tbl-not-implication"}[Table 1.4.12].
+{ex "ex-logical-equivalence-negation-implication-verified-numref"}[] The negation of an implication, verified in {numref}[tbl-not-implication].
 
 :::table +header
 *
@@ -555,13 +567,39 @@ Example 10. The negation of an implication, verified in {tabref "tbl-not-implica
   * F
 :::
 
-*{tableAnchor "tbl-not-implication"}[Table 1.4.12. Truth table for ¬(P → Q) ≡ P ∧ ¬Q.]*
+{tabcap "tbl-not-implication"}[Truth table for ¬(P → Q) ≡ P ∧ ¬Q.]
 
-Truth tables decide any propositional question, but their size grows exponentially in the number of variables, and they do not extend to the quantifiers of Lecture 2. Deduction rules, applied one step at a time, scale and generalize. The next section presents them, and the rest of the lecture develops the corresponding proofs in Lean.
+## Logical Calculi
+
+Truth tables decide any propositional question, but their size grows exponentially in the number of variables, and they do not extend to the quantifiers of Lecture 2. A *calculus* answers the same questions by derivation rather than by computation.
+
+A calculus fixes a set of *axioms*, which are propositions taken as given, and a set of *inference rules*, each of which produces a proposition from propositions already derived. A *derivation* is a finite sequence of rule applications, and a proposition that ends a derivation is a *theorem* of the calculus. Valuations play no part in this. A derivation rewrites symbols according to the rules alone, and that is what lets a machine check it.
+
+Two properties tie a calculus to the semantics of the previous sections. A calculus is *sound* when every theorem is a tautology, and *complete* when every tautology is a theorem. Post proved both for the propositional calculus in 1921, in the paper that also introduced the truth-table method.{margin}[E. L. Post, *Introduction to a General Theory of Elementary Propositions*, American Journal of Mathematics 43, 1921, pp. 163–185.]
+
+Propositional logic admits several calculi, and they differ in the shape of their rules rather than in the theorems they prove.
+
+An *axiomatic* calculus, in the style of Hilbert and Ackermann,{margin}[D. Hilbert and W. Ackermann, *Grundzüge der theoretischen Logik*, Julius Springer, Berlin, 1928.] takes many axioms and one rule. The system of Łukasiewicz and Tarski needs three axiom schemes over → and ¬, with modus ponens as its only rule.{margin}[J. Łukasiewicz and A. Tarski, *Untersuchungen über den Aussagenkalkül*, Comptes Rendus des Séances de la Société des Sciences et des Lettres de Varsovie, Classe III, 23, 1930, pp. 30–50.]
+
+```
+  A → (B → A)
+  (A → (B → C)) → ((A → B) → (A → C))
+  (¬A → ¬B) → (B → A)
+```
+
+Each scheme stands for every proposition of its shape, so `P → (Q → P)` and `(P ∧ Q) → (R → (P ∧ Q))` are both instances of the first. Deriving a theorem as simple as P → P takes five steps here, and finding the steps is an art.
+
+*Resolution* goes to the other extreme, with one rule on propositions written as clauses, which is what machine provers search with.{margin}[J. A. Robinson, *A Machine-Oriented Logic Based on the Resolution Principle*, Journal of the ACM 12(1), 1965, pp. 23–41.]
+
+*Natural deduction* sits between the two. It has no axioms and two rules for each connective, one that introduces the connective and one that eliminates it, and its derivations may rest on assumptions that a later rule discharges. Gentzen designed it to follow the steps a mathematician actually takes.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.] The *sequent calculus*, from the same paper, carries the assumptions explicitly to the left of a turnstile ⊢ and serves proof-theoretic arguments.
+
+## The Calculus of This Course
+
+This course uses natural deduction. Its introduction and elimination rules are the ones Lean's tactics implement, and a Lean proof term corresponds to one of its derivations. The next section presents the rules, and the rest of the lecture develops the corresponding proofs in Lean.
 
 # Natural Deduction
 
-Natural deduction derives a proposition from assumptions by rules that mirror how mathematicians argue.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.] Gerhard Gentzen introduced the system in 1935, and Dag Prawitz gave its proof-theoretic study.{margin}[D. Prawitz, *Natural Deduction: A Proof-Theoretical Study*, Almqvist & Wiksell, Stockholm, 1965.] Each rule has zero or more *premises* above a horizontal line and one *conclusion* below it, and it reads as follows. Given derivations of the premises, the line licenses the conclusion.
+Natural deduction derives a proposition from assumptions by rules that mirror how mathematicians argue. Dag Prawitz gave the system its proof-theoretic study.{margin}[D. Prawitz, *Natural Deduction: A Proof-Theoretical Study*, Almqvist & Wiksell, Stockholm, 1965.] Each rule has zero or more *premises* above a horizontal line and one *conclusion* below it, and it reads as follows. Given derivations of the premises, the line licenses the conclusion.
 
 A derivation stands on *assumptions*. Some rules *discharge* an assumption, so a proposition assumed at the top of a subderivation no longer counts as an open assumption once the rule fires. We mark a discharged assumption with brackets, as `[P]`, and write a vertical ⋮ for the intervening derivation. A proposition proved with no open assumptions is a *theorem*.
 
@@ -631,7 +669,7 @@ The De Morgan law ¬(P ∧ Q) ≡ ¬P ∨ ¬Q and Peirce's law depend on this ru
 
 The derivations below prove propositional theorems with the rules above. A numeral marks each discharged assumption together with the rule that discharges it, and each tree reads from its leaves down to its root.
 
-Example 1. Implication is reflexive.
+{ex "ex-natural-deduction-implication-reflexive"}[] Implication is reflexive.
 
 ```
    [P]¹
@@ -639,7 +677,7 @@ Example 1. Implication is reflexive.
    P → P
 ```
 
-Example 2. A conjunction entails each conjunct.
+{ex "ex-natural-deduction-conjunction-entails-each-conjunct"}[] A conjunction entails each conjunct.
 
 ```
    [P ∧ Q]¹
@@ -649,7 +687,7 @@ Example 2. A conjunction entails each conjunct.
    P ∧ Q → P
 ```
 
-Example 3. A disjunct entails the disjunction.
+{ex "ex-natural-deduction-disjunct-entails-disjunction"}[] A disjunct entails the disjunction.
 
 ```
      [P]¹
@@ -659,7 +697,7 @@ Example 3. A disjunct entails the disjunction.
    P → P ∨ Q
 ```
 
-Example 4. Anything follows from absurdity, the principle *ex falso quodlibet*.
+{ex "ex-natural-deduction-anything-follows-absurdity-principle"}[] Anything follows from absurdity, the principle *ex falso quodlibet*.
 
 ```
    [⊥]¹
@@ -669,7 +707,7 @@ Example 4. Anything follows from absurdity, the principle *ex falso quodlibet*.
    ⊥ → P
 ```
 
-Example 5. Modus ponens, packaged as a single implication.
+{ex "ex-natural-deduction-modus-ponens-packaged-single"}[] Modus ponens, packaged as a single implication.
 
 ```
    [(P→Q)∧P]¹            [(P→Q)∧P]¹
@@ -681,7 +719,7 @@ Example 5. Modus ponens, packaged as a single implication.
           (P → Q) ∧ P → Q
 ```
 
-Example 6. Disjunction commutes.
+{ex "ex-natural-deduction-disjunction-commutes"}[] Disjunction commutes.
 
 ```
                 [P]²           [Q]²
@@ -693,7 +731,7 @@ Example 6. Disjunction commutes.
    P ∨ Q → Q ∨ P
 ```
 
-Example 7. Double negation introduction.
+{ex "ex-natural-deduction-double-negation-introduction"}[] Double negation introduction.
 
 ```
     [¬P]²   [P]¹
@@ -705,7 +743,7 @@ Example 7. Double negation introduction.
       P → ¬¬P
 ```
 
-Example 8. Contraposition.
+{ex "ex-natural-deduction-contraposition"}[] Contraposition.
 
 ```
                [P→Q]¹  [P]³
@@ -721,7 +759,7 @@ Example 8. Contraposition.
    (P → Q) → (¬Q → ¬P)
 ```
 
-Example 9. Double negation elimination, which needs the classical rule.
+{ex "ex-natural-deduction-double-negation-elimination-which"}[] Double negation elimination, which needs the classical rule.
 
 ```
     [¬P]²  [¬¬P]¹
@@ -733,7 +771,7 @@ Example 9. Double negation elimination, which needs the classical rule.
      ¬¬P → P
 ```
 
-Example 10. Currying turns a conjunctive hypothesis into nested implications.
+{ex "ex-natural-deduction-currying-turns-conjunctive-hypothesis"}[] Currying turns a conjunctive hypothesis into nested implications.
 
 ```
                       [P]²  [Q]³
@@ -762,7 +800,7 @@ theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
 
 Here `theorem` names the result `and_swap`. The binders `(P Q : Prop)` and `(h : P ∧ Q)` introduce two propositions and one hypothesis. The statement to prove is `Q ∧ P`, and the proof is the term after `:=`. The keyword `example` replaces `theorem` when the result needs no name.
 
-{tabref "tbl-lean-syntax"}[Table 1.6.1] lists the pieces of syntax that the following sections use.
+{numref}[tbl-lean-syntax] lists the pieces of syntax that the following sections use.
 
 :::table +header
 *
@@ -797,9 +835,9 @@ Here `theorem` names the result `and_swap`. The binders `(P Q : Prop)` and `(h :
   * comment to the end of the line
 :::
 
-*{tableAnchor "tbl-lean-syntax"}[Table 1.6.1. The syntax of declarations, terms and tactic blocks.]*
+{tabcap "tbl-lean-syntax"}[The syntax of declarations, terms and tactic blocks.]
 
-The logical symbols are unicode, and {tabref "tbl-lean-symbols"}[Table 1.6.2] gives the abbreviation that types each one. Typing the backslash abbreviation and then space or tab inserts the character in VS Code.
+The logical symbols are unicode, and {numref}[tbl-lean-symbols] gives the abbreviation that types each one. Typing the backslash abbreviation and then space or tab inserts the character in VS Code.
 
 :::table +header
 *
@@ -840,7 +878,7 @@ The logical symbols are unicode, and {tabref "tbl-lean-symbols"}[Table 1.6.2] gi
   * `\.`
 :::
 
-*{tableAnchor "tbl-lean-symbols"}[Table 1.6.2. The logical symbols and the abbreviations that type them.]*
+{tabcap "tbl-lean-symbols"}[The logical symbols and the abbreviations that type them.]
 
 The same statement can be proved by a term or in tactic mode, and the two produce the same underlying proof. The sections that follow use both.
 
@@ -874,7 +912,7 @@ example (P : Prop) (h : P) : P := h
 
 Here `h` names the assumption that P holds, and the proof is `h` itself. Lecture 3 develops this correspondence between propositions and types.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, in *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
 
-{tabref "tbl-rules-to-lean"}[Table 1.7.1] maps each rule of the section on natural deduction to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
+{numref}[tbl-rules-to-lean] maps each rule of the section on natural deduction to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
 
 :::table +header
 *
@@ -923,7 +961,7 @@ Here `h` names the assumption that P holds, and the proof is `h` itself. Lecture
   * `False.elim h`
 :::
 
-*{tableAnchor "tbl-rules-to-lean"}[Table 1.7.1. The natural deduction rules and the Lean terms that realize them.]*
+{tabcap "tbl-rules-to-lean"}[The natural deduction rules and the Lean terms that realize them.]
 
 Because ¬P abbreviates P → False, the negation rules reuse the terms for implication. To see the correspondence on a full derivation, take P ∧ Q → Q ∧ P. It discharges the assumption P ∧ Q, projects each conjunct, and reassembles them in the opposite order.
 
@@ -948,42 +986,42 @@ example (P Q : Prop) : P ∧ Q → Q ∧ P :=
 
 The proofs below encode the ten derivations of the previous section as proof terms. Each term mirrors its derivation, with an introduction rule building a term and an elimination rule taking one apart.
 
-Example 1. Implication is reflexive.
+{ex "ex-natural-deduction-lean-implication-reflexive"}[] Implication is reflexive.
 
 ```lean
 example (P : Prop) : P → P :=
   fun h => h
 ```
 
-Example 2. A conjunction entails each conjunct.
+{ex "ex-natural-deduction-lean-conjunction-entails-each-conjunct"}[] A conjunction entails each conjunct.
 
 ```lean
 example (P Q : Prop) : P ∧ Q → P :=
   fun h => h.left
 ```
 
-Example 3. A disjunct entails the disjunction.
+{ex "ex-natural-deduction-lean-disjunct-entails-disjunction"}[] A disjunct entails the disjunction.
 
 ```lean
 example (P Q : Prop) : P → P ∨ Q :=
   fun h => Or.inl h
 ```
 
-Example 4. Anything follows from absurdity.
+{ex "ex-natural-deduction-lean-anything-follows-absurdity"}[] Anything follows from absurdity.
 
 ```lean
 example (P : Prop) : False → P :=
   fun h => False.elim h
 ```
 
-Example 5. Modus ponens, packaged as a single implication.
+{ex "ex-natural-deduction-lean-modus-ponens-packaged-single"}[] Modus ponens, packaged as a single implication.
 
 ```lean
 example (P Q : Prop) : (P → Q) ∧ P → Q :=
   fun h => h.left h.right
 ```
 
-Example 6. Disjunction commutes.
+{ex "ex-natural-deduction-lean-disjunction-commutes"}[] Disjunction commutes.
 
 ```lean
 example (P Q : Prop) : P ∨ Q → Q ∨ P :=
@@ -992,28 +1030,28 @@ example (P Q : Prop) : P ∨ Q → Q ∨ P :=
     (fun hQ => Or.inl hQ)
 ```
 
-Example 7. Double negation introduction.
+{ex "ex-natural-deduction-lean-double-negation-introduction"}[] Double negation introduction.
 
 ```lean
 example (P : Prop) : P → ¬¬P :=
   fun hP hnP => hnP hP
 ```
 
-Example 8. Contraposition.
+{ex "ex-natural-deduction-lean-contraposition"}[] Contraposition.
 
 ```lean
 example (P Q : Prop) : (P → Q) → (¬Q → ¬P) :=
   fun hPQ hnQ hP => hnQ (hPQ hP)
 ```
 
-Example 9. Double negation elimination, which needs classical reasoning.
+{ex "ex-natural-deduction-lean-double-negation-elimination-which"}[] Double negation elimination, which needs classical reasoning.
 
 ```lean
 example (P : Prop) : ¬¬P → P :=
   fun h => Classical.byContradiction (fun hnP => h hnP)
 ```
 
-Example 10. Currying turns a conjunctive hypothesis into nested implications.
+{ex "ex-natural-deduction-lean-currying-turns-conjunctive-hypothesis"}[] Currying turns a conjunctive hypothesis into nested implications.
 
 ```lean
 example (P Q R : Prop) : (P ∧ Q → R) → (P → (Q → R)) :=
@@ -1021,6 +1059,9 @@ example (P Q R : Prop) : (P ∧ Q → R) → (P → (Q → R)) :=
 ```
 
 # Proving with Tactics
+%%%
+tag := "tactics"
+%%%
 
 Writing proof terms by hand becomes impractical as proofs grow. A *tactic* is a command that transforms the *proof state*, the goal together with the hypotheses in scope, one step at a time. The keyword `by` enters tactic mode, and Lean elaborates the tactic sequence into a proof term, so a tactic proof and a term proof yield the same underlying object.
 
@@ -1170,7 +1211,7 @@ theorem deMorgan_and (P Q : Prop) : ¬(P ∧ Q) → ¬P ∨ ¬Q := by
 
 The proofs below prove those same ten theorems again, now with tactics. Each can be read alongside the proof term of the previous section.
 
-Example 1. Implication is reflexive.
+{ex "ex-proving-tactics-implication-reflexive"}[] Implication is reflexive.
 
 ```lean
 example (P : Prop) : P → P := by
@@ -1178,7 +1219,7 @@ example (P : Prop) : P → P := by
   exact h
 ```
 
-Example 2. A conjunction entails each conjunct.
+{ex "ex-proving-tactics-conjunction-entails-each-conjunct"}[] A conjunction entails each conjunct.
 
 ```lean
 example (P Q : Prop) : P ∧ Q → P := by
@@ -1186,7 +1227,7 @@ example (P Q : Prop) : P ∧ Q → P := by
   exact h.left
 ```
 
-Example 3. A disjunct entails the disjunction.
+{ex "ex-proving-tactics-disjunct-entails-disjunction"}[] A disjunct entails the disjunction.
 
 ```lean
 example (P Q : Prop) : P → P ∨ Q := by
@@ -1194,7 +1235,7 @@ example (P Q : Prop) : P → P ∨ Q := by
   exact Or.inl h
 ```
 
-Example 4. Anything follows from absurdity.
+{ex "ex-proving-tactics-anything-follows-absurdity"}[] Anything follows from absurdity.
 
 ```lean
 example (P : Prop) : False → P := by
@@ -1202,7 +1243,7 @@ example (P : Prop) : False → P := by
   exact False.elim h
 ```
 
-Example 5. Modus ponens, packaged as a single implication.
+{ex "ex-proving-tactics-modus-ponens-packaged-single"}[] Modus ponens, packaged as a single implication.
 
 ```lean
 example (P Q : Prop) : (P → Q) ∧ P → Q := by
@@ -1211,7 +1252,7 @@ example (P Q : Prop) : (P → Q) ∧ P → Q := by
   exact h.right
 ```
 
-Example 6. Disjunction commutes.
+{ex "ex-proving-tactics-disjunction-commutes"}[] Disjunction commutes.
 
 ```lean
 example (P Q : Prop) : P ∨ Q → Q ∨ P := by
@@ -1221,7 +1262,7 @@ example (P Q : Prop) : P ∨ Q → Q ∨ P := by
   | inr hQ => exact Or.inl hQ
 ```
 
-Example 7. Double negation introduction.
+{ex "ex-proving-tactics-double-negation-introduction"}[] Double negation introduction.
 
 ```lean
 example (P : Prop) : P → ¬¬P := by
@@ -1229,7 +1270,7 @@ example (P : Prop) : P → ¬¬P := by
   exact hnP hP
 ```
 
-Example 8. Contraposition.
+{ex "ex-proving-tactics-contraposition"}[] Contraposition.
 
 ```lean
 example (P Q : Prop) : (P → Q) → (¬Q → ¬P) := by
@@ -1237,7 +1278,7 @@ example (P Q : Prop) : (P → Q) → (¬Q → ¬P) := by
   exact hnQ (hPQ hP)
 ```
 
-Example 9. Double negation elimination, which needs classical reasoning.
+{ex "ex-proving-tactics-double-negation-elimination-which"}[] Double negation elimination, which needs classical reasoning.
 
 ```lean
 example (P : Prop) : ¬¬P → P := by
@@ -1247,7 +1288,7 @@ example (P : Prop) : ¬¬P → P := by
   exact h hnP
 ```
 
-Example 10. Currying turns a conjunctive hypothesis into nested implications.
+{ex "ex-proving-tactics-currying-turns-conjunctive-hypothesis"}[] Currying turns a conjunctive hypothesis into nested implications.
 
 ```lean
 example (P Q R : Prop) : (P ∧ Q → R) → (P → (Q → R)) := by
@@ -1284,7 +1325,7 @@ example (P Q : Prop) : P ∧ Q → P := by
 
 ## Ex Falso Quodlibet
 
-From a proof of the absurdity, ⊥ elimination proves any proposition.{fnref "exfalso"}[2]
+From a proof of the absurdity, ⊥ elimination proves any proposition.{fnref}[exfalso]
 
 ```
    [⊥]
@@ -1307,7 +1348,7 @@ example (P : Prop) : False → P := by
 
 ## Modus Ponens
 
-An implication and its antecedent, both projected from the conjunction, combine by →E to give the consequent.{fnref "modusponens"}[3]
+An implication and its antecedent, both projected from the conjunction, combine by →E to give the consequent.{fnref}[modusponens]
 
 ```
    [(P→Q)∧P]           [(P→Q)∧P]
@@ -1362,7 +1403,7 @@ example (P Q : Prop) : P ∨ Q → Q ∨ P := by
 
 ## Double Negation Elimination
 
-This direction requires classical reasoning. `Classical.byContradiction` discharges the assumption ¬P after deriving ⊥ from it together with ¬¬P.{fnref "raa"}[4]
+This direction requires classical reasoning. `Classical.byContradiction` discharges the assumption ¬P after deriving ⊥ from it together with ¬¬P.{fnref}[raa]
 
 ```
    [¬P]  [¬¬P]
@@ -1389,11 +1430,11 @@ example (P : Prop) : ¬¬P → P := by
 
 :::footnotes
 
-{fnAnchor "exfalso"}[2.] *Ex falso quodlibet* is Latin for "from a falsehood, anything follows".
+{fnAnchor "exfalso"}[] *Ex falso quodlibet* is Latin for "from a falsehood, anything follows".
 
-{fnAnchor "modusponens"}[3.] *Modus ponens* is Latin, short for *modus ponendo ponens*, "the mode that affirms by affirming".
+{fnAnchor "modusponens"}[] *Modus ponens* is Latin, short for *modus ponendo ponens*, "the mode that affirms by affirming".
 
-{fnAnchor "raa"}[4.] The classical step marked RAA is *reductio ad absurdum*, Latin for "reduction to absurdity".
+{fnAnchor "raa"}[] The classical step marked RAA is *reductio ad absurdum*, Latin for "reduction to absurdity".
 
 :::
 
@@ -1406,7 +1447,7 @@ Exercises for Lecture 1: Motivation and Propositional Logic.
 Replace each `sorry` with a proof.
 ```
 
-Exercise 1. Implication composes.
+{exercise "exr-implication-composes"}[] Implication composes.
 
 ```savedLean -keep
 theorem exercise1 (P Q R : Prop)
@@ -1414,7 +1455,7 @@ theorem exercise1 (P Q R : Prop)
   sorry
 ```
 
-Exercise 2. Conjunction distributes over disjunction.
+{exercise "exr-conjunction-distributes-over-disjunction"}[] Conjunction distributes over disjunction.
 
 ```savedLean -keep
 theorem exercise2 (P Q R : Prop) :
@@ -1422,7 +1463,7 @@ theorem exercise2 (P Q R : Prop) :
   sorry
 ```
 
-Exercise 3. Disjunction associates.
+{exercise "exr-disjunction-associates"}[] Disjunction associates.
 
 ```savedLean -keep
 theorem exercise3 (P Q R : Prop) :
@@ -1430,21 +1471,21 @@ theorem exercise3 (P Q R : Prop) :
   sorry
 ```
 
-Exercise 4. This direction of the first De Morgan law is constructive.
+{exercise "exr-this-direction-first-de"}[] This direction of the first De Morgan law is constructive.
 
 ```savedLean -keep
 theorem exercise4 (P Q : Prop) : ¬P ∨ ¬Q → ¬(P ∧ Q) := by
   sorry
 ```
 
-Exercise 5. Peirce's law.{margin}[C. S. Peirce, *On the Algebra of Logic: A Contribution to the Philosophy of Notation*, American Journal of Mathematics 7(2), 1885, pp. 180–196.] It requires classical reasoning; consider a case analysis on `Classical.em P`.
+{exercise "exr-peirce-s-law-margin"}[] Peirce's law.{margin}[C. S. Peirce, *On the Algebra of Logic: A Contribution to the Philosophy of Notation*, American Journal of Mathematics 7(2), 1885, pp. 180–196.] It requires classical reasoning; consider a case analysis on `Classical.em P`.
 
 ```savedLean -keep
 theorem exercise5 (P Q : Prop) : ((P → Q) → P) → P := by
   sorry
 ```
 
-Exercise 6. Disjunction distributes over conjunction.
+{exercise "exr-disjunction-distributes-over-conjunction"}[] Disjunction distributes over conjunction.
 
 ```savedLean -keep
 theorem exercise6 (P Q R : Prop) :
@@ -1452,7 +1493,7 @@ theorem exercise6 (P Q R : Prop) :
   sorry
 ```
 
-Exercise 7. An implication into a conjunction splits into two implications.
+{exercise "exr-implication-conjunction-splits-two"}[] An implication into a conjunction splits into two implications.
 
 ```savedLean -keep
 theorem exercise7 (P Q R : Prop) :
@@ -1460,21 +1501,21 @@ theorem exercise7 (P Q R : Prop) :
   sorry
 ```
 
-Exercise 8. From a disjunction and the negation of one disjunct, the other holds.
+{exercise "exr-disjunction-negation-one-disjunct"}[] From a disjunction and the negation of one disjunct, the other holds.
 
 ```savedLean -keep
 theorem exercise8 (P Q : Prop) : (P ∨ Q) → ¬P → Q := by
   sorry
 ```
 
-Exercise 9. No proposition is equivalent to its own negation.
+{exercise "exr-no-proposition-equivalent-own"}[] No proposition is equivalent to its own negation.
 
 ```savedLean -keep
 theorem exercise9 (P : Prop) : ¬(P ↔ ¬P) := by
   sorry
 ```
 
-Exercise 10. Of any two propositions, one implies the other. It requires classical reasoning; consider a case analysis on `Classical.em P`.
+{exercise "exr-any-two-propositions-one"}[] Of any two propositions, one implies the other. It requires classical reasoning; consider a case analysis on `Classical.em P`.
 
 ```savedLean -keep
 theorem exercise10 (P Q : Prop) : (P → Q) ∨ (Q → P) := by

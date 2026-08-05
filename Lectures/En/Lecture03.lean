@@ -1,7 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
-import Lectures.Meta.Figure
+import Lectures.Meta.Label
 import Lectures.Papers
 import Lectures.LoVe.LoVelib
 
@@ -97,7 +97,7 @@ end MyList
 
 The examples below build values of the inductive types of this section and inspect them with `#check` and `#print`.
 
-Example 1. The numeral three is three applications of `succ` to `zero`.
+{ex "ex-inductive-types-numeral-three-three-applications"}[] The numeral three is three applications of `succ` to `zero`.
 
 ```lean (name := exThree)
 #check MyNat.Nat.succ
@@ -107,7 +107,7 @@ Example 1. The numeral three is three applications of `succ` to `zero`.
 MyNat.Nat.zero.succ.succ.succ : MyNat.Nat
 ```
 
-Example 2. An enumeration is an inductive type whose constructors carry no data.
+{ex "ex-inductive-types-enumeration-inductive-type-whose"}[] An enumeration is an inductive type whose constructors carry no data.
 
 ```lean (name := exAnswer)
 inductive Answer : Type where
@@ -121,7 +121,7 @@ inductive Answer : Type where
 Answer.maybe : Answer
 ```
 
-Example 3. The expression `(x + 3) * y` is a value of `AExp`. The constructor applications mirror the shape of the expression.
+{ex "ex-inductive-types-expression-value-constructor-applications"}[] The expression `(x + 3) * y` is a value of `AExp`. The constructor applications mirror the shape of the expression.
 
 ```lean (name := exAExp)
 #check AExp.mul
@@ -132,7 +132,7 @@ Example 3. The expression `(x + 3) * y` is a value of `AExp`. The constructor ap
 ((AExp.var "x").add (AExp.num 3)).mul (AExp.var "y") : AExp
 ```
 
-Example 4. The list containing 3 and 7 is two applications of `cons` ending in `nil`.
+{ex "ex-inductive-types-list-containing-3-7"}[] The list containing 3 and 7 is two applications of `cons` ending in `nil`.
 
 ```lean (name := exList)
 #check MyList.List.cons 3
@@ -142,7 +142,7 @@ Example 4. The list containing 3 and 7 is two applications of `cons` ending in `
 MyList.List.cons 3 (MyList.List.cons 7 MyList.List.nil) : MyList.List ℕ
 ```
 
-Example 5. A constructor can take several arguments. The type below packs two integers.
+{ex "ex-inductive-types-constructor-can-take-several"}[] A constructor can take several arguments. The type below packs two integers.
 
 ```lean (name := exInterval)
 inductive Interval : Type where
@@ -154,7 +154,7 @@ inductive Interval : Type where
 Interval.mk 1 5 : Interval
 ```
 
-Example 6. `#print` lists the constructors of a type.
+{ex "ex-inductive-types-lists-constructors-type"}[] `#print` lists the constructors of a type.
 
 ```lean (name := printList)
 #print MyList.List
@@ -167,7 +167,7 @@ MyList.List.nil : {α : Type} → MyList.List α
 MyList.List.cons : {α : Type} → α → MyList.List α → MyList.List α
 ```
 
-Example 7. Constructor applications nest to any depth. The value below is the expression x / 0, a legal piece of syntax whose evaluation the next sections discuss.
+{ex "ex-inductive-types-constructor-applications-nest-any"}[] Constructor applications nest to any depth. The value below is the expression x / 0, a legal piece of syntax whose evaluation the next sections discuss.
 
 ```lean (name := exDiv)
 #check AExp.div (AExp.var "x") (AExp.num 0)
@@ -176,7 +176,7 @@ Example 7. Constructor applications nest to any depth. The value below is the ex
 (AExp.var "x").div (AExp.num 0) : AExp
 ```
 
-Example 8. Lean's own numerals elaborate to the core `Nat`. The reconstruction and the original are distinct types.
+{ex "ex-inductive-types-lean-s-own-numerals"}[] Lean's own numerals elaborate to the core `Nat`. The reconstruction and the original are distinct types.
 
 ```lean (name := exCoreNat)
 #check (3 : ℕ)
@@ -185,7 +185,7 @@ Example 8. Lean's own numerals elaborate to the core `Nat`. The reconstruction a
 3 : ℕ
 ```
 
-Example 9. The empty list over ℤ requires a type annotation, since `nil` alone does not determine α.
+{ex "ex-inductive-types-empty-list-over-z"}[] The empty list over ℤ requires a type annotation, since `nil` alone does not determine α.
 
 ```lean (name := exNil)
 #check (MyList.List.nil : MyList.List ℤ)
@@ -194,7 +194,7 @@ Example 9. The empty list over ℤ requires a type annotation, since `nil` alone
 MyList.List.nil : MyList.List ℤ
 ```
 
-Example 10. The four cardinal directions as an enumeration, printed.
+{ex "ex-inductive-types-four-cardinal-directions-enumeration"}[] The four cardinal directions as an enumeration, printed.
 
 ```lean (name := exDirection)
 inductive Direction : Type where
@@ -254,7 +254,7 @@ def powerParam (m : ℕ) : ℕ → ℕ
 
 The examples below define functions by pattern matching and structural recursion on ℕ and on `Bool`.
 
-Example 1. Halving discards one from every pair, matching the shape n + 2.
+{ex "ex-functions-pattern-matching-halving-discards-one-every"}[] Halving discards one from every pair, matching the shape n + 2.
 
 ```lean
 def half : ℕ → ℕ
@@ -263,13 +263,13 @@ def half : ℕ → ℕ
   | n + 2 => half n + 1
 ```
 
-Example 2. A non-recursive definition needs no pattern matching. Squaring reuses `mul`.
+{ex "ex-functions-pattern-matching-non-recursive-definition-needs"}[] A non-recursive definition needs no pattern matching. Squaring reuses `mul`.
 
 ```lean
 def square (n : ℕ) : ℕ := mul n n
 ```
 
-Example 3. Testing for zero returns a `Bool`, and the two equations cover the two constructors.
+{ex "ex-functions-pattern-matching-testing-zero-returns-two"}[] Testing for zero returns a `Bool`, and the two equations cover the two constructors.
 
 ```lean
 def isZero : ℕ → Bool
@@ -277,7 +277,7 @@ def isZero : ℕ → Bool
   | Nat.succ _ => false
 ```
 
-Example 4. The factorial recurses on the shape n + 1, and the parameter form keeps the multiplication explicit.
+{ex "ex-functions-pattern-matching-factorial-recurses-shape-n"}[] The factorial recurses on the shape n + 1, and the parameter form keeps the multiplication explicit.
 
 ```lean
 def factorial : ℕ → ℕ
@@ -285,7 +285,7 @@ def factorial : ℕ → ℕ
   | n + 1 => mul (n + 1) (factorial n)
 ```
 
-Example 5. Pattern matching on two arguments at once. The smaller of two numbers descends on both.
+{ex "ex-functions-pattern-matching-pattern-matching-two-arguments"}[] Pattern matching on two arguments at once. The smaller of two numbers descends on both.
 
 ```lean
 def smaller : ℕ → ℕ → ℕ
@@ -294,7 +294,7 @@ def smaller : ℕ → ℕ → ℕ
   | m + 1, n + 1 => smaller m n + 1
 ```
 
-Example 6. The Lucas numbers follow the Fibonacci recursion from different initial values.
+{ex "ex-functions-pattern-matching-lucas-numbers-follow-fibonacci"}[] The Lucas numbers follow the Fibonacci recursion from different initial values.
 
 ```lean
 def lucas : ℕ → ℕ
@@ -303,7 +303,7 @@ def lucas : ℕ → ℕ
   | n + 2 => lucas (n + 1) + lucas n
 ```
 
-Example 7. Conjunction on `Bool` matches only its first argument.
+{ex "ex-functions-pattern-matching-conjunction-matches-only-first"}[] Conjunction on `Bool` matches only its first argument.
 
 ```lean
 def conj : Bool → Bool → Bool
@@ -311,7 +311,7 @@ def conj : Bool → Bool → Bool
   | false, _ => false
 ```
 
-Example 8. Evenness recurses by two, so the recursive call peels two constructors.
+{ex "ex-functions-pattern-matching-evenness-recurses-two-so"}[] Evenness recurses by two, so the recursive call peels two constructors.
 
 ```lean
 def evenb : ℕ → Bool
@@ -320,7 +320,7 @@ def evenb : ℕ → Bool
   | n + 2 => evenb n
 ```
 
-Example 9. The sum of the first n numbers recurses on n + 1.
+{ex "ex-functions-pattern-matching-sum-first-n-numbers"}[] The sum of the first n numbers recurses on n + 1.
 
 ```lean
 def sumTo : ℕ → ℕ
@@ -328,7 +328,7 @@ def sumTo : ℕ → ℕ
   | n + 1 => (n + 1) + sumTo n
 ```
 
-Example 10. Powers of two as an instance of the recursion of `power`, with the base fixed.
+{ex "ex-functions-pattern-matching-powers-two-instance-recursion"}[] Powers of two as an instance of the recursion of `power`, with the base fixed.
 
 ```lean
 def twoPow : ℕ → ℕ
@@ -338,7 +338,7 @@ def twoPow : ℕ → ℕ
 
 # Polymorphism and Implicit Arguments
 
-A definition can take a type as an argument. The function below appends two lists over any type α, given explicitly at each call, and Lean's `_` asks the elaborator to infer it. The elaborator is the stage of Lean that turns the text we write into a term of the core language, and inference is part of its work, together with the resolution of type class instances and the execution of tactics. {figref "fig-lean-components"}[Figure 1.1] places it among the other components. Writing `_` therefore states that the argument is determined by the rest of the call, and the elaborator recovers it by unification.
+A definition can take a type as an argument. The function below appends two lists over any type α, given explicitly at each call, and Lean's `_` asks the elaborator to infer it. The elaborator is the stage of Lean that turns the text we write into a term of the core language, and inference is part of its work, together with the resolution of type class instances and the execution of tactics. {numref}[fig-lean-components] places it among the other components. Writing `_` therefore states that the argument is determined by the rest of the call, and the elaborator recovers it by unification.
 
 ```lean
 def append (α : Type) : List α → List α → List α
@@ -379,7 +379,7 @@ def reverse {α : Type} : List α → List α
 
 The examples below compare explicit and implicit type arguments and define polymorphic functions over lists and pairs.
 
-Example 1. With an explicit type argument, the type appears in the signature as an ordinary argument.
+{ex "ex-polymorphism-implicit-arguments-explicit-type-argument-type"}[] With an explicit type argument, the type appears in the signature as an ordinary argument.
 
 ```lean (name := checkAppendPoly)
 #check @append
@@ -388,7 +388,7 @@ Example 1. With an explicit type argument, the type appears in the signature as 
 append : (α : Type) → List α → List α → List α
 ```
 
-Example 2. Curly braces mark the argument as implicit, and `@` displays it.
+{ex "ex-polymorphism-implicit-arguments-curly-braces-mark-argument"}[] Curly braces mark the argument as implicit, and `@` displays it.
 
 ```lean (name := checkAppendPretty)
 #check @appendPretty
@@ -397,7 +397,7 @@ Example 2. Curly braces mark the argument as implicit, and `@` displays it.
 @appendPretty : {α : Type} → List α → List α → List α
 ```
 
-Example 3. At a call, the implicit argument comes from the type of the lists.
+{ex "ex-polymorphism-implicit-arguments-call-implicit-argument-comes"}[] At a call, the implicit argument comes from the type of the lists.
 
 ```lean (name := evalAppendNat)
 #eval appendPretty [1, 2] [3]
@@ -406,7 +406,7 @@ Example 3. At a call, the implicit argument comes from the type of the lists.
 [1, 2, 3]
 ```
 
-Example 4. The same definition serves another type without change.
+{ex "ex-polymorphism-implicit-arguments-same-definition-serves-another"}[] The same definition serves another type without change.
 
 ```lean (name := evalAppendStr)
 #eval appendImplicit ["a"] ["b"]
@@ -415,7 +415,7 @@ Example 4. The same definition serves another type without change.
 ["a", "b"]
 ```
 
-Example 5. The `@` prefix restores the explicit form, useful when inference has nothing to work with.
+{ex "ex-polymorphism-implicit-arguments-prefix-restores-explicit-form"}[] The `@` prefix restores the explicit form, useful when inference has nothing to work with.
 
 ```lean (name := evalAppendAt)
 #eval @appendImplicit ℕ [1] [2]
@@ -424,7 +424,7 @@ Example 5. The `@` prefix restores the explicit form, useful when inference has 
 [1, 2]
 ```
 
-Example 6. The identity function is polymorphic and returns its argument unchanged.
+{ex "ex-polymorphism-implicit-arguments-identity-function-polymorphic-returns"}[] The identity function is polymorphic and returns its argument unchanged.
 
 ```lean (name := checkIdPoly)
 def idPoly {α : Type} (x : α) : α := x
@@ -435,7 +435,7 @@ def idPoly {α : Type} (x : α) : α := x
 @idPoly : {α : Type} → α → α
 ```
 
-Example 7. Building a one-element list works at every type.
+{ex "ex-polymorphism-implicit-arguments-building-one-element-list"}[] Building a one-element list works at every type.
 
 ```lean (name := evalSingleton)
 def singletonList {α : Type} (x : α) : List α := [x]
@@ -446,7 +446,7 @@ def singletonList {α : Type} (x : α) : List α := [x]
 [5]
 ```
 
-Example 8. A definition can take two type arguments. Swapping the components of a pair exchanges them.
+{ex "ex-polymorphism-implicit-arguments-definition-can-take-two"}[] A definition can take two type arguments. Swapping the components of a pair exchanges them.
 
 ```lean (name := evalSwap)
 def swapPair {α β : Type} : α × β → β × α
@@ -458,7 +458,7 @@ def swapPair {α β : Type} : α × β → β × α
 ("x", 1)
 ```
 
-Example 9. The length of a list ignores the elements, so the type argument never appears in the result.
+{ex "ex-polymorphism-implicit-arguments-length-list-ignores-elements"}[] The length of a list ignores the elements, so the type argument never appears in the result.
 
 ```lean (name := evalLengthPoly)
 def lengthPoly {α : Type} : List α → ℕ
@@ -471,7 +471,7 @@ def lengthPoly {α : Type} : List α → ℕ
 3
 ```
 
-Example 10. An empty list carries no element to infer from, and a type ascription fixes the implicit argument.
+{ex "ex-polymorphism-implicit-arguments-empty-list-carries-no"}[] An empty list carries no element to infer from, and a type ascription fixes the implicit argument.
 
 ```lean (name := checkNilAscribed)
 #check ([] : List ℕ)
@@ -533,7 +533,7 @@ example : eval (fun _ => 7)
 
 The examples below run the functions of this lecture and inspect the arithmetic that `eval` inherits from ℤ.
 
-Example 1. The tenth Fibonacci number, computed by the compiler.
+{ex "ex-evaluation-tenth-fibonacci-number-computed"}[] The tenth Fibonacci number, computed by the compiler.
 
 ```lean (name := evalFib)
 #eval fib 10
@@ -542,7 +542,7 @@ Example 1. The tenth Fibonacci number, computed by the compiler.
 55
 ```
 
-Example 2. The factorial of five, through the recursion of `mul` and `add`.
+{ex "ex-evaluation-factorial-five-through-recursion"}[] The factorial of five, through the recursion of `mul` and `add`.
 
 ```lean (name := evalFactorial)
 #eval factorial 5
@@ -551,7 +551,7 @@ Example 2. The factorial of five, through the recursion of `mul` and `add`.
 120
 ```
 
-Example 3. Two to the tenth, through the recursion of `power`.
+{ex "ex-evaluation-two-tenth-through-recursion"}[] Two to the tenth, through the recursion of `power`.
 
 ```lean (name := evalPower)
 #eval power 2 10
@@ -560,7 +560,7 @@ Example 3. Two to the tenth, through the recursion of `power`.
 1024
 ```
 
-Example 4. `#reduce` normalizes in the kernel and reaches the same value.
+{ex "ex-evaluation-normalizes-kernel-reaches-same"}[] `#reduce` normalizes in the kernel and reaches the same value.
 
 ```lean (name := reduceHalf)
 #reduce half 7
@@ -569,7 +569,7 @@ Example 4. `#reduce` normalizes in the kernel and reaches the same value.
 3
 ```
 
-Example 5. A function into `Bool` evaluates to a Boolean value.
+{ex "ex-evaluation-function-evaluates-boolean-value"}[] A function into `Bool` evaluates to a Boolean value.
 
 ```lean (name := evalEvenb)
 #eval evenb 10
@@ -578,7 +578,7 @@ Example 5. A function into `Bool` evaluates to a Boolean value.
 true
 ```
 
-Example 6. Evaluation runs polymorphic functions as well.
+{ex "ex-evaluation-evaluation-runs-polymorphic-functions"}[] Evaluation runs polymorphic functions as well.
 
 ```lean (name := evalReverse)
 #eval reverse [1, 2, 3]
@@ -587,7 +587,7 @@ Example 6. Evaluation runs polymorphic functions as well.
 [3, 2, 1]
 ```
 
-Example 7. The environment supplies the value of each variable, and the rest is arithmetic.
+{ex "ex-evaluation-environment-supplies-value-each"}[] The environment supplies the value of each variable, and the rest is arithmetic.
 
 ```lean (name := evalEnvX)
 #eval eval (fun x => if x = "x" then 3 else 0)
@@ -597,7 +597,7 @@ Example 7. The environment supplies the value of each variable, and the rest is 
 7
 ```
 
-Example 8. Integer division truncates, so 5 / 2 evaluates to 2.
+{ex "ex-evaluation-integer-division-truncates-so"}[] Integer division truncates, so 5 / 2 evaluates to 2.
 
 ```lean (name := evalDivTrunc)
 #eval eval (fun _ => 0)
@@ -607,7 +607,7 @@ Example 8. Integer division truncates, so 5 / 2 evaluates to 2.
 2
 ```
 
-Example 9. Division on ℤ follows the Euclidean convention, whose remainder is never negative, so −7 / 2 evaluates to −4 rather than −3.
+{ex "ex-evaluation-division-z-follows-euclidean"}[] Division on ℤ follows the Euclidean convention, whose remainder is never negative, so −7 / 2 evaluates to −4 rather than −3.
 
 ```lean (name := evalDivNeg)
 #eval eval (fun _ => 0)
@@ -617,7 +617,7 @@ Example 9. Division on ℤ follows the Euclidean convention, whose remainder is 
 -4
 ```
 
-Example 10. Every evaluation above also serves as a proof, since `rfl` closes an equation whose sides compute to the same value.
+{ex "ex-evaluation-every-evaluation-above-also"}[] Every evaluation above also serves as a proof, since `rfl` closes an equation whose sides compute to the same value.
 
 ```lean
 example : sumTo 10 = 55 := rfl
@@ -674,7 +674,7 @@ axiom a_less_b : a < b
 
 The examples below read the statements back, separate what computation settles from what it does not, and track which axioms a proof rests on. The namespace `MoreTheorems` keeps the new names clear of Mathlib.
 
-Example 1. A statement with named binders is a universally quantified proposition.
+{ex "ex-theorem-statements-statement-named-binders-universally"}[] A statement with named binders is a universally quantified proposition.
 
 ```lean (name := checkAddComm)
 #check @SorryTheorems.add_comm
@@ -683,7 +683,7 @@ Example 1. A statement with named binders is a universally quantified propositio
 SorryTheorems.add_comm : ∀ (m n : ℕ), add m n = add n m
 ```
 
-Example 2. An implicit binder appears in braces, and the statement quantifies over the type as well.
+{ex "ex-theorem-statements-implicit-binder-appears-braces"}[] An implicit binder appears in braces, and the statement quantifies over the type as well.
 
 ```lean (name := checkRevRev)
 #check @SorryTheorems.reverse_reverse
@@ -692,7 +692,7 @@ Example 2. An implicit binder appears in braces, and the statement quantifies ov
 @SorryTheorems.reverse_reverse : ∀ {α : Type} (xs : List α), reverse (reverse xs) = xs
 ```
 
-Example 3. The command `#print axioms` reports what a proof rests on, and `sorry` leaves the trace `sorryAx`.
+{ex "ex-theorem-statements-command-reports-what-proof"}[] The command `#print axioms` reports what a proof rests on, and `sorry` leaves the trace `sorryAx`.
 
 ```lean (name := axiomsAddComm)
 #print axioms SorryTheorems.add_comm
@@ -701,7 +701,7 @@ Example 3. The command `#print axioms` reports what a proof rests on, and `sorry
 'SorryTheorems.add_comm' depends on axioms: [sorryAx]
 ```
 
-Example 4. A law that computation settles needs no induction. Zero on the right matches the first equation of `add`, so `rfl` proves it for every n.
+{ex "ex-theorem-statements-law-computation-settles-needs"}[] A law that computation settles needs no induction. Zero on the right matches the first equation of `add`, so `rfl` proves it for every n.
 
 ```lean (name := axiomsAddZero)
 namespace MoreTheorems
@@ -716,7 +716,7 @@ end MoreTheorems
 'MoreTheorems.add_zero_right' does not depend on any axioms
 ```
 
-Example 5. The same holds for the first equation of `eval`, whatever the environment.
+{ex "ex-theorem-statements-same-holds-first-equation"}[] The same holds for the first equation of `eval`, whatever the environment.
 
 ```lean (name := checkEvalNum)
 namespace MoreTheorems
@@ -732,7 +732,7 @@ end MoreTheorems
 MoreTheorems.eval_num : ∀ (env : String → ℤ) (i : ℤ), eval env (AExp.num i) = i
 ```
 
-Example 6. A ground equation deserves a name as much as a general law does.
+{ex "ex-theorem-statements-ground-equation-deserves-name"}[] A ground equation deserves a name as much as a general law does.
 
 ```lean
 namespace MoreTheorems
@@ -744,7 +744,7 @@ theorem reverse_nil : reverse ([] : List ℕ) = [] := rfl
 end MoreTheorems
 ```
 
-Example 7. Binders to the left of the colon and an explicit ∀ state the same proposition.
+{ex "ex-theorem-statements-binders-left-colon-explicit"}[] Binders to the left of the colon and an explicit ∀ state the same proposition.
 
 ```lean (name := checkAllAddZero)
 namespace MoreTheorems
@@ -760,7 +760,7 @@ end MoreTheorems
 MoreTheorems.all_add_zero : ∀ (n : ℕ), add n 0 = n
 ```
 
-Example 8. Applying a stated theorem to arguments instantiates the statement, whether or not a proof exists yet.
+{ex "ex-theorem-statements-applying-stated-theorem-arguments"}[] Applying a stated theorem to arguments instantiates the statement, whether or not a proof exists yet.
 
 ```lean (name := checkAddCommInst)
 #check SorryTheorems.add_comm 2 3
@@ -769,7 +769,7 @@ Example 8. Applying a stated theorem to arguments instantiates the statement, wh
 SorryTheorems.add_comm 2 3 : add 2 3 = add 3 2
 ```
 
-Example 9. Whatever a proof uses, `#print axioms` shows. The proof below rests on the axiom of this section, and on `propext`, which Mathlib's lemma uses.
+{ex "ex-theorem-statements-whatever-proof-uses-shows"}[] Whatever a proof uses, `#print axioms` shows. The proof below rests on the axiom of this section, and on `propext`, which Mathlib's lemma uses.
 
 ```lean (name := axiomsANeB)
 namespace MoreTheorems
@@ -784,7 +784,7 @@ end MoreTheorems
 'MoreTheorems.a_ne_b' depends on axioms: [a_less_b, propext]
 ```
 
-Example 10. Variables block computation, so the law below waits for structural induction and carries `sorryAx` in the meantime.
+{ex "ex-theorem-statements-variables-block-computation-so"}[] Variables block computation, so the law below waits for structural induction and carries `sorryAx` in the meantime.
 
 ```lean (name := axiomsHalfDouble)
 namespace MoreTheorems
@@ -948,7 +948,7 @@ statement, as each exercise asks. The definitions above
 come from the lecture.
 ```
 
-Exercise 1. Define the predecessor function, with `pred 0 = 0`.
+{exercise "exr-define-predecessor-function"}[] Define the predecessor function, with `pred 0 = 0`.
 
 ```savedLean -keep
 def pred : ℕ → ℕ := sorry
@@ -956,7 +956,7 @@ def pred : ℕ → ℕ := sorry
 -- Expected: #eval pred 5 gives 4, #eval pred 0 gives 0.
 ```
 
-Exercise 2. Define doubling by recursion, without `*`, and prove the ground equation by computation.
+{exercise "exr-define-doubling-recursion-without"}[] Define doubling by recursion, without `*`, and prove the ground equation by computation.
 
 ```savedLean -keep
 def double : ℕ → ℕ := sorry
@@ -964,7 +964,7 @@ def double : ℕ → ℕ := sorry
 theorem double_five : double 5 = 10 := sorry
 ```
 
-Exercise 3. Define the environment that maps "x" to 3, "y" to 17, and every other name to 201, and prove the two evaluations by computation.
+{exercise "exr-define-environment-maps-x"}[] Define the environment that maps "x" to 3, "y" to 17, and every other name to 201, and prove the two evaluations by computation.
 
 ```savedLean -keep
 def someEnv : String → ℤ := sorry
@@ -980,7 +980,7 @@ theorem eval_div_zero :
   sorry
 ```
 
-Exercise 4. Define the sum of a list of natural numbers, and prove the ground equation by computation.
+{exercise "exr-define-sum-list-natural"}[] Define the sum of a list of natural numbers, and prove the ground equation by computation.
 
 ```savedLean -keep
 def sumList : List ℕ → ℕ := sorry
@@ -988,7 +988,7 @@ def sumList : List ℕ → ℕ := sorry
 theorem sumList_example : sumList [1, 2, 3] = 6 := sorry
 ```
 
-Exercise 5. Define the length of a list, with an implicit type argument, and prove the ground equation by computation.
+{exercise "exr-define-length-list-implicit"}[] Define the length of a list, with an implicit type argument, and prove the ground equation by computation.
 
 ```savedLean -keep
 def length {α : Type} : List α → ℕ := sorry
@@ -996,7 +996,7 @@ def length {α : Type} : List α → ℕ := sorry
 theorem length_three : length [1, 2, 3] = 3 := sorry
 ```
 
-Exercise 6. Define `map`, which applies a function to every element, then state, with `sorry`, its two functorial laws. Mapping the identity function changes nothing, and mapping a composition equals composing the maps.
+{exercise "exr-define-which-applies-function"}[] Define `map`, which applies a function to every element, then state, with `sorry`, its two functorial laws. Mapping the identity function changes nothing, and mapping a composition equals composing the maps.
 
 ```savedLean -keep
 def map {α β : Type} (f : α → β) : List α → List β :=
@@ -1008,7 +1008,7 @@ def map {α β : Type} (f : α → β) : List α → List β :=
 --             composition over xs.
 ```
 
-Exercise 7. Define `flatten`, which concatenates a list of lists with `appendPretty`, then state, with `sorry`, that the length of the result is the sum of the lengths of the inner lists, using `length`, `map` and `sumList` of the exercises above.
+{exercise "exr-define-which-concatenates-list"}[] Define `flatten`, which concatenates a list of lists with `appendPretty`, then state, with `sorry`, that the length of the result is the sum of the lengths of the inner lists, using `length`, `map` and `sumList` of the exercises above.
 
 ```savedLean -keep
 def flatten {α : Type} : List (List α) → List α := sorry
@@ -1017,7 +1017,7 @@ def flatten {α : Type} : List (List α) → List α := sorry
 -- length (flatten xss) equals sumList (map length xss).
 ```
 
-Exercise 8. Complete `simplify`, which removes additions of 0, multiplications by 1, and divisions by 1, following the given cases, then state, with `sorry`, its correctness. Simplifying preserves the value under every environment.
+{exercise "exr-complete-which-removes-additions"}[] Complete `simplify`, which removes additions of 0, multiplications by 1, and divisions by 1, following the given cases, then state, with `sorry`, its correctness. Simplifying preserves the value under every environment.
 
 ```savedLean -keep
 def simplify : AExp → AExp
@@ -1035,7 +1035,7 @@ def simplify : AExp → AExp
 -- equals eval env e.
 ```
 
-Exercise 9. Define the size of an expression, counting every constructor, and its depth, counting the longest constructor chain, then state, with `sorry`, that the depth never exceeds the size.
+{exercise "exr-define-size-expression-counting"}[] Define the size of an expression, counting every constructor, and its depth, counting the longest constructor chain, then state, with `sorry`, that the depth never exceeds the size.
 
 ```savedLean -keep
 def size : AExp → ℕ := sorry
@@ -1046,7 +1046,7 @@ theorem depth_le_size (e : AExp) :
     depth e ≤ size e := sorry
 ```
 
-Exercise 10. Define `mirror`, which swaps the operands of every addition and multiplication and leaves the rest unchanged, then state, with `sorry`, that mirroring preserves the value under every environment.
+{exercise "exr-define-which-swaps-operands"}[] Define `mirror`, which swaps the operands of every addition and multiplication and leaves the rest unchanged, then state, with `sorry`, that mirroring preserves the value under every environment.
 
 ```savedLean -keep
 def mirror : AExp → AExp := sorry

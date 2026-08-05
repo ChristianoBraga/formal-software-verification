@@ -1,17 +1,19 @@
 /-
 Footnotes. Usage:
 
-  ... [LoVe](url){fnref "lovelib"}[1] ...        -- the marker in the text
+  ... [LoVe](url){fnref}[lovelib] ...          -- the marker in the text
 
   :::footnotes
-  {fnAnchor "lovelib"}[1.] LoVe reúne os arquivos ...
+  {fnAnchor "lovelib"}[] LoVe reúne os arquivos ...
   :::
 
 The marker and the note sit on the same page, so both links are plain
-fragments. Numbering is written by hand, as in the figure captions.
+fragments. Numbers come from the footnote counter of `Lectures.Meta.Label`,
+which restarts in each lecture.
 -/
 
 import VersoManual
+import Lectures.Meta.Label
 
 open Lean Elab
 open Verso Doc Elab Html
@@ -69,9 +71,13 @@ inline_extension Inline.fnref (key : String) where
   toHtml := some fun goI _ data content => do
     match data with
     | .str key =>
+      let st ← Verso.Doc.Html.HtmlT.state
+      let some e := findLabel st key
+        | reportError s!"fnref: no footnote '{key}'"
+          pure <| Html.seq (← content.mapM goI)
       pure {{
         <sup class="fn-ref" id={{"fnref-" ++ key}}>
-          <a href={{"#fn-" ++ key}}>{{← content.mapM goI}}</a>
+          <a href={{"#fn-" ++ key}}>{{Html.text true e.num}}</a>
         </sup>
       }}
     | _ =>
@@ -80,15 +86,27 @@ inline_extension Inline.fnref (key : String) where
 
 inline_extension Inline.fnAnchor (key : String) where
   data := .str key
-  traverse _ _ _ := pure none
+  traverse _ data _ := do
+    match data with
+    | .str key =>
+      assignLabel { key, counter := "footnote", word := "", cls := "fn-anchor",
+                    resetLevel := 1, prefixLevel := 0 }
+      pure none
+    | _ =>
+      reportError s!"fnAnchor: failed to deserialize key: {data}"
+      pure none
   toTeX := none
+  extraCss := [footnoteCss]
   toHtml := some fun goI _ data content => do
     match data with
     | .str key =>
+      let st ← Verso.Doc.Html.HtmlT.state
+      let num := (findLabel st key).map (·.num) |>.getD ""
       pure {{
         <a class="fn-anchor" id={{"fn-" ++ key}} href={{"#fnref-" ++ key}}>
-          {{← content.mapM goI}}
+          {{Html.text true s!"{num}."}}
         </a>
+        {{← content.mapM goI}}
       }}
     | _ =>
       reportError s!"fnAnchor: failed to deserialize key: {data}"
@@ -104,12 +122,12 @@ instance : FromArgs FootnoteConfig m where
   fromArgs := FootnoteConfig.mk <$> .positional `key (ValDesc.string.as "footnote key (string literal)")
 end
 
-/-- The marker in the running text, linking to the note. -/
+/-- The marker in the running text, whose content is the label of the note. -/
 @[role]
-def fnref : RoleExpanderOf FootnoteConfig
-  | {key}, content => do
-    let content ← content.mapM elabInline
-    ``(Verso.Doc.Inline.other (Inline.fnref $(quote key)) #[$content,*])
+def fnref : RoleExpanderOf Unit
+  | (), content => do
+    let key := (inlineToString (← getEnv) (mkNullNode content)).trimAscii.toString
+    ``(Verso.Doc.Inline.other (Inline.fnref $(quote key)) #[])
 
 /-- The number that opens a note, linking back to its marker. -/
 @[role]

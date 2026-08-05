@@ -26,7 +26,7 @@ Christiano Braga · Mestrado em Sistemas e Computação · IME
 
 Based on [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HTPIwL), chapter [1](https://djvelleman.github.io/HTPIwL/Chap1.html).
 
-# Testing shows presence, not absence
+# §1.1 Testing shows presence, not absence
 
 * Software controls aircraft, medical devices, financial systems, and communication networks. Errors cost money and lives.
 
@@ -34,9 +34,9 @@ Based on [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HT
 
 > Program testing can be used to show the presence of bugs, but never to show their absence!
 
-{cite}[E. W. Dijkstra, _Notes on Structured Programming_, EWD249, 1970.]
+{cite}[E. W. Dijkstra, [_Notes on Structured Programming_](https://www.cs.utexas.edu/~EWD/ewd02xx/EWD249.PDF), EWD249, 1970.]
 
-# The complementary route
+# §1.1 The complementary route
 
 * State a property of a program as a *mathematical proposition*.
 
@@ -44,9 +44,9 @@ Based on [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HT
 
 * A *proof assistant* checks every step against the rules of a formal logic and helps build the proof interactively.
 
-* In current use: *Lean*, Rocq (formerly Coq), Isabelle/HOL, Agda. Landmarks: the *seL4* microkernel and the *CompCert* C compiler.
+* In current use: *Lean*, Rocq (formerly Coq), Isabelle/HOL, Agda. Landmarks: the [seL4](https://trustworthy.systems/publications/nictaabstracts/Klein_EHACDEEKNSTW_09.abstract) microkernel and the [CompCert](https://xavierleroy.org/publi/compcert-CACM.pdf) C compiler.
 
-# Generated code
+# §1.1 Generated code
 
 * Language models write a growing share of code. *Plausible is not the same as correct*; the failure mode is hallucination.
 
@@ -54,13 +54,17 @@ Based on [*How To Prove It with Lean*](https://djvelleman.github.io/HTPIwL/) (HT
 
 * The burden of correctness moves from *reading the code* to *writing the right specification*.
 
-# Propositions and connectives
+# §1.2–1.3 Propositions and connectives
 
 * A *proposition* is a declarative sentence that is either true or false. In Lean the type `Prop` classifies them.
 
 * Connectives build compound propositions: `¬P`, `P ∧ Q`, `P ∨ Q`, `P → Q`, `P ↔ Q`.
 
-* They are *truth-functional*. An implication is true whenever its antecedent is false, and disjunction is *inclusive*.
+* They are *truth-functional*, so the value of a compound proposition depends only on the values of its parts.
+
+* An implication whose antecedent is false is true, whatever its consequent says, because an implication claims nothing about those cases.
+
+* Disjunction is *inclusive*, so `P ∨ Q` also holds when P and Q hold together.
 
 # §1.4 Logical equivalence
 
@@ -128,7 +132,25 @@ Second De Morgan law: the columns for ¬(P ∨ Q) and ¬P ∧ ¬Q agree on all f
   * T
 :::
 
-Truth tables decide any propositional question, but grow *exponentially* in the number of variables and do not extend to the quantifiers of Lecture 2. Deduction rules scale and generalize.
+Truth tables decide any propositional question, but grow *exponentially* in the number of variables and do not extend to the quantifiers of Lecture 2. A *calculus* derives instead of computing.
+
+# §1.4 Logical calculi
+
+* A calculus fixes *axioms* and *inference rules*. A *derivation* applies the rules, no valuation appears in it, and a machine can check it.
+
+* It is *sound* when every theorem is a tautology and *complete* when every tautology is a theorem. Post proved both for the propositional calculus in 1921.
+
+* An *axiomatic* calculus has many axioms and one rule. Łukasiewicz and Tarski need three schemes over → and ¬, with modus ponens.
+
+```tree
+   A → (B → A)
+   (A → (B → C)) → ((A → B) → (A → C))
+   (¬A → ¬B) → (B → A)
+```
+
+* *Resolution* keeps one rule on clauses, which machine provers search with (Robinson, 1965).
+
+* *Natural deduction* has no axioms and two rules per connective, one to introduce it and one to eliminate it. This course uses it.
 
 # §1.5 Natural deduction: the rules of the game
 

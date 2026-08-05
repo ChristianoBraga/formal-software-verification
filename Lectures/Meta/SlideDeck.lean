@@ -272,6 +272,10 @@ def slideDeckCss : String := r##"
     display: inline-block; background: var(--card);
   }
   .notelink a:hover { border-color: var(--accent2); }
+  /* The paragraph inside .notelink carries no class of its own, so the generic
+     body-link rule above matches it and underlines the button. Same
+     specificity, later in the sheet, so this wins. */
+  .inner .notelink p a { text-decoration: none; }
   .refs { font-size: clamp(0.85rem, 1.9vw, 1.1rem); margin: 1rem 0 0; color: var(--muted); }
   .slide--title .inner .refs { color: rgba(255,255,255,0.9); }
   .slide--title .inner .refs a { color: #ffffff; text-decoration: underline; }
@@ -417,7 +421,11 @@ def slideDeckCss : String := r##"
     margin: 0.4rem 0 0.8rem; padding: 0.6rem 1rem; overflow-x: auto;
     background: var(--code-bg); border-radius: 0.5rem; color: var(--muted);
   }
-  table.tabular { border-collapse: collapse; margin: 0.5rem 0; font-size: clamp(0.8rem, 1.7vw, 1.1rem); }
+  /* Centred, and set off from the paragraph that introduces it. */
+  table.tabular {
+    border-collapse: collapse; margin: 1.4rem auto 0.8rem;
+    font-size: clamp(0.8rem, 1.7vw, 1.1rem);
+  }
   table.tabular th, table.tabular td {
     border: 1px solid var(--border); padding: 0.22rem 0.7rem;
     text-align: left; color: var(--text);

@@ -17,7 +17,7 @@ fi
 staging=$(mktemp -d)
 trap 'rm -rf "$staging"' EXIT
 
-version="$(git log -1 --format='%cs+%h' 2>/dev/null || echo dev)"
+version="$(TZ=UTC git log -1 --format='%h · %cd' --date=format-local:'%Y-%m-%d %H:%M UTC' 2>/dev/null || echo dev)"
 
 cp -r site/. "$staging"/
 sed "s/__SITE_VERSION__/$version/" site/index.html > "$staging"/index.html

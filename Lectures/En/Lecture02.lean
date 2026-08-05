@@ -1,7 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
-import Lectures.Meta.Figure
+import Lectures.Meta.Label
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -36,7 +36,7 @@ Lecture 1 excluded "x is even" from the propositions because its truth depends o
 fun n => n > 3 : Nat → Prop
 ```
 
-Quantifiers bind the variable of a predicate and produce a proposition, and {tabref "tbl-quantifiers"}[Table 2.1.1] names the two.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] We write P x for the proposition that the predicate P yields at x.
+Quantifiers bind the variable of a predicate and produce a proposition, and {numref}[tbl-quantifiers] names the two.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] We write P x for the proposition that the predicate P yields at x.
 
 :::table +header
 *
@@ -53,7 +53,7 @@ Quantifiers bind the variable of a predicate and produce a proposition, and {tab
   * P x holds for some x
 :::
 
-*{tableAnchor "tbl-quantifiers"}[Table 2.1.1. The two quantifiers, with their symbols and readings.]*
+{tabcap "tbl-quantifiers"}[The two quantifiers, with their symbols and readings.]
 
 The quantifier *binds* its variable, so ∀ x, P x depends on no free variable and is a proposition. The variable ranges over a type. For example, `∃ n : Nat, n * n = 9` states that some natural number squares to 9. When the context determines the type, Lean infers it and we omit the annotation.
 
@@ -97,7 +97,7 @@ theorem forall_and_distrib (α : Type) (P Q : α → Prop) :
 
 The examples below combine the two rules of this section with the connectives of Lecture 1.
 
-Example 1. Implication is reflexive at each element.
+{ex "ex-universal-quantifier-implication-reflexive-each-element"}[] Implication is reflexive at each element.
 
 ```lean
 example (α : Type) (P : α → Prop) : ∀ x, P x → P x := by
@@ -105,14 +105,14 @@ example (α : Type) (P : α → Prop) : ∀ x, P x → P x := by
   exact hPa
 ```
 
-Example 2. A universal hypothesis instantiates at any given element. The application `h a` is already the proof, so no tactics are needed.
+{ex "ex-universal-quantifier-universal-hypothesis-instantiates-any"}[] A universal hypothesis instantiates at any given element. The application `h a` is already the proof, so no tactics are needed.
 
 ```lean
 example (α : Type) (P : α → Prop)
     (h : ∀ x, P x) (a : α) : P a := h a
 ```
 
-Example 3. Instantiating both variables of a binary predicate at the same element yields the diagonal. The tactic `apply` unifies the hypothesis with the goal and finds both instantiations.
+{ex "ex-universal-quantifier-instantiating-both-variables-binary"}[] Instantiating both variables of a binary predicate at the same element yields the diagonal. The tactic `apply` unifies the hypothesis with the goal and finds both instantiations.
 
 ```lean
 example (α : Type) (R : α → α → Prop)
@@ -121,7 +121,7 @@ example (α : Type) (R : α → α → Prop)
   apply h
 ```
 
-Example 4. Consecutive universal quantifiers commute.
+{ex "ex-universal-quantifier-consecutive-universal-quantifiers-commute"}[] Consecutive universal quantifiers commute.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -130,7 +130,7 @@ example (α β : Type) (R : α → β → Prop)
   exact h a b
 ```
 
-Example 5. Conjunction commutes under the quantifier. The tactic `have` records the instantiated hypothesis, and `constructor` splits the goal into the two conjuncts.
+{ex "ex-universal-quantifier-conjunction-commutes-under-quantifier"}[] Conjunction commutes under the quantifier. The tactic `have` records the instantiated hypothesis, and `constructor` splits the goal into the two conjuncts.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -142,7 +142,7 @@ example (α : Type) (P Q : α → Prop)
   · exact ha.left
 ```
 
-Example 6. A disjunct entails the disjunction at each element. Applying `Or.inl` reduces the disjunction to its left side.
+{ex "ex-universal-quantifier-disjunct-entails-disjunction-each"}[] A disjunct entails the disjunction at each element. Applying `Or.inl` reduces the disjunction to its left side.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -152,7 +152,7 @@ example (α : Type) (P Q : α → Prop)
   exact h a
 ```
 
-Example 7. A pointwise disjunction whose left side fails everywhere yields its right side.
+{ex "ex-universal-quantifier-pointwise-disjunction-whose-left"}[] A pointwise disjunction whose left side fails everywhere yields its right side.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -163,7 +163,7 @@ example (α : Type) (P Q : α → Prop)
   | inr hQa => exact hQa
 ```
 
-Example 8. Contraposition applies at each element. The proof reasons forward, deriving Q a with `have` before reaching the contradiction.
+{ex "ex-universal-quantifier-contraposition-applies-each-element"}[] Contraposition applies at each element. The proof reasons forward, deriving Q a with `have` before reaching the contradiction.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -173,7 +173,7 @@ example (α : Type) (P Q : α → Prop)
   exact hn a hQa
 ```
 
-Example 9. An antecedent that does not mention the quantified variable moves inside the quantifier.
+{ex "ex-universal-quantifier-antecedent-does-not-mention"}[] An antecedent that does not mention the quantified variable moves inside the quantifier.
 
 ```lean
 example (α : Type) (P : Prop) (Q : α → Prop)
@@ -182,7 +182,7 @@ example (α : Type) (P : Prop) (Q : α → Prop)
   exact h hP a
 ```
 
-Example 10. When the type has an element, ∀ x, P x refutes ∀ x, ¬P x.
+{ex "ex-universal-quantifier-when-type-has-element"}[] When the type has an element, ∀ x, P x refutes ∀ x, ¬P x.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -238,27 +238,27 @@ theorem exists_imp_exists (α : Type) (P Q : α → Prop)
 
 The examples below combine the witness rule and existential elimination with the connectives of Lecture 1.
 
-Example 1. The witness 7 proves a concrete existential by computation.
+{ex "ex-existential-quantifier-witness-7-proves-concrete"}[] The witness 7 proves a concrete existential by computation.
 
 ```lean
 example : ∃ n : Nat, n + 5 = 12 := ⟨7, rfl⟩
 ```
 
-Example 2. Both 0 and 1 satisfy `n * n = n`, and the proof picks the witness 1.
+{ex "ex-existential-quantifier-both-0-1-satisfy"}[] Both 0 and 1 satisfy `n * n = n`, and the proof picks the witness 1.
 
 ```lean
 example : ∃ n : Nat, n * n = n := by
   exists 1
 ```
 
-Example 3. An element together with a proof at it is the introduction rule packaged as a pair.
+{ex "ex-existential-quantifier-element-together-proof-introduction"}[] An element together with a proof at it is the introduction rule packaged as a pair.
 
 ```lean
 example (α : Type) (P : α → Prop)
     (a : α) (hPa : P a) : ∃ x, P x := ⟨a, hPa⟩
 ```
 
-Example 4. On an inhabited type, a universal statement yields an existential one. The tactic `specialize` instantiates the hypothesis, and `exists` finds it as an assumption.
+{ex "ex-existential-quantifier-inhabited-type-universal-statement"}[] On an inhabited type, a universal statement yields an existential one. The tactic `specialize` instantiates the hypothesis, and `exists` finds it as an assumption.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -267,7 +267,7 @@ example (α : Type) (P : α → Prop)
   exists a
 ```
 
-Example 5. A proposition that does not mention the bound variable escapes the quantifier.
+{ex "ex-existential-quantifier-proposition-does-not-mention"}[] A proposition that does not mention the bound variable escapes the quantifier.
 
 ```lean
 example (α : Type) (P : Prop) (h : ∃ _ : α, P) : P := by
@@ -275,7 +275,7 @@ example (α : Type) (P : Prop) (h : ∃ _ : α, P) : P := by
   exact hP
 ```
 
-Example 6. Conjunction commutes under the quantifier.
+{ex "ex-existential-quantifier-conjunction-commutes-under-quantifier"}[] Conjunction commutes under the quantifier.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -284,7 +284,7 @@ example (α : Type) (P Q : α → Prop)
   | intro a ha => exact ⟨a, ha.right, ha.left⟩
 ```
 
-Example 7. An existential of a conjunction splits, and the two parts share the witness. The pattern of `obtain` destructures the conjunction under the quantifier in one step.
+{ex "ex-existential-quantifier-existential-conjunction-splits-two"}[] An existential of a conjunction splits, and the two parts share the witness. The pattern of `obtain` destructures the conjunction under the quantifier in one step.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -295,7 +295,7 @@ example (α : Type) (P Q : α → Prop)
   · exact ⟨a, hQa⟩
 ```
 
-Example 8. The witness for P x also witnesses Q x → P x.
+{ex "ex-existential-quantifier-witness-p-x-also"}[] The witness for P x also witnesses Q x → P x.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -306,7 +306,7 @@ example (α : Type) (P Q : α → Prop)
   exact hPa
 ```
 
-Example 9. Consecutive existential quantifiers commute.
+{ex "ex-existential-quantifier-consecutive-existential-quantifiers-commute"}[] Consecutive existential quantifiers commute.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -315,7 +315,7 @@ example (α β : Type) (R : α → β → Prop)
   exact ⟨b, a, hab⟩
 ```
 
-Example 10. An existential disjunction whose right side fails everywhere witnesses its left side.
+{ex "ex-existential-quantifier-existential-disjunction-whose-right"}[] An existential disjunction whose right side fails everywhere witnesses its left side.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -328,7 +328,7 @@ example (α : Type) (P Q : α → Prop)
 
 # Quantifier Negation Laws
 
-The De Morgan laws of Lecture 1 exchange negation with conjunction and disjunction. The laws of {tabref "tbl-quantifier-negation"}[Table 2.4.1] exchange negation with the quantifiers.
+The De Morgan laws of Lecture 1 exchange negation with conjunction and disjunction. The laws of {numref}[tbl-quantifier-negation] exchange negation with the quantifiers.
 
 :::table +header
 *
@@ -342,7 +342,7 @@ The De Morgan laws of Lecture 1 exchange negation with conjunction and disjuncti
   * ¬(∀ x, P x) ≡ ∃ x, ¬P x
 :::
 
-*{tableAnchor "tbl-quantifier-negation"}[Table 2.4.1. The quantifier negation laws.]*
+{tabcap "tbl-quantifier-negation"}[The quantifier negation laws.]
 
 The first law is constructive in both directions.
 
@@ -375,7 +375,7 @@ theorem not_forall_exists (α : Type) (P : α → Prop)
 
 The examples below apply the two negation laws and combine them with the connectives of Lecture 1. Examples 6 and 10 reason classically.
 
-Example 1. A property that fails everywhere admits no witness. This is the constructive direction of the first law. The anonymous constructor pattern in `intro` introduces the existential and destructs it in one step, so no `obtain` is needed.
+{ex "ex-quantifier-negation-laws-property-fails-everywhere-admits"}[] A property that fails everywhere admits no witness. This is the constructive direction of the first law. The anonymous constructor pattern in `intro` introduces the existential and destructs it in one step, so no `obtain` is needed.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -384,7 +384,7 @@ example (α : Type) (P : α → Prop)
   exact h a hPa
 ```
 
-Example 2. Conversely, if no witness exists, the property fails at each element.
+{ex "ex-quantifier-negation-laws-conversely-if-no-witness"}[] Conversely, if no witness exists, the property fails at each element.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -393,7 +393,7 @@ example (α : Type) (P : α → Prop)
   exact h ⟨a, hPa⟩
 ```
 
-Example 3. A witness refutes the negation of the existential.
+{ex "ex-quantifier-negation-laws-witness-refutes-negation-existential"}[] A witness refutes the negation of the existential.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -402,7 +402,7 @@ example (α : Type) (P : α → Prop)
   exact hn ⟨a, hPa⟩
 ```
 
-Example 4. A property that holds everywhere excludes any counterexample. The proof is a proof term, as in Lecture 1. Since the negated goal is a function into `False`, a `fun` that matches the counterexample's witness proves it.
+{ex "ex-quantifier-negation-laws-property-holds-everywhere-excludes"}[] A property that holds everywhere excludes any counterexample. The proof is a proof term, as in Lecture 1. Since the negated goal is a function into `False`, a `fun` that matches the counterexample's witness proves it.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -410,7 +410,7 @@ example (α : Type) (P : α → Prop)
   fun ⟨a, hnPa⟩ => hnPa (h a)
 ```
 
-Example 5. A counterexample refutes the universal statement. This is the constructive direction of the second law.
+{ex "ex-quantifier-negation-laws-counterexample-refutes-universal-statement"}[] A counterexample refutes the universal statement. This is the constructive direction of the second law.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -420,7 +420,7 @@ example (α : Type) (P : α → Prop)
   exact hnPa (hall a)
 ```
 
-Example 6. The converse of Example 4 requires classical reasoning. Given the absence of counterexamples, `Classical.byContradiction` proves the property at each element.
+{ex "ex-quantifier-negation-laws-converse-example-4-requires"}[] The converse of {numref}[ex-quantifier-negation-laws-property-holds-everywhere-excludes] requires classical reasoning. Given the absence of counterexamples, `Classical.byContradiction` proves the property at each element.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -431,7 +431,7 @@ example (α : Type) (P : α → Prop)
   exact h ⟨a, hnPa⟩
 ```
 
-Example 7. A pointwise implication transports the absence of witnesses from the conclusion to the premise. The pattern in `intro` again destructs the existential at introduction.
+{ex "ex-quantifier-negation-laws-pointwise-implication-transports-absence"}[] A pointwise implication transports the absence of witnesses from the conclusion to the premise. The pattern in `intro` again destructs the existential at introduction.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -440,7 +440,7 @@ example (α : Type) (P Q : α → Prop)
   exact hn ⟨a, h a hPa⟩
 ```
 
-Example 8. When no element satisfies both properties, each element that satisfies the first fails to satisfy the second.
+{ex "ex-quantifier-negation-laws-when-no-element-satisfies"}[] When no element satisfies both properties, each element that satisfies the first fails to satisfy the second.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -449,7 +449,7 @@ example (α : Type) (P Q : α → Prop)
   exact h ⟨a, hPa, hQa⟩
 ```
 
-Example 9. Negating an existential disjunction yields, at each element, the conjunction of the negations, which combines the first law with a De Morgan law.
+{ex "ex-quantifier-negation-laws-negating-existential-disjunction-yields"}[] Negating an existential disjunction yields, at each element, the conjunction of the negations, which combines the first law with a De Morgan law.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -462,7 +462,7 @@ example (α : Type) (P Q : α → Prop)
     exact h ⟨a, Or.inr hQa⟩
 ```
 
-Example 10. The theorem `not_forall_exists` of this section extracts a counterexample, and the pointwise implication converts it into a witness.
+{ex "ex-quantifier-negation-laws-theorem-this-section-extracts"}[] The theorem `not_forall_exists` of this section extracts a counterexample, and the pointwise implication converts it into a witness.
 
 ```lean
 example (α : Type) (P Q : α → Prop) (h : ¬∀ x, P x)
@@ -491,7 +491,7 @@ The converse fails. Over the natural numbers, take R x y to be x ≥ y. Then ∀
 
 The examples below move quantifiers across one another. The last two prove in Lean the two claims of the counterexample above.
 
-Example 1. A witness that relates to every element in particular relates to itself.
+{ex "ex-order-quantifiers-witness-relates-every-element"}[] A witness that relates to every element in particular relates to itself.
 
 ```lean
 example (α : Type) (R : α → α → Prop)
@@ -500,7 +500,7 @@ example (α : Type) (R : α → α → Prop)
   exact ⟨a, ha a⟩
 ```
 
-Example 2. An existential-universal statement yields the doubly existential one when the inner type has an element.
+{ex "ex-order-quantifiers-existential-universal-statement-yields"}[] An existential-universal statement yields the doubly existential one when the inner type has an element.
 
 ```lean
 example (α β : Type) (R : α → β → Prop) (b : β)
@@ -509,7 +509,7 @@ example (α β : Type) (R : α → β → Prop) (b : β)
   exact ⟨a, b, ha b⟩
 ```
 
-Example 3. A doubly universal statement yields the mixed order when the type of witnesses has an element.
+{ex "ex-order-quantifiers-doubly-universal-statement-yields"}[] A doubly universal statement yields the mixed order when the type of witnesses has an element.
 
 ```lean
 example (α β : Type) (R : α → β → Prop) (a : α)
@@ -518,7 +518,7 @@ example (α β : Type) (R : α → β → Prop) (a : α)
   exact ⟨a, h a b⟩
 ```
 
-Example 4. The theorem `exists_forall_swap` is a function, and applying it to a hypothesis and an element gives the instantiated conclusion. The proof is the application itself.
+{ex "ex-order-quantifiers-theorem-function-applying-hypothesis"}[] The theorem `exists_forall_swap` is a function, and applying it to a hypothesis and an element gives the instantiated conclusion. The proof is the application itself.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -526,7 +526,7 @@ example (α β : Type) (R : α → β → Prop)
   exists_forall_swap α β R h b
 ```
 
-Example 5. A conjunction under the two quantifiers projects to its left conjunct, preserving the witness.
+{ex "ex-order-quantifiers-conjunction-under-two-quantifiers"}[] A conjunction under the two quantifiers projects to its left conjunct, preserving the witness.
 
 ```lean
 example (α β : Type) (R S : α → β → Prop)
@@ -537,7 +537,7 @@ example (α β : Type) (R S : α → β → Prop)
   exact (ha b).left
 ```
 
-Example 6. Two existential-universal hypotheses combine into a doubly existential conjunction, and each witness instantiates the universal of the other.
+{ex "ex-order-quantifiers-two-existential-universal-hypotheses"}[] Two existential-universal hypotheses combine into a doubly existential conjunction, and each witness instantiates the universal of the other.
 
 ```lean
 example (α β : Type) (R S : α → β → Prop)
@@ -548,7 +548,7 @@ example (α β : Type) (R S : α → β → Prop)
   exact ⟨a, b, ha b, hb a⟩
 ```
 
-Example 7. With three quantifiers, the existential witness serves for every z, so the outer universal moves to the front.
+{ex "ex-order-quantifiers-three-quantifiers-existential-witness"}[] With three quantifiers, the existential witness serves for every z, so the outer universal moves to the front.
 
 ```lean
 example (α β γ : Type) (T : α → β → γ → Prop)
@@ -561,7 +561,7 @@ example (α β γ : Type) (T : α → β → γ → Prop)
   exact ha b c
 ```
 
-Example 8. Contraposition of `exists_forall_swap` transports the negation in the opposite direction.
+{ex "ex-order-quantifiers-contraposition-transports-negation-opposite"}[] Contraposition of `exists_forall_swap` transports the negation in the opposite direction.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -570,7 +570,7 @@ example (α β : Type) (R : α → β → Prop)
   exact h (exists_forall_swap α β R hex)
 ```
 
-Example 9. The first claim of the counterexample above. Each natural number is greater than or equal to itself.
+{ex "ex-order-quantifiers-first-claim-counterexample-above"}[] The first claim of the counterexample above. Each natural number is greater than or equal to itself.
 
 ```lean
 example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
@@ -578,7 +578,7 @@ example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
   exact ⟨b, Nat.le_refl b⟩
 ```
 
-Example 10. The second claim. No natural number is greater than or equal to every natural number, since a + 1 exceeds a. The lemma `Nat.not_succ_le_self` refutes a ≥ a + 1.
+{ex "ex-order-quantifiers-second-claim-no-natural"}[] The second claim. No natural number is greater than or equal to every natural number, since a + 1 exceeds a. The lemma `Nat.not_succ_le_self` refutes a ≥ a + 1.
 
 ```lean
 example : ¬∃ x : Nat, ∀ y : Nat, x ≥ y := by
@@ -671,7 +671,7 @@ Two sets with the same elements are equal. Proving such an equality requires ext
 
 The examples below prove memberships and inclusions directly from the definitions. Each inclusion proof begins by introducing an element and its membership hypothesis, and the notations unfold to the connectives and quantifiers of the previous sections.
 
-Example 1. A set given by a predicate contains an element exactly when the predicate holds at it. The witness 3 proves that 9 is a square.
+{ex "ex-sets-set-given-predicate-contains"}[] A set given by a predicate contains an element exactly when the predicate holds at it. The witness 3 proves that 9 is a square.
 
 ```lean
 def Squares : Set Nat := fun n => ∃ k, n = k * k
@@ -679,7 +679,7 @@ def Squares : Set Nat := fun n => ∃ k, n = k * k
 example : (9 : Nat) ∈ Squares := ⟨3, rfl⟩
 ```
 
-Example 2. Inclusion is reflexive. The proof introduces an element and its membership hypothesis and returns the hypothesis unchanged.
+{ex "ex-sets-inclusion-reflexive-proof-introduces"}[] Inclusion is reflexive. The proof introduces an element and its membership hypothesis and returns the hypothesis unchanged.
 
 ```lean
 example (α : Type) (s : Set α) : s ⊆ s := by
@@ -687,7 +687,7 @@ example (α : Type) (s : Set α) : s ⊆ s := by
   exact hx
 ```
 
-Example 3. The union contains its left side. Membership in the union is a disjunction, and `Or.inl` picks the left side.
+{ex "ex-sets-union-contains-left-side"}[] The union contains its left side. Membership in the union is a disjunction, and `Or.inl` picks the left side.
 
 ```lean
 example (α : Type) (s t : Set α) : s ⊆ s ∪ t := by
@@ -695,7 +695,7 @@ example (α : Type) (s t : Set α) : s ⊆ s ∪ t := by
   exact Or.inl hx
 ```
 
-Example 4. Intersection commutes as an inclusion. Membership in the intersection is a conjunction, and the anonymous constructor swaps its parts.
+{ex "ex-sets-intersection-commutes-inclusion-membership"}[] Intersection commutes as an inclusion. Membership in the intersection is a conjunction, and the anonymous constructor swaps its parts.
 
 ```lean
 example (α : Type) (s t : Set α) : s ∩ t ⊆ t ∩ s := by
@@ -703,7 +703,7 @@ example (α : Type) (s t : Set α) : s ∩ t ⊆ t ∩ s := by
   exact ⟨hx.right, hx.left⟩
 ```
 
-Example 5. The union contains the intersection.
+{ex "ex-sets-union-contains-intersection"}[] The union contains the intersection.
 
 ```lean
 example (α : Type) (s t : Set α) : s ∩ t ⊆ s ∪ t := by
@@ -711,7 +711,7 @@ example (α : Type) (s t : Set α) : s ∩ t ⊆ s ∪ t := by
   exact Or.inl hx.left
 ```
 
-Example 6. When t and u both contain s, their intersection contains s.
+{ex "ex-sets-when-t-u-both"}[] When t and u both contain s, their intersection contains s.
 
 ```lean
 example (α : Type) (s t u : Set α)
@@ -720,7 +720,7 @@ example (α : Type) (s t u : Set α)
   exact ⟨h1 x hx, h2 x hx⟩
 ```
 
-Example 7. When u contains both sides of a union, u contains the union. The tactic `cases` splits the disjunction.
+{ex "ex-sets-when-u-contains-both"}[] When u contains both sides of a union, u contains the union. The tactic `cases` splits the disjunction.
 
 ```lean
 example (α : Type) (s t u : Set α)
@@ -731,7 +731,7 @@ example (α : Type) (s t u : Set α)
   | inr ht => exact h2 x ht
 ```
 
-Example 8. Union with a fixed set preserves inclusion.
+{ex "ex-sets-union-fixed-set-preserves"}[] Union with a fixed set preserves inclusion.
 
 ```lean
 example (α : Type) (s t u : Set α)
@@ -742,7 +742,7 @@ example (α : Type) (s t u : Set α)
   | inr hu => exact Or.inr hu
 ```
 
-Example 9. The empty set, whose membership predicate is `False` at every element, is a subset of every set. `False.elim` closes the goal.
+{ex "ex-sets-empty-set-whose-membership"}[] The empty set, whose membership predicate is `False` at every element, is a subset of every set. `False.elim` closes the goal.
 
 ```lean
 def EmptySet (α : Type) : Set α := fun _ => False
@@ -752,7 +752,7 @@ example (α : Type) (s : Set α) : EmptySet α ⊆ s := by
   exact False.elim hx
 ```
 
-Example 10. Every set is a subset of the universal set, whose membership predicate is `True` at every element.
+{ex "ex-sets-every-set-subset-universal"}[] Every set is a subset of the universal set, whose membership predicate is `True` at every element.
 
 ```lean
 def UnivSet (α : Type) : Set α := fun _ => True
@@ -853,7 +853,7 @@ Replace each `sorry` with a proof. The definitions above
 come from the lecture.
 ```
 
-Exercise 1. The universal quantifier distributes over implication.
+{exercise "exr-universal-quantifier-distributes-over"}[] The universal quantifier distributes over implication.
 
 ```savedLean -keep
 theorem exercise1 (α : Type) (P Q : α → Prop)
@@ -861,7 +861,7 @@ theorem exercise1 (α : Type) (P Q : α → Prop)
   sorry
 ```
 
-Exercise 2. The existential quantifier distributes over disjunction.
+{exercise "exr-existential-quantifier-distributes-over"}[] The existential quantifier distributes over disjunction.
 
 ```savedLean -keep
 theorem exercise2 (α : Type) (P Q : α → Prop) :
@@ -869,7 +869,7 @@ theorem exercise2 (α : Type) (P Q : α → Prop) :
   sorry
 ```
 
-Exercise 3. Eliminate the existential hypothesis, then instantiate the universal one at the witness.
+{exercise "exr-eliminate-existential-hypothesis-then"}[] Eliminate the existential hypothesis, then instantiate the universal one at the witness.
 
 ```savedLean -keep
 theorem exercise3 (α : Type) (P : α → Prop) (Q : Prop)
@@ -877,7 +877,7 @@ theorem exercise3 (α : Type) (P : α → Prop) (Q : Prop)
   sorry
 ```
 
-Exercise 4. Inclusion is transitive.
+{exercise "exr-inclusion-transitive"}[] Inclusion is transitive.
 
 ```savedLean -keep
 theorem exercise4 (α : Type) (s t u : Set α)
@@ -885,7 +885,7 @@ theorem exercise4 (α : Type) (s t u : Set α)
   sorry
 ```
 
-Exercise 5. Intersection distributes over union.
+{exercise "exr-intersection-distributes-over-union"}[] Intersection distributes over union.
 
 ```savedLean -keep
 theorem exercise5 (α : Type) (s t u : Set α) :

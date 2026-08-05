@@ -1,7 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
-import Lectures.Meta.Figure
+import Lectures.Meta.Label
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -10,6 +10,7 @@ open Verso.Genre.Manual.InlineLean
 open Lectures
 
 set_option pp.rawOnError true
+set_option lectures.language "pt"
 
 #doc (Manual) "Aula 2: Lógica de Predicados e Conjuntos" =>
 
@@ -36,7 +37,7 @@ A Aula 1 excluiu "x é par" das proposições porque a sua verdade depende da va
 fun n => n > 3 : Nat → Prop
 ```
 
-Quantificadores ligam a variável de um predicado e produzem uma proposição, e a {tabref "tbl-quantifiers"}[Tabela 2.1.1] nomeia os dois.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] Escrevemos P x para a proposição que o predicado P produz em x.
+Quantificadores ligam a variável de um predicado e produzem uma proposição, e a {numref}[tbl-quantifiers] nomeia os dois.{margin}[G. Frege, *Begriffsschrift, eine der arithmetischen nachgebildete Formelsprache des reinen Denkens*, Verlag von Louis Nebert, Halle, 1879.] Escrevemos P x para a proposição que o predicado P produz em x.
 
 :::table +header
 *
@@ -53,7 +54,7 @@ Quantificadores ligam a variável de um predicado e produzem uma proposição, e
   * P x vale para algum x
 :::
 
-*{tableAnchor "tbl-quantifiers"}[Tabela 2.1.1. Os dois quantificadores, com os seus símbolos e leituras.]*
+{tabcap "tbl-quantifiers"}[Os dois quantificadores, com os seus símbolos e leituras.]
 
 O quantificador *liga* a sua variável, então ∀ x, P x não depende de variável livre e é uma proposição. A variável percorre um tipo. Por exemplo, `∃ n : Nat, n * n = 9` afirma que algum número natural elevado ao quadrado dá 9. Quando o contexto determina o tipo, Lean o infere e omitimos a anotação.
 
@@ -97,7 +98,7 @@ theorem forall_and_distrib (α : Type) (P Q : α → Prop) :
 
 Os exemplos abaixo combinam as duas regras desta seção com os conectivos da Aula 1.
 
-Exemplo 1. A implicação é reflexiva em cada elemento.
+{ex "ex-universal-quantifier-implication-reflexive-each-element"}[] A implicação é reflexiva em cada elemento.
 
 ```lean
 example (α : Type) (P : α → Prop) : ∀ x, P x → P x := by
@@ -105,14 +106,14 @@ example (α : Type) (P : α → Prop) : ∀ x, P x → P x := by
   exact hPa
 ```
 
-Exemplo 2. Uma hipótese universal se instancia em qualquer elemento dado. A aplicação `h a` já é a prova, então nenhuma tática é necessária.
+{ex "ex-universal-quantifier-universal-hypothesis-instantiates-any"}[] Uma hipótese universal se instancia em qualquer elemento dado. A aplicação `h a` já é a prova, então nenhuma tática é necessária.
 
 ```lean
 example (α : Type) (P : α → Prop)
     (h : ∀ x, P x) (a : α) : P a := h a
 ```
 
-Exemplo 3. Instanciar as duas variáveis de um predicado binário no mesmo elemento produz a diagonal. A tática `apply` unifica a hipótese com o objetivo e encontra as duas instanciações.
+{ex "ex-universal-quantifier-instantiating-both-variables-binary"}[] Instanciar as duas variáveis de um predicado binário no mesmo elemento produz a diagonal. A tática `apply` unifica a hipótese com o objetivo e encontra as duas instanciações.
 
 ```lean
 example (α : Type) (R : α → α → Prop)
@@ -121,7 +122,7 @@ example (α : Type) (R : α → α → Prop)
   apply h
 ```
 
-Exemplo 4. Quantificadores universais consecutivos comutam.
+{ex "ex-universal-quantifier-consecutive-universal-quantifiers-commute"}[] Quantificadores universais consecutivos comutam.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -130,7 +131,7 @@ example (α β : Type) (R : α → β → Prop)
   exact h a b
 ```
 
-Exemplo 5. A conjunção comuta sob o quantificador. A tática `have` registra a hipótese instanciada, e `constructor` divide o objetivo nas duas partes da conjunção.
+{ex "ex-universal-quantifier-conjunction-commutes-under-quantifier"}[] A conjunção comuta sob o quantificador. A tática `have` registra a hipótese instanciada, e `constructor` divide o objetivo nas duas partes da conjunção.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -142,7 +143,7 @@ example (α : Type) (P Q : α → Prop)
   · exact ha.left
 ```
 
-Exemplo 6. Um disjunto implica a disjunção em cada elemento. Aplicar `Or.inl` reduz a disjunção ao seu lado esquerdo.
+{ex "ex-universal-quantifier-disjunct-entails-disjunction-each"}[] Um disjunto implica a disjunção em cada elemento. Aplicar `Or.inl` reduz a disjunção ao seu lado esquerdo.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -152,7 +153,7 @@ example (α : Type) (P Q : α → Prop)
   exact h a
 ```
 
-Exemplo 7. Uma disjunção pontual cujo lado esquerdo falha em todo elemento produz o seu lado direito.
+{ex "ex-universal-quantifier-pointwise-disjunction-whose-left"}[] Uma disjunção pontual cujo lado esquerdo falha em todo elemento produz o seu lado direito.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -163,7 +164,7 @@ example (α : Type) (P Q : α → Prop)
   | inr hQa => exact hQa
 ```
 
-Exemplo 8. A contraposição se aplica em cada elemento. A prova raciocina para frente, derivando Q a com `have` antes de chegar à contradição.
+{ex "ex-universal-quantifier-contraposition-applies-each-element"}[] A contraposição se aplica em cada elemento. A prova raciocina para frente, derivando Q a com `have` antes de chegar à contradição.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -173,7 +174,7 @@ example (α : Type) (P Q : α → Prop)
   exact hn a hQa
 ```
 
-Exemplo 9. Um antecedente que não menciona a variável quantificada move-se para dentro do quantificador.
+{ex "ex-universal-quantifier-antecedent-does-not-mention"}[] Um antecedente que não menciona a variável quantificada move-se para dentro do quantificador.
 
 ```lean
 example (α : Type) (P : Prop) (Q : α → Prop)
@@ -182,7 +183,7 @@ example (α : Type) (P : Prop) (Q : α → Prop)
   exact h hP a
 ```
 
-Exemplo 10. Quando o tipo tem um elemento, ∀ x, P x refuta ∀ x, ¬P x.
+{ex "ex-universal-quantifier-when-type-has-element"}[] Quando o tipo tem um elemento, ∀ x, P x refuta ∀ x, ¬P x.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -238,27 +239,27 @@ theorem exists_imp_exists (α : Type) (P Q : α → Prop)
 
 Os exemplos abaixo combinam a regra da testemunha e a eliminação do existencial com os conectivos da Aula 1.
 
-Exemplo 1. A testemunha 7 prova um existencial concreto por computação.
+{ex "ex-existential-quantifier-witness-7-proves-concrete"}[] A testemunha 7 prova um existencial concreto por computação.
 
 ```lean
 example : ∃ n : Nat, n + 5 = 12 := ⟨7, rfl⟩
 ```
 
-Exemplo 2. Tanto 0 quanto 1 satisfazem `n * n = n`, e a prova escolhe a testemunha 1.
+{ex "ex-existential-quantifier-both-0-1-satisfy"}[] Tanto 0 quanto 1 satisfazem `n * n = n`, e a prova escolhe a testemunha 1.
 
 ```lean
 example : ∃ n : Nat, n * n = n := by
   exists 1
 ```
 
-Exemplo 3. Um elemento junto com uma prova nele é a regra de introdução empacotada como um par.
+{ex "ex-existential-quantifier-element-together-proof-introduction"}[] Um elemento junto com uma prova nele é a regra de introdução empacotada como um par.
 
 ```lean
 example (α : Type) (P : α → Prop)
     (a : α) (hPa : P a) : ∃ x, P x := ⟨a, hPa⟩
 ```
 
-Exemplo 4. Em um tipo habitado, uma afirmação universal produz uma existencial. A tática `specialize` instancia a hipótese, e `exists` a encontra como hipótese do contexto.
+{ex "ex-existential-quantifier-inhabited-type-universal-statement"}[] Em um tipo habitado, uma afirmação universal produz uma existencial. A tática `specialize` instancia a hipótese, e `exists` a encontra como hipótese do contexto.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -267,7 +268,7 @@ example (α : Type) (P : α → Prop)
   exists a
 ```
 
-Exemplo 5. Uma proposição que não menciona a variável ligada escapa do quantificador.
+{ex "ex-existential-quantifier-proposition-does-not-mention"}[] Uma proposição que não menciona a variável ligada escapa do quantificador.
 
 ```lean
 example (α : Type) (P : Prop) (h : ∃ _ : α, P) : P := by
@@ -275,7 +276,7 @@ example (α : Type) (P : Prop) (h : ∃ _ : α, P) : P := by
   exact hP
 ```
 
-Exemplo 6. A conjunção comuta sob o quantificador.
+{ex "ex-existential-quantifier-conjunction-commutes-under-quantifier"}[] A conjunção comuta sob o quantificador.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -284,7 +285,7 @@ example (α : Type) (P Q : α → Prop)
   | intro a ha => exact ⟨a, ha.right, ha.left⟩
 ```
 
-Exemplo 7. Um existencial de uma conjunção se divide, e as duas partes compartilham a testemunha. O padrão do `obtain` desestrutura a conjunção sob o quantificador em um só passo.
+{ex "ex-existential-quantifier-existential-conjunction-splits-two"}[] Um existencial de uma conjunção se divide, e as duas partes compartilham a testemunha. O padrão do `obtain` desestrutura a conjunção sob o quantificador em um só passo.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -295,7 +296,7 @@ example (α : Type) (P Q : α → Prop)
   · exact ⟨a, hQa⟩
 ```
 
-Exemplo 8. A testemunha de P x também testemunha Q x → P x.
+{ex "ex-existential-quantifier-witness-p-x-also"}[] A testemunha de P x também testemunha Q x → P x.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -306,7 +307,7 @@ example (α : Type) (P Q : α → Prop)
   exact hPa
 ```
 
-Exemplo 9. Quantificadores existenciais consecutivos comutam.
+{ex "ex-existential-quantifier-consecutive-existential-quantifiers-commute"}[] Quantificadores existenciais consecutivos comutam.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -315,7 +316,7 @@ example (α β : Type) (R : α → β → Prop)
   exact ⟨b, a, hab⟩
 ```
 
-Exemplo 10. Uma disjunção existencial cujo lado direito falha em todo elemento testemunha o seu lado esquerdo.
+{ex "ex-existential-quantifier-existential-disjunction-whose-right"}[] Uma disjunção existencial cujo lado direito falha em todo elemento testemunha o seu lado esquerdo.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -328,7 +329,7 @@ example (α : Type) (P Q : α → Prop)
 
 # Leis de Negação dos Quantificadores
 
-As leis de De Morgan da Aula 1 trocam a negação com a conjunção e a disjunção. As leis da {tabref "tbl-quantifier-negation"}[Tabela 2.4.1] trocam a negação com os quantificadores.
+As leis de De Morgan da Aula 1 trocam a negação com a conjunção e a disjunção. As leis da {numref}[tbl-quantifier-negation] trocam a negação com os quantificadores.
 
 :::table +header
 *
@@ -342,7 +343,7 @@ As leis de De Morgan da Aula 1 trocam a negação com a conjunção e a disjunç
   * ¬(∀ x, P x) ≡ ∃ x, ¬P x
 :::
 
-*{tableAnchor "tbl-quantifier-negation"}[Tabela 2.4.1. As leis de negação dos quantificadores.]*
+{tabcap "tbl-quantifier-negation"}[As leis de negação dos quantificadores.]
 
 A primeira lei é construtiva nas duas direções.
 
@@ -375,7 +376,7 @@ theorem not_forall_exists (α : Type) (P : α → Prop)
 
 Os exemplos abaixo aplicam as duas leis de negação e as combinam com os conectivos da Aula 1. Os Exemplos 6 e 10 raciocinam classicamente.
 
-Exemplo 1. Uma propriedade que falha em toda parte não admite testemunha. Esta é a direção construtiva da primeira lei. O padrão de construtor anônimo em `intro` introduz o existencial e o destrói num só passo, então nenhum `obtain` é necessário.
+{ex "ex-quantifier-negation-laws-property-fails-everywhere-admits"}[] Uma propriedade que falha em toda parte não admite testemunha. Esta é a direção construtiva da primeira lei. O padrão de construtor anônimo em `intro` introduz o existencial e o destrói num só passo, então nenhum `obtain` é necessário.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -384,7 +385,7 @@ example (α : Type) (P : α → Prop)
   exact h a hPa
 ```
 
-Exemplo 2. Reciprocamente, se não existe testemunha, a propriedade falha em cada elemento.
+{ex "ex-quantifier-negation-laws-conversely-if-no-witness"}[] Reciprocamente, se não existe testemunha, a propriedade falha em cada elemento.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -393,7 +394,7 @@ example (α : Type) (P : α → Prop)
   exact h ⟨a, hPa⟩
 ```
 
-Exemplo 3. Uma testemunha refuta a negação do existencial.
+{ex "ex-quantifier-negation-laws-witness-refutes-negation-existential"}[] Uma testemunha refuta a negação do existencial.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -402,7 +403,7 @@ example (α : Type) (P : α → Prop)
   exact hn ⟨a, hPa⟩
 ```
 
-Exemplo 4. Uma propriedade que vale em toda parte exclui qualquer contraexemplo. A prova é um termo de prova, como na Aula 1. Como o objetivo negado é uma função em `False`, um `fun` que casa o padrão da testemunha do contraexemplo o prova.
+{ex "ex-quantifier-negation-laws-property-holds-everywhere-excludes"}[] Uma propriedade que vale em toda parte exclui qualquer contraexemplo. A prova é um termo de prova, como na Aula 1. Como o objetivo negado é uma função em `False`, um `fun` que casa o padrão da testemunha do contraexemplo o prova.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -410,7 +411,7 @@ example (α : Type) (P : α → Prop)
   fun ⟨a, hnPa⟩ => hnPa (h a)
 ```
 
-Exemplo 5. Um contraexemplo refuta o enunciado universal. Esta é a direção construtiva da segunda lei.
+{ex "ex-quantifier-negation-laws-counterexample-refutes-universal-statement"}[] Um contraexemplo refuta o enunciado universal. Esta é a direção construtiva da segunda lei.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -420,7 +421,7 @@ example (α : Type) (P : α → Prop)
   exact hnPa (hall a)
 ```
 
-Exemplo 6. A recíproca do Exemplo 4 exige raciocínio clássico. Dada a ausência de contraexemplos, `Classical.byContradiction` prova a propriedade em cada elemento.
+{ex "ex-quantifier-negation-laws-converse-example-4-requires"}[] A recíproca do {numref}[ex-quantifier-negation-laws-property-holds-everywhere-excludes] exige raciocínio clássico. Dada a ausência de contraexemplos, `Classical.byContradiction` prova a propriedade em cada elemento.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -431,7 +432,7 @@ example (α : Type) (P : α → Prop)
   exact h ⟨a, hnPa⟩
 ```
 
-Exemplo 7. Uma implicação ponto a ponto transporta a ausência de testemunhas da conclusão para a premissa. O padrão em `intro` de novo destrói o existencial na introdução.
+{ex "ex-quantifier-negation-laws-pointwise-implication-transports-absence"}[] Uma implicação ponto a ponto transporta a ausência de testemunhas da conclusão para a premissa. O padrão em `intro` de novo destrói o existencial na introdução.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -440,7 +441,7 @@ example (α : Type) (P Q : α → Prop)
   exact hn ⟨a, h a hPa⟩
 ```
 
-Exemplo 8. Quando nenhum elemento satisfaz as duas propriedades, cada elemento que satisfaz a primeira não satisfaz a segunda.
+{ex "ex-quantifier-negation-laws-when-no-element-satisfies"}[] Quando nenhum elemento satisfaz as duas propriedades, cada elemento que satisfaz a primeira não satisfaz a segunda.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -449,7 +450,7 @@ example (α : Type) (P Q : α → Prop)
   exact h ⟨a, hPa, hQa⟩
 ```
 
-Exemplo 9. A negação de um existencial de uma disjunção dá, em cada elemento, a conjunção das negações, o que combina a primeira lei com uma lei de De Morgan.
+{ex "ex-quantifier-negation-laws-negating-existential-disjunction-yields"}[] A negação de um existencial de uma disjunção dá, em cada elemento, a conjunção das negações, o que combina a primeira lei com uma lei de De Morgan.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -462,7 +463,7 @@ example (α : Type) (P Q : α → Prop)
     exact h ⟨a, Or.inr hQa⟩
 ```
 
-Exemplo 10. O teorema `not_forall_exists` desta seção extrai um contraexemplo, e a implicação ponto a ponto o converte em testemunha.
+{ex "ex-quantifier-negation-laws-theorem-this-section-extracts"}[] O teorema `not_forall_exists` desta seção extrai um contraexemplo, e a implicação ponto a ponto o converte em testemunha.
 
 ```lean
 example (α : Type) (P Q : α → Prop) (h : ¬∀ x, P x)
@@ -491,7 +492,7 @@ A recíproca falha. Sobre os números naturais, tome R x y como x ≥ y. Então 
 
 Os exemplos abaixo movem quantificadores uns sobre os outros. Os dois últimos provam em Lean as duas afirmações do contraexemplo acima.
 
-Exemplo 1. Uma testemunha que se relaciona com todo elemento em particular se relaciona consigo mesma.
+{ex "ex-order-quantifiers-witness-relates-every-element"}[] Uma testemunha que se relaciona com todo elemento em particular se relaciona consigo mesma.
 
 ```lean
 example (α : Type) (R : α → α → Prop)
@@ -500,7 +501,7 @@ example (α : Type) (R : α → α → Prop)
   exact ⟨a, ha a⟩
 ```
 
-Exemplo 2. Um enunciado existencial-universal dá o duplamente existencial quando o tipo interno tem um elemento.
+{ex "ex-order-quantifiers-existential-universal-statement-yields"}[] Um enunciado existencial-universal dá o duplamente existencial quando o tipo interno tem um elemento.
 
 ```lean
 example (α β : Type) (R : α → β → Prop) (b : β)
@@ -509,7 +510,7 @@ example (α β : Type) (R : α → β → Prop) (b : β)
   exact ⟨a, b, ha b⟩
 ```
 
-Exemplo 3. Um enunciado duplamente universal dá a ordem mista quando o tipo das testemunhas tem um elemento.
+{ex "ex-order-quantifiers-doubly-universal-statement-yields"}[] Um enunciado duplamente universal dá a ordem mista quando o tipo das testemunhas tem um elemento.
 
 ```lean
 example (α β : Type) (R : α → β → Prop) (a : α)
@@ -518,7 +519,7 @@ example (α β : Type) (R : α → β → Prop) (a : α)
   exact ⟨a, h a b⟩
 ```
 
-Exemplo 4. O teorema `exists_forall_swap` é uma função, e aplicá-lo a uma hipótese e a um elemento dá a conclusão instanciada. A prova é a própria aplicação.
+{ex "ex-order-quantifiers-theorem-function-applying-hypothesis"}[] O teorema `exists_forall_swap` é uma função, e aplicá-lo a uma hipótese e a um elemento dá a conclusão instanciada. A prova é a própria aplicação.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -526,7 +527,7 @@ example (α β : Type) (R : α → β → Prop)
   exists_forall_swap α β R h b
 ```
 
-Exemplo 5. Uma conjunção sob os dois quantificadores projeta-se na sua parte esquerda, preservando a testemunha.
+{ex "ex-order-quantifiers-conjunction-under-two-quantifiers"}[] Uma conjunção sob os dois quantificadores projeta-se na sua parte esquerda, preservando a testemunha.
 
 ```lean
 example (α β : Type) (R S : α → β → Prop)
@@ -537,7 +538,7 @@ example (α β : Type) (R S : α → β → Prop)
   exact (ha b).left
 ```
 
-Exemplo 6. Duas hipóteses existencial-universais combinam-se numa conjunção duplamente existencial, e cada testemunha instancia o universal da outra.
+{ex "ex-order-quantifiers-two-existential-universal-hypotheses"}[] Duas hipóteses existencial-universais combinam-se numa conjunção duplamente existencial, e cada testemunha instancia o universal da outra.
 
 ```lean
 example (α β : Type) (R S : α → β → Prop)
@@ -548,7 +549,7 @@ example (α β : Type) (R S : α → β → Prop)
   exact ⟨a, b, ha b, hb a⟩
 ```
 
-Exemplo 7. Com três quantificadores, a testemunha existencial serve para todo z, então o universal externo move-se para a frente.
+{ex "ex-order-quantifiers-three-quantifiers-existential-witness"}[] Com três quantificadores, a testemunha existencial serve para todo z, então o universal externo move-se para a frente.
 
 ```lean
 example (α β γ : Type) (T : α → β → γ → Prop)
@@ -561,7 +562,7 @@ example (α β γ : Type) (T : α → β → γ → Prop)
   exact ha b c
 ```
 
-Exemplo 8. A contraposição de `exists_forall_swap` transporta a negação na direção oposta.
+{ex "ex-order-quantifiers-contraposition-transports-negation-opposite"}[] A contraposição de `exists_forall_swap` transporta a negação na direção oposta.
 
 ```lean
 example (α β : Type) (R : α → β → Prop)
@@ -570,7 +571,7 @@ example (α β : Type) (R : α → β → Prop)
   exact h (exists_forall_swap α β R hex)
 ```
 
-Exemplo 9. A primeira afirmação do contraexemplo acima. Cada número natural é maior ou igual a si mesmo.
+{ex "ex-order-quantifiers-first-claim-counterexample-above"}[] A primeira afirmação do contraexemplo acima. Cada número natural é maior ou igual a si mesmo.
 
 ```lean
 example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
@@ -578,7 +579,7 @@ example : ∀ y : Nat, ∃ x : Nat, x ≥ y := by
   exact ⟨b, Nat.le_refl b⟩
 ```
 
-Exemplo 10. A segunda afirmação. Nenhum número natural é maior ou igual a todo número natural, pois a + 1 excede a. O lema `Nat.not_succ_le_self` refuta a ≥ a + 1.
+{ex "ex-order-quantifiers-second-claim-no-natural"}[] A segunda afirmação. Nenhum número natural é maior ou igual a todo número natural, pois a + 1 excede a. O lema `Nat.not_succ_le_self` refuta a ≥ a + 1.
 
 ```lean
 example : ¬∃ x : Nat, ∀ y : Nat, x ≥ y := by
@@ -671,7 +672,7 @@ Dois conjuntos com os mesmos elementos são iguais. Provar essa igualdade requer
 
 Os exemplos abaixo provam pertinências e inclusões diretamente a partir das definições. Cada prova de inclusão começa introduzindo um elemento e a sua hipótese de pertinência, e as notações desdobram-se nos conectivos e quantificadores das seções anteriores.
 
-Exemplo 1. Um conjunto dado por um predicado contém um elemento exatamente quando o predicado vale nele. A testemunha 3 prova que 9 é um quadrado.
+{ex "ex-sets-set-given-predicate-contains"}[] Um conjunto dado por um predicado contém um elemento exatamente quando o predicado vale nele. A testemunha 3 prova que 9 é um quadrado.
 
 ```lean
 def Squares : Set Nat := fun n => ∃ k, n = k * k
@@ -679,7 +680,7 @@ def Squares : Set Nat := fun n => ∃ k, n = k * k
 example : (9 : Nat) ∈ Squares := ⟨3, rfl⟩
 ```
 
-Exemplo 2. A inclusão é reflexiva. A prova introduz um elemento e a sua hipótese de pertinência e devolve a hipótese sem mudança.
+{ex "ex-sets-inclusion-reflexive-proof-introduces"}[] A inclusão é reflexiva. A prova introduz um elemento e a sua hipótese de pertinência e devolve a hipótese sem mudança.
 
 ```lean
 example (α : Type) (s : Set α) : s ⊆ s := by
@@ -687,7 +688,7 @@ example (α : Type) (s : Set α) : s ⊆ s := by
   exact hx
 ```
 
-Exemplo 3. A união contém o seu lado esquerdo. A pertinência à união é uma disjunção, e `Or.inl` escolhe o lado esquerdo.
+{ex "ex-sets-union-contains-left-side"}[] A união contém o seu lado esquerdo. A pertinência à união é uma disjunção, e `Or.inl` escolhe o lado esquerdo.
 
 ```lean
 example (α : Type) (s t : Set α) : s ⊆ s ∪ t := by
@@ -695,7 +696,7 @@ example (α : Type) (s t : Set α) : s ⊆ s ∪ t := by
   exact Or.inl hx
 ```
 
-Exemplo 4. A interseção comuta como inclusão. A pertinência à interseção é uma conjunção, e o construtor anônimo troca as suas partes.
+{ex "ex-sets-intersection-commutes-inclusion-membership"}[] A interseção comuta como inclusão. A pertinência à interseção é uma conjunção, e o construtor anônimo troca as suas partes.
 
 ```lean
 example (α : Type) (s t : Set α) : s ∩ t ⊆ t ∩ s := by
@@ -703,7 +704,7 @@ example (α : Type) (s t : Set α) : s ∩ t ⊆ t ∩ s := by
   exact ⟨hx.right, hx.left⟩
 ```
 
-Exemplo 5. A união contém a interseção.
+{ex "ex-sets-union-contains-intersection"}[] A união contém a interseção.
 
 ```lean
 example (α : Type) (s t : Set α) : s ∩ t ⊆ s ∪ t := by
@@ -711,7 +712,7 @@ example (α : Type) (s t : Set α) : s ∩ t ⊆ s ∪ t := by
   exact Or.inl hx.left
 ```
 
-Exemplo 6. Quando t e u contêm s, a sua interseção contém s.
+{ex "ex-sets-when-t-u-both"}[] Quando t e u contêm s, a sua interseção contém s.
 
 ```lean
 example (α : Type) (s t u : Set α)
@@ -720,7 +721,7 @@ example (α : Type) (s t u : Set α)
   exact ⟨h1 x hx, h2 x hx⟩
 ```
 
-Exemplo 7. Quando u contém os dois lados de uma união, u contém a união. A tática `cases` divide a disjunção.
+{ex "ex-sets-when-u-contains-both"}[] Quando u contém os dois lados de uma união, u contém a união. A tática `cases` divide a disjunção.
 
 ```lean
 example (α : Type) (s t u : Set α)
@@ -731,7 +732,7 @@ example (α : Type) (s t u : Set α)
   | inr ht => exact h2 x ht
 ```
 
-Exemplo 8. A união com um conjunto fixo preserva a inclusão.
+{ex "ex-sets-union-fixed-set-preserves"}[] A união com um conjunto fixo preserva a inclusão.
 
 ```lean
 example (α : Type) (s t u : Set α)
@@ -742,7 +743,7 @@ example (α : Type) (s t u : Set α)
   | inr hu => exact Or.inr hu
 ```
 
-Exemplo 9. O conjunto vazio, cujo predicado de pertinência é `False` em cada elemento, é subconjunto de todo conjunto. `False.elim` fecha o objetivo.
+{ex "ex-sets-empty-set-whose-membership"}[] O conjunto vazio, cujo predicado de pertinência é `False` em cada elemento, é subconjunto de todo conjunto. `False.elim` fecha o objetivo.
 
 ```lean
 def EmptySet (α : Type) : Set α := fun _ => False
@@ -752,7 +753,7 @@ example (α : Type) (s : Set α) : EmptySet α ⊆ s := by
   exact False.elim hx
 ```
 
-Exemplo 10. Todo conjunto é subconjunto do conjunto universo, cujo predicado de pertinência é `True` em cada elemento.
+{ex "ex-sets-every-set-subset-universal"}[] Todo conjunto é subconjunto do conjunto universo, cujo predicado de pertinência é `True` em cada elemento.
 
 ```lean
 def UnivSet (α : Type) : Set α := fun _ => True
@@ -853,7 +854,7 @@ Substitua cada `sorry` por uma prova. As definições acima
 vêm da aula.
 ```
 
-Exercício 1. O quantificador universal distribui sobre a implicação.
+{exercise "exr-universal-quantifier-distributes-over"}[] O quantificador universal distribui sobre a implicação.
 
 ```savedLean -keep
 theorem exercise1 (α : Type) (P Q : α → Prop)
@@ -861,7 +862,7 @@ theorem exercise1 (α : Type) (P Q : α → Prop)
   sorry
 ```
 
-Exercício 2. O quantificador existencial distribui sobre a disjunção.
+{exercise "exr-existential-quantifier-distributes-over"}[] O quantificador existencial distribui sobre a disjunção.
 
 ```savedLean -keep
 theorem exercise2 (α : Type) (P Q : α → Prop) :
@@ -869,7 +870,7 @@ theorem exercise2 (α : Type) (P Q : α → Prop) :
   sorry
 ```
 
-Exercício 3. Elimine a hipótese existencial e então instancie a universal na testemunha.
+{exercise "exr-eliminate-existential-hypothesis-then"}[] Elimine a hipótese existencial e então instancie a universal na testemunha.
 
 ```savedLean -keep
 theorem exercise3 (α : Type) (P : α → Prop) (Q : Prop)
@@ -877,7 +878,7 @@ theorem exercise3 (α : Type) (P : α → Prop) (Q : Prop)
   sorry
 ```
 
-Exercício 4. A inclusão é transitiva.
+{exercise "exr-inclusion-transitive"}[] A inclusão é transitiva.
 
 ```savedLean -keep
 theorem exercise4 (α : Type) (s t u : Set α)
@@ -885,7 +886,7 @@ theorem exercise4 (α : Type) (s t u : Set α)
   sorry
 ```
 
-Exercício 5. A interseção distribui sobre a união.
+{exercise "exr-intersection-distributes-over-union"}[] A interseção distribui sobre a união.
 
 ```savedLean -keep
 theorem exercise5 (α : Type) (s t u : Set α) :

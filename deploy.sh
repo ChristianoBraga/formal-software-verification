@@ -11,7 +11,9 @@ lake exe slides-pt --output _out/slides-pt
 staging=$(mktemp -d)
 trap 'rm -rf "$staging"' EXIT
 
-version="$(git log -1 --format='%cs+%h')"
+# Short hash plus the commit timestamp in UTC, so the stamp is the same
+# whether the site is built here or on the CI runner.
+version="$(TZ=UTC git log -1 --format='%h · %cd' --date=format-local:'%Y-%m-%d %H:%M UTC')"
 
 cp -r site/. "$staging"/
 sed "s/__SITE_VERSION__/$version/" site/index.html > "$staging"/index.html
