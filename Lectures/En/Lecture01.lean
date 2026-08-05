@@ -48,6 +48,8 @@ In this course we use [Lean](https://lean-lang.org). Lean is at once a programmi
 
 *Figure 1.1. The main components of Lean.*
 
+These components serve any development in Lean, and the course puts them to one specific use. The imperative language of the final lectures, its semantics and its Hoare logic are ordinary Lean definitions, the verification conditions are goals that tactics discharge, and the kernel checks the result as it checks any other proof. Read at the level of that use, the same picture becomes the architecture of a program verifier.
+
 {figref "fig-verifier-architecture"}[Figure 1.2] shows the architecture of the verifier that the course builds. A program and its specification form a Hoare triple. The big-step operational semantics gives the triple its meaning. The `mvcgen` tactic generates the verification conditions, which are purely logical goals. Tactic proofs discharge them, and the Lean kernel checks every proof.
 
 {figureAnchor "fig-verifier-architecture"}[![Architecture of a program verifier in Lean: a program and a specification form a Hoare triple, whose meaning comes from the big-step semantics; the mvcgen tactic generates verification conditions, tactic proofs discharge them, and the Lean kernel checks every proof](verifier-architecture.svg)]
