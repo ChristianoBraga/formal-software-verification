@@ -597,12 +597,48 @@ def Set (α : Type) : Type := α → Prop
 
 Todo elemento de um conjunto vem do tipo fixo α, e essa disciplina de tipos bloqueia o *paradoxo de Russell*.{margin}[B. Russell, carta a Frege, 16 de junho de 1902. Em J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.] A teoria ingênua de conjuntos admite um conjunto para cada propriedade. Tome R como o conjunto de todos os conjuntos que não são elementos de si mesmos. Então R ∈ R vale exatamente quando R ∉ R, o que é uma contradição, e a teoria colapsa. Em Lean, um conjunto s : Set α contém apenas elementos de α, e o próprio s tem tipo Set α, não α, então a expressão s ∈ s não é bem tipada. Não há como enunciar a propriedade que define R nem formar a coleção, então o paradoxo não ocorre.
 
-Lean resolve notações como x ∈ s por meio de *classes de tipos*. A classe `Membership` declara a notação, e uma declaração `instance` dá o seu significado num tipo particular. Quando Lean elabora x ∈ s, ele procura entre as instâncias registradas uma que cubra o tipo de s. `Set α` é uma definição desta aula, então nenhuma instância a cobre ainda, e a notação falharia. A instância abaixo fornece o significado que falta, e x ∈ s desdobra-se por definição na aplicação s x. Nesta instância e nas seguintes, Lean liga a variável de tipo livre α automaticamente.
+Nada até aqui dá ao símbolo ∈ um significado nos nossos conjuntos, e Lean não traz um embutido. Uma *classe de tipos* declara uma operação e a deixa sem significado, e uma declaração `instance` fornece o significado em um tipo. A notação x ∈ s chega aos nossos conjuntos em três passos, e cada passo mora em um lugar diferente.
+
+O símbolo é notação comum, declarada no módulo do núcleo `Init.Notation`. Ele abrevia uma aplicação, e nada mais.
+
+```
+notation:50 a:50 " ∈ " b:50 => Membership.mem b a
+```
+
+O nome `Membership.mem` à direita é o único campo de uma classe declarada no módulo do núcleo `Init.Prelude`. A classe fixa a forma da operação, tomando o tipo dos elementos e o tipo do recipiente, e não dá definição alguma.
+
+```
+class Membership (α : outParam (Type u)) (γ : Type v) where
+  mem : γ → α → Prop
+```
+
+O recipiente vem primeiro em `mem` e vem depois na notação, então x ∈ s abrevia `Membership.mem s x`.
+
+O terceiro passo é nosso. Quando Lean elabora x ∈ s, ele procura entre as instâncias registradas uma cujo tipo de recipiente case com o tipo de s. `Set α` é uma definição desta aula, então essa busca nada encontra e a notação não elabora. A instância abaixo encerra a busca e dá a `mem` a sua definição em `Set α`. Nesta instância e nas seguintes, Lean liga a variável de tipo livre α automaticamente.
 
 ```savedLean
 instance : Membership α (Set α) :=
   ⟨fun s a => s a⟩
 ```
+
+Imprimir uma pertinência com a notação desligada mostra os dois passos de uma vez, a expansão do símbolo e a instância que o elaborador encontrou.
+
+```lean (name := checkMem)
+set_option pp.notation false in
+#check fun (α : Type) (s : Set α) (x : α) => x ∈ s
+```
+```leanOutput checkMem
+fun α s x => Membership.mem s x : (α : Type) → Set α → α → Prop
+```
+
+Com a instância em escopo, x ∈ s é a aplicação s x por definição, então as duas são intercambiáveis e `rfl` prova que são iguais.
+
+```lean
+example (α : Type) (s : Set α) (x : α) :
+    (x ∈ s) = s x := rfl
+```
+
+Os três passos repartem-se entre dois dos componentes da {numref}[fig-lean-components]. O expansor de macros faz o primeiro, trocando o símbolo pela aplicação, e o elaborador faz o terceiro, escolhendo a instância a partir do tipo de s.
 
 Um conjunto dado por uma propriedade é o próprio predicado, e uma prova de pertinência é uma prova da propriedade. A notação matemática escreve esse conjunto por compreensão, como o conjunto de todos os n que satisfazem `∃ k, n = 2 * k`. O núcleo de Lean não tem notação por compreensão, então escrevemos o predicado diretamente.
 

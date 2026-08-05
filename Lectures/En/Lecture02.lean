@@ -596,12 +596,48 @@ def Set (α : Type) : Type := α → Prop
 
 Every element of a set comes from the fixed type α, and this typing discipline blocks *Russell's paradox*.{margin}[B. Russell, letter to Frege, 16 June 1902. In J. van Heijenoort, *From Frege to Gödel: A Source Book in Mathematical Logic, 1879–1931*, Harvard University Press, 1967, pp. 124–125.] Naive set theory admits a set for every property. Take R to be the set of all sets that are not elements of themselves. Then R ∈ R holds exactly when R ∉ R, which is a contradiction, and the theory collapses. In Lean, a set s : Set α contains only elements of α, and s itself has type Set α, not α, so the expression s ∈ s is not well typed. There is no way to state the property that defines R or to form the collection, so the paradox does not arise.
 
-Lean resolves notations such as x ∈ s through *type classes*. The class `Membership` declares the notation, and an `instance` declaration provides its meaning at a particular type. When Lean elaborates x ∈ s, it searches the registered instances for one that covers the type of s. `Set α` is a definition of this lecture, so no instance covers it yet, and the notation would fail. The instance below supplies the missing meaning, and x ∈ s unfolds by definition to the application s x. In this instance and the following ones, Lean binds the free type variable α automatically.
+Nothing so far gives the symbol ∈ a meaning at our sets, and Lean does not build one in. A *type class* declares an operation and leaves it without meaning, and an `instance` declaration supplies the meaning at one type. The notation x ∈ s reaches ours in three steps, and each step lives in a different place.
+
+The symbol is ordinary notation, declared in the core module `Init.Notation`. It abbreviates an application and nothing more.
+
+```
+notation:50 a:50 " ∈ " b:50 => Membership.mem b a
+```
+
+The name `Membership.mem` on the right is the single field of a class declared in the core module `Init.Prelude`. The class fixes the shape of the operation, taking the type of the elements and the type of the container, and it gives no definition.
+
+```
+class Membership (α : outParam (Type u)) (γ : Type v) where
+  mem : γ → α → Prop
+```
+
+The container comes first in `mem` and second in the notation, so x ∈ s abbreviates `Membership.mem s x`.
+
+The third step is ours. When Lean elaborates x ∈ s, it searches the registered instances for one whose container type matches the type of s. `Set α` is a definition of this lecture, so that search finds nothing and the notation fails to elaborate. The instance below ends the search and gives `mem` its definition at `Set α`. In this instance and the following ones, Lean binds the free type variable α automatically.
 
 ```savedLean
 instance : Membership α (Set α) :=
   ⟨fun s a => s a⟩
 ```
+
+Printing a membership with the notation turned off shows the two steps at once, the expansion of the symbol and the instance that the elaborator found.
+
+```lean (name := checkMem)
+set_option pp.notation false in
+#check fun (α : Type) (s : Set α) (x : α) => x ∈ s
+```
+```leanOutput checkMem
+fun α s x => Membership.mem s x : (α : Type) → Set α → α → Prop
+```
+
+With the instance in scope, x ∈ s is the application s x by definition, so the two are interchangeable and `rfl` proves them equal.
+
+```lean
+example (α : Type) (s : Set α) (x : α) :
+    (x ∈ s) = s x := rfl
+```
+
+The three steps split between two of the components of {numref}[fig-lean-components]. The macro expander performs the first, replacing the symbol by the application, and the elaborator performs the third, choosing the instance from the type of s.
 
 A set given by a property is the predicate itself, and a membership proof is a proof of the property. Mathematical notation writes such a set in set-builder notation, as the set of all n such that `∃ k, n = 2 * k`. Lean core has no set-builder notation, so we write the predicate directly.
 

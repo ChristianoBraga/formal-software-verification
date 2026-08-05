@@ -289,11 +289,26 @@ def Evens : Set Nat := fun n => ∃ k, n = 2 * k
 example : (6 : Nat) ∈ Evens := ⟨3, rfl⟩
 ```
 
+# §2.6 De onde vem o símbolo ∈
+
+* Uma *classe de tipos* declara uma operação e a deixa sem significado; uma `instance` fornece o significado em um tipo. O símbolo chega aos nossos conjuntos em três passos.
+
+* O símbolo é notação do módulo do núcleo `Init.Notation`, e abrevia uma aplicação. O nome à sua direita é o único campo de uma classe de `Init.Prelude`.
+
+```tree
+notation:50 a:50 " ∈ " b:50 => Membership.mem b a
+
+class Membership (α : outParam (Type u)) (γ : Type v) where
+  mem : γ → α → Prop
+```
+
+* O recipiente vem primeiro em `mem` e vem depois na notação, então `x ∈ s` abrevia `Membership.mem s x`.
+
+* O terceiro passo é nosso. O elaborador procura entre as instâncias registradas uma para o tipo de `s`, e `Set α` é uma definição desta aula, então sem uma instância nossa a busca falha.
+
 # §2.6 Classes de tipos e instâncias
 
-* Lean resolve notações como `x ∈ s` por *classes de tipos*. A classe declara a notação; uma `instance` dá o seu significado num tipo particular.
-
-* `Set α` é uma definição desta aula, então nenhuma instância registrada a cobre. As instâncias abaixo fornecem o significado: `x ∈ s` desdobra-se em `s x`.
+* As instâncias abaixo encerram essa busca: `x ∈ s` é `s x` por definição, e `⊆`, `∪` e `∩` definem-se a partir dela.
 
 ```lean
 instance : Membership α (Set α) :=
