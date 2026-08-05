@@ -283,6 +283,18 @@ def slideDeckCss : String := r##"
     background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.5);
   }
   .slide--title .inner p { margin: 0 0 1.2rem; }
+  /* In dark mode the accents are pastel, so the title-slide gradient is
+     light and white ink on it is unreadable. Flip the ink to slate. */
+  @media (prefers-color-scheme: dark) {
+    .slide--title .refs { color: rgba(15,23,42,0.9); }
+    .slide--title .refs a { color: #0f172a; }
+    .slide--title .kicker { color: rgba(15,23,42,0.85); }
+    .slide--title h1 { -webkit-text-fill-color: #0f172a; color: #0f172a; }
+    .slide--title .subtitle, .slide--title .byline { color: rgba(15,23,42,0.92); }
+    .slide--title .notelink a {
+      background: rgba(15,23,42,0.12); color: #0f172a; border-color: rgba(15,23,42,0.5);
+    }
+  }
   footer {
     position: fixed; bottom: 0; left: 0; right: 0;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
