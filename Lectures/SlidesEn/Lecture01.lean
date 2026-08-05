@@ -182,6 +182,40 @@ The rules above are *constructive*. Classical logic adds one further rule, equiv
      P                          P ∨ ¬P
 ```
 
+# §1.6 The syntax of Lean
+
+* A declaration names a statement and gives its proof. The keyword comes first, then the name, then the hypotheses in parentheses, then the statement after the colon, then the proof after `:=`.
+
+::::cols
+:::col
+{lbl}[Term proof]
+
+```lean
+theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.right, h.left⟩
+```
+
+* `fun h => e` builds a function, and `f a` applies one.
+
+* `⟨a, b⟩` is the *anonymous constructor*; `h.left` and `h.right` take a conjunction apart.
+:::
+:::col
+{lbl}[Tactic proof]
+
+```lean
+example (P Q : Prop) (h : P ∧ Q) :
+    Q ∧ P := by
+  exact ⟨h.right, h.left⟩
+```
+
+* `by` enters tactic mode, `·` focuses one goal, and `sorry` marks a missing proof.
+
+* `#check` prints the type of a term, and `--` starts a comment.
+:::
+::::
+
+* The logical symbols are unicode, typed with a backslash abbreviation: `\to` for →, `\and` for ∧, `\or` for ∨, `\not` for ¬, `\iff` for ↔, `\bot` for ⊥, `\langle` and `\rangle` for ⟨ ⟩, and `\.` for ·.
+
 # §1.7 Natural deduction in Lean
 
 A proof of a proposition is a *term* whose type is that proposition; an assumption is a variable of that type. Each rule builds or takes apart a term.

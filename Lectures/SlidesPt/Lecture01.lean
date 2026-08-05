@@ -182,6 +182,40 @@ As regras acima são *construtivas*. A lógica clássica acrescenta mais uma reg
      P                          P ∨ ¬P
 ```
 
+# §1.6 A sintaxe de Lean
+
+* Uma declaração dá nome a um enunciado e apresenta a sua prova. A palavra-chave vem primeiro, depois o nome, depois as hipóteses entre parênteses, depois o enunciado após os dois-pontos, e por fim a prova após `:=`.
+
+::::cols
+:::col
+{lbl}[Prova por termo]
+
+```lean
+theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.right, h.left⟩
+```
+
+* `fun h => e` constrói uma função, e `f a` aplica uma.
+
+* `⟨a, b⟩` é o *construtor anônimo*; `h.left` e `h.right` desmontam uma conjunção.
+:::
+:::col
+{lbl}[Prova por táticas]
+
+```lean
+example (P Q : Prop) (h : P ∧ Q) :
+    Q ∧ P := by
+  exact ⟨h.right, h.left⟩
+```
+
+* `by` entra no modo de táticas, `·` foca um objetivo, e `sorry` marca uma prova ausente.
+
+* `#check` imprime o tipo de um termo, e `--` inicia um comentário.
+:::
+::::
+
+* Os símbolos lógicos são unicode, digitados com uma abreviação de contrabarra: `\to` para →, `\and` para ∧, `\or` para ∨, `\not` para ¬, `\iff` para ↔, `\bot` para ⊥, `\langle` e `\rangle` para ⟨ ⟩, e `\.` para ·.
+
 # §1.7 Dedução natural em Lean
 
 Uma prova de uma proposição é um *termo* cujo tipo é aquela proposição; uma suposição é uma variável daquele tipo. Cada regra constrói ou desmonta um termo.
