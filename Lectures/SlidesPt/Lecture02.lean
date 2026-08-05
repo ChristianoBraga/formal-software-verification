@@ -205,7 +205,7 @@ theorem not_forall_exists (α : Type) (P : α → Prop)
 
 * `intro` aceita o *padrão de construtor anônimo*, introduzindo o existencial e o destruindo num só passo.
 
-* Uma meta negada é uma *função em False*, então um termo de prova com um `fun` que casa padrões a prova, sem táticas.
+* Um objetivo negado é uma *função em False*, então um termo de prova com um `fun` que casa padrões a prova, sem táticas.
 
 ::::cols
 :::col

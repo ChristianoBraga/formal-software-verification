@@ -109,7 +109,7 @@ example (α : Type) (P : α → Prop)
     (h : ∀ x, P x) (a : α) : P a := h a
 ```
 
-Exemplo 3. Instanciar as duas variáveis de um predicado binário no mesmo elemento produz a diagonal. A tática `apply` unifica a hipótese com a meta e encontra as duas instanciações.
+Exemplo 3. Instanciar as duas variáveis de um predicado binário no mesmo elemento produz a diagonal. A tática `apply` unifica a hipótese com o objetivo e encontra as duas instanciações.
 
 ```lean
 example (α : Type) (R : α → α → Prop)
@@ -127,7 +127,7 @@ example (α β : Type) (R : α → β → Prop)
   exact h a b
 ```
 
-Exemplo 5. A conjunção comuta sob o quantificador. A tática `have` registra a hipótese instanciada, e `constructor` divide a meta nas duas partes da conjunção.
+Exemplo 5. A conjunção comuta sob o quantificador. A tática `have` registra a hipótese instanciada, e `constructor` divide o objetivo nas duas partes da conjunção.
 
 ```lean
 example (α : Type) (P Q : α → Prop)
@@ -397,7 +397,7 @@ example (α : Type) (P : α → Prop)
   exact hn ⟨a, hPa⟩
 ```
 
-Exemplo 4. Uma propriedade que vale em toda parte exclui qualquer contraexemplo. A prova é um termo de prova, como na Aula 1. Como a meta negada é uma função em `False`, um `fun` que casa o padrão da testemunha do contraexemplo prova a meta.
+Exemplo 4. Uma propriedade que vale em toda parte exclui qualquer contraexemplo. A prova é um termo de prova, como na Aula 1. Como o objetivo negado é uma função em `False`, um `fun` que casa o padrão da testemunha do contraexemplo o prova.
 
 ```lean
 example (α : Type) (P : α → Prop)
@@ -737,7 +737,7 @@ example (α : Type) (s t u : Set α)
   | inr hu => exact Or.inr hu
 ```
 
-Exemplo 9. O conjunto vazio, cujo predicado de pertinência é `False` em cada elemento, é subconjunto de todo conjunto. `False.elim` fecha a meta.
+Exemplo 9. O conjunto vazio, cujo predicado de pertinência é `False` em cada elemento, é subconjunto de todo conjunto. `False.elim` fecha o objetivo.
 
 ```lean
 def EmptySet (α : Type) : Set α := fun _ => False
