@@ -41,11 +41,17 @@ Formal verification, in particular when automated, changes how we can trust such
 
 In this course we use [Lean](https://lean-lang.org). Lean is at once a programming language and a proof assistant, so we can write a program and prove its properties in the same system. Lectures 1 and 2 review classical logic while introducing Lean's proof language, following HTPIwL. Lectures 3 to 8 follow [LoVe](https://github.com/lean-forward/logical_verification_2026){margin}[LoVe collects the Lean files that accompany the *Hitchhiker's Guide to Logical Verification*, 2026 edition. Its support library `LoVelib` is not published as a Lake package, so these notes keep a copy of it under `Lectures/LoVe/`, together with its BSD 3-clause licence. The copy is verbatim except for the attribute `@[reducible]` on `Set.PartialOrder`, which the definition linter of Lean v4.32.0 requires and the original, written for Lean v4.24.0, does not carry.] through interactive proving, functional programming, and inductive predicates. The final block treats the semantics of an imperative language, Hoare logic, and practical verification with the `mvcgen` tactic.
 
-{figref "fig-verifier-architecture"}[Figure 1.1] shows the architecture of the verifier that the course builds. A program and its specification form a Hoare triple. The big-step operational semantics gives the triple its meaning. The `mvcgen` tactic generates the verification conditions, which are purely logical goals. Tactic proofs discharge them, and the Lean kernel checks every proof.
+{figref "fig-lean-components"}[Figure 1.1] shows the components of Lean that the course exercises. The parser reads the text of a `.lean` file into syntax trees, and the macro expander unfolds the notations that libraries and user code define. The elaborator turns those trees into terms of the core language, and it does the work that the surface syntax leaves implicit, inferring omitted arguments, resolving type class instances, and running tactics. Tactics are themselves Lean programs, and they build terms rather than certificates of their own correctness. The kernel rechecks the finished term with respect to the rules of dependent type theory, so a tactic that produces a wrong term fails here, and only the kernel belongs to the trusted base. The compiler takes the same terms to native code, which is what `#eval` runs. The libraries supply notations, instances and lemmas to every stage above the kernel.
+
+{figureAnchor "fig-lean-components"}[![Main components of Lean: a .lean file goes through the parser and macro expander to the elaborator, which draws on tactics and libraries and produces core terms; the kernel checks those terms and the compiler turns them into native code](lean-components.svg)]
+
+*Figure 1.1. The main components of Lean.*
+
+{figref "fig-verifier-architecture"}[Figure 1.2] shows the architecture of the verifier that the course builds. A program and its specification form a Hoare triple. The big-step operational semantics gives the triple its meaning. The `mvcgen` tactic generates the verification conditions, which are purely logical goals. Tactic proofs discharge them, and the Lean kernel checks every proof.
 
 {figureAnchor "fig-verifier-architecture"}[![Architecture of a program verifier in Lean: a program and a specification form a Hoare triple, whose meaning comes from the big-step semantics; the mvcgen tactic generates verification conditions, tactic proofs discharge them, and the Lean kernel checks every proof](verifier-architecture.svg)]
 
-*Figure 1.1. Architecture of a program verifier in Lean.*
+*Figure 1.2. Architecture of a program verifier in Lean.*
 
 # Propositions
 

@@ -1,6 +1,7 @@
 import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
+import Lectures.Meta.Figure
 import Lectures.Papers
 import Lectures.LoVe.LoVelib
 
@@ -17,7 +18,7 @@ set_option pp.rawOnError true
 tag := "lecture-3"
 %%%
 
-This lecture moves from proving to programming, following chapter 2 of the *Hitchhiker's Guide to Logical Verification* and its Lean demo in [LoVe](https://github.com/lean-forward/logical_verification_2026).{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, 2026 edition, chapter 2.] It presents inductive types, function definitions by pattern matching and recursion, evaluation, and the statement of theorems about programs, without carrying out any proofs yet.
+This lecture moves from proving to programming, following chapter 2 of the *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, 2026 edition, chapter 2.] It presents inductive types, function definitions by pattern matching and recursion, evaluation, and the statement of theorems about programs, without carrying out any proofs yet.
 
 # From Proofs to Programs
 
@@ -335,7 +336,7 @@ def twoPow : ℕ → ℕ
 
 # Polymorphism and Implicit Arguments
 
-A definition can take a type as an argument. The function below appends two lists over any type α, given explicitly at each call, and Lean's `_` asks the elaborator to infer it.
+A definition can take a type as an argument. The function below appends two lists over any type α, given explicitly at each call, and Lean's `_` asks the elaborator to infer it. The elaborator is the stage of Lean that turns the text we write into a term of the core language, and inference is part of its work, together with the resolution of type class instances and the execution of tactics. {figref "fig-lean-components"}[Figure 1.1] places it among the other components. Writing `_` therefore states that the argument is determined by the rest of the call, and the elaborator recovers it by unification.
 
 ```lean
 def append (α : Type) : List α → List α → List α

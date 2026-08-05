@@ -41,11 +41,17 @@ A verificação formal, em particular quando automatizada, muda a maneira como p
 
 Nesta disciplina usamos [Lean](https://lean-lang.org). Lean é ao mesmo tempo uma linguagem de programação e um assistente de prova, então podemos escrever um programa e provar as suas propriedades no mesmo sistema. As aulas 1 e 2 revisam a lógica clássica e introduzem a linguagem de provas de Lean, seguindo HTPIwL. As aulas 3 a 8 seguem [LoVe](https://github.com/lean-forward/logical_verification_2026){margin}[LoVe reúne os arquivos Lean que acompanham o *Hitchhiker's Guide to Logical Verification*, edição de 2026. A sua biblioteca de apoio `LoVelib` não é publicada como pacote Lake, então estas notas guardam uma cópia dela em `Lectures/LoVe/`, junto com a licença BSD de três cláusulas. A cópia é literal, com uma única alteração, o atributo `@[reducible]` em `Set.PartialOrder`, exigido pelo linter de definições de Lean v4.32.0 e ausente no original, escrito para Lean v4.24.0.] por prova interativa, programação funcional e predicados indutivos. O bloco final trata a semântica de uma linguagem imperativa, a lógica de Hoare e a verificação prática com a tática `mvcgen`.
 
-A {figref "fig-verifier-architecture"}[Figura 1.1] mostra a arquitetura do verificador que a disciplina constrói. Um programa e a sua especificação formam uma tripla de Hoare. A semântica operacional big-step dá o significado da tripla. A tática `mvcgen` gera as condições de verificação, que são metas (_goals_) puramente lógicas. Provas por táticas as fecham, e o kernel de Lean verifica cada prova.
+A {figref "fig-lean-components"}[Figura 1.1] mostra os componentes de Lean que a disciplina exercita. O analisador sintático lê o texto de um arquivo `.lean` e produz árvores de sintaxe, e o expansor de macros desdobra as notações definidas pelas bibliotecas e pelo código do usuário. O elaborador transforma essas árvores em termos da linguagem núcleo e faz o trabalho que a sintaxe de superfície deixa implícito, inferindo argumentos omitidos, resolvendo instâncias de classes de tipos e executando táticas. As táticas são elas próprias programas Lean e constroem termos, não certificados da própria correção. O kernel reverifica o termo pronto com respeito às regras da teoria de tipos dependentes, então uma tática que produz um termo errado falha aí, e somente o kernel pertence à base confiável. O compilador leva os mesmos termos a código nativo, que é o que `#eval` executa. As bibliotecas fornecem notações, instâncias e lemas a todas as etapas acima do kernel.
+
+{figureAnchor "fig-lean-components"}[![Principais componentes de Lean: um arquivo .lean passa pelo analisador sintático e pelo expansor de macros até o elaborador, que recorre a táticas e bibliotecas e produz termos do núcleo; o kernel verifica esses termos e o compilador os leva a código nativo](lean-components.svg)]
+
+*Figura 1.1. Principais componentes de Lean.*
+
+A {figref "fig-verifier-architecture"}[Figura 1.2] mostra a arquitetura do verificador que a disciplina constrói. Um programa e a sua especificação formam uma tripla de Hoare. A semântica operacional big-step dá o significado da tripla. A tática `mvcgen` gera as condições de verificação, que são metas (_goals_) puramente lógicas. Provas por táticas as fecham, e o kernel de Lean verifica cada prova.
 
 {figureAnchor "fig-verifier-architecture"}[![Arquitetura de um verificador de programas em Lean: um programa e uma especificação formam uma tripla de Hoare, cujo significado vem da semântica big-step; a tática mvcgen gera as condições de verificação, provas por táticas as fecham e o kernel de Lean verifica cada prova](verifier-architecture.svg)]
 
-*Figura 1.1. Arquitetura de um verificador de programas em Lean.*
+*Figura 1.2. Arquitetura de um verificador de programas em Lean.*
 
 # Proposições
 

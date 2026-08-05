@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" width="640" height="460" role="img">
+  <title>Principais componentes de Lean · Main components of Lean</title>
+  <style>
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    }
+    .box { fill: #f8fafc; stroke: #e2e8f0; }
+    .title { fill: #0f172a; font-size: 13px; font-weight: 600; text-anchor: middle; }
+    .sub { fill: #475569; font-size: 11px; text-anchor: middle; }
+    .edge { stroke: #475569; stroke-width: 1.4; fill: none; marker-end: url(#arr); }
+    .elabel { fill: #475569; font-size: 10px; font-style: italic; text-anchor: middle; }
+    .arrhead { fill: #475569; }
+    .elab-title { fill: #ffffff; font-size: 14px; font-weight: 700; text-anchor: middle; }
+    .elab-sub { fill: #ffffff; opacity: 0.85; font-size: 11px; text-anchor: middle; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrhead" d="M 0 0 L 10 5 L 0 10 z"/>
+    </marker>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <rect class="box" x="200" y="8" width="240" height="52" rx="10"/>
+  <text class="title" x="320" y="30">Arquivo .lean</text>
+  <text class="sub" x="320" y="47">source file</text>
+
+  <line class="edge" x1="320" y1="60" x2="320" y2="88"/>
+
+  <rect class="box" x="200" y="92" width="240" height="56" rx="10"/>
+  <text class="title" x="320" y="114">Sintaxe e macros</text>
+  <text class="sub" x="320" y="131">parser and macro expander</text>
+
+  <line class="edge" x1="320" y1="148" x2="320" y2="176"/>
+
+  <rect x="8" y="180" width="180" height="64" rx="10" class="box"/>
+  <text class="title" x="98" y="202">Táticas</text>
+  <text class="sub" x="98" y="219">metaprogramação em Lean</text>
+  <text class="sub" x="98" y="235">metaprogramming in Lean</text>
+
+  <line class="edge" x1="188" y1="212" x2="198" y2="212"/>
+
+  <rect x="200" y="180" width="240" height="64" rx="10" fill="url(#grad)"/>
+  <text class="elab-title" x="320" y="204">Elaborador · Elaborator</text>
+  <text class="elab-sub" x="320" y="221">sintaxe → termos do núcleo</text>
+  <text class="elab-sub" x="320" y="236">surface syntax → core terms</text>
+
+  <line class="edge" x1="452" y1="212" x2="442" y2="212"/>
+
+  <rect class="box" x="452" y="180" width="180" height="64" rx="10"/>
+  <text class="title" x="542" y="202">Bibliotecas · Libraries</text>
+  <text class="sub" x="542" y="219">núcleo, Mathlib, LoVelib</text>
+  <text class="sub" x="542" y="235">instâncias, notações, lemas</text>
+
+  <line class="edge" x1="320" y1="244" x2="320" y2="272"/>
+
+  <rect class="box" x="200" y="276" width="240" height="64" rx="10"/>
+  <text class="title" x="320" y="298">Termos do núcleo</text>
+  <text class="sub" x="320" y="315">core terms</text>
+  <text class="sub" x="320" y="332">teoria de tipos dependentes</text>
+
+  <line class="edge" x1="290" y1="340" x2="180" y2="376"/>
+  <text class="elabel" x="116" y="356">verificação · checking</text>
+
+  <line class="edge" x1="350" y1="340" x2="460" y2="376"/>
+  <text class="elabel" x="524" y="356">execução · execution</text>
+
+  <rect class="box" x="30" y="380" width="260" height="64" rx="10"/>
+  <text class="title" x="160" y="401">Kernel de Lean ✓</text>
+  <text class="sub" x="160" y="417">Lean kernel</text>
+  <text class="sub" x="160" y="433">verifica cada termo · checks every term</text>
+
+  <rect class="box" x="350" y="380" width="260" height="64" rx="10"/>
+  <text class="title" x="480" y="401">Compilador · Compiler</text>
+  <text class="sub" x="480" y="417">gera código nativo</text>
+  <text class="sub" x="480" y="433">generates native code (#eval)</text>
+</svg>
