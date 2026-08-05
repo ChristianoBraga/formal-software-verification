@@ -2,6 +2,7 @@ import VersoManual
 import Lectures.Meta.Lean
 import Lectures.Meta.Hover
 import Lectures.Meta.Figure
+import Lectures.Meta.Footnote
 import Lectures.Papers
 
 open Verso.Genre Manual
@@ -39,7 +40,7 @@ Modelos de linguagem escrevem hoje uma parcela crescente do código. Um modelo p
 
 A verificação formal, em particular quando automatizada, muda a maneira como podemos confiar nesse código.{margin}[L. de Moura, [*The Lean Programming Language and Theorem Prover*](https://leodemoura.github.io/static/etaps2026/), ETAPS 2026.] Quando o código gerado chega com uma prova, verificada por máquina, de que satisfaz a sua especificação, o assistente de prova verifica a prova independentemente de como o código surgiu, então código alucinado ou simplesmente errado não passa. O ônus da correção move-se de ler o código para escrever a especificação certa. As técnicas desta disciplina aplicam-se sem mudança a código gerado, e a automação das aulas finais, com a tática `mvcgen`, aponta para verificação no ritmo da geração de código.
 
-Nesta disciplina usamos [Lean](https://lean-lang.org). Lean é ao mesmo tempo uma linguagem de programação e um assistente de prova, então podemos escrever um programa e provar as suas propriedades no mesmo sistema. As aulas 1 e 2 revisam a lógica clássica e introduzem a linguagem de provas de Lean, seguindo HTPIwL. As aulas 3 a 8 seguem [LoVe](https://github.com/lean-forward/logical_verification_2026){margin}[LoVe reúne os arquivos Lean que acompanham o *Hitchhiker's Guide to Logical Verification*, edição de 2026. A sua biblioteca de apoio `LoVelib` não é publicada como pacote Lake, então estas notas guardam uma cópia dela em `Lectures/LoVe/`, junto com a licença BSD de três cláusulas. A cópia é literal, com uma única alteração, o atributo `@[reducible]` em `Set.PartialOrder`, exigido pelo linter de definições de Lean v4.32.0 e ausente no original, escrito para Lean v4.24.0.] por prova interativa, programação funcional e predicados indutivos. O bloco final trata a semântica de uma linguagem imperativa, a lógica de Hoare e a verificação prática com a tática `mvcgen`.
+Nesta disciplina usamos [Lean](https://lean-lang.org). Lean é ao mesmo tempo uma linguagem de programação e um assistente de prova, então podemos escrever um programa e provar as suas propriedades no mesmo sistema. As aulas 1 e 2 revisam a lógica clássica e introduzem a linguagem de provas de Lean, seguindo HTPIwL. As aulas 3 a 8 seguem [LoVe](https://github.com/lean-forward/logical_verification_2026){fnref "lovelib"}[1] por prova interativa, programação funcional e predicados indutivos. O bloco final trata a semântica de uma linguagem imperativa, a lógica de Hoare e a verificação prática com a tática `mvcgen`.
 
 A {figref "fig-lean-components"}[Figura 1.1] mostra os componentes de Lean que a disciplina exercita. O analisador sintático lê o texto de um arquivo `.lean` e produz árvores de sintaxe, e o expansor de macros desdobra as notações definidas pelas bibliotecas e pelo código do usuário. O elaborador transforma essas árvores em termos da linguagem núcleo e faz o trabalho que a sintaxe de superfície deixa implícito, inferindo argumentos omitidos, resolvendo instâncias de classes de tipos e executando táticas. As táticas são elas próprias programas Lean e constroem termos, não certificados da própria correção. O kernel reverifica o termo pronto com respeito às regras da teoria de tipos dependentes, então uma tática que produz um termo errado falha aí, e somente o kernel pertence à base confiável. O compilador leva os mesmos termos a código nativo, que é o que `#eval` executa. As bibliotecas fornecem notações, instâncias e lemas a todas as etapas acima do kernel.
 
@@ -52,6 +53,12 @@ A {figref "fig-verifier-architecture"}[Figura 1.2] mostra a arquitetura do verif
 {figureAnchor "fig-verifier-architecture"}[![Arquitetura de um verificador de programas em Lean: um programa e uma especificação formam uma tripla de Hoare, cujo significado vem da semântica big-step; a tática mvcgen gera as condições de verificação, provas por táticas as fecham e o kernel de Lean verifica cada prova](verifier-architecture.svg)]
 
 *Figura 1.2. Arquitetura de um verificador de programas em Lean.*
+
+:::footnotes
+
+{fnAnchor "lovelib"}[1.] LoVe reúne os arquivos Lean que acompanham o *Hitchhiker's Guide to Logical Verification*, edição de 2026. A sua biblioteca de apoio `LoVelib` não é publicada como pacote Lake, então estas notas guardam uma cópia dela em `Lectures/LoVe/`, junto com a licença BSD de três cláusulas. A cópia é literal, com uma única alteração, o atributo `@[reducible]` em `Set.PartialOrder`, exigido pelo linter de definições de Lean v4.32.0 e ausente no original, escrito para Lean v4.24.0.
+
+:::
 
 # Proposições
 
@@ -1132,7 +1139,7 @@ example (P Q : Prop) : P ∧ Q → P := by
 
 ## Ex Falso Quodlibet
 
-A partir de uma prova da absurdidade, a eliminação de ⊥ prova qualquer proposição.{margin}[*Ex falso quodlibet* é latim para "de uma falsidade, qualquer coisa se segue".]
+A partir de uma prova da absurdidade, a eliminação de ⊥ prova qualquer proposição.{fnref "exfalso"}[2]
 
 ```
    [⊥]
@@ -1155,7 +1162,7 @@ example (P : Prop) : False → P := by
 
 ## Modus Ponens
 
-Uma implicação e o seu antecedente, ambos projetados da conjunção, combinam-se por →E para dar o consequente.{margin}[*Modus ponens* é latim, abreviação de *modus ponendo ponens*, "o modo que afirma afirmando".]
+Uma implicação e o seu antecedente, ambos projetados da conjunção, combinam-se por →E para dar o consequente.{fnref "modusponens"}[3]
 
 ```
    [(P→Q)∧P]           [(P→Q)∧P]
@@ -1210,7 +1217,7 @@ example (P Q : Prop) : P ∨ Q → Q ∨ P := by
 
 ## Eliminação da Dupla Negação
 
-Esta direção requer raciocínio clássico. `Classical.byContradiction` descarta a suposição ¬P após derivar ⊥ dela junto com ¬¬P.{margin}[O passo clássico marcado RAA é *reductio ad absurdum*, latim para "redução ao absurdo".]
+Esta direção requer raciocínio clássico. `Classical.byContradiction` descarta a suposição ¬P após derivar ⊥ dela junto com ¬¬P.{fnref "raa"}[4]
 
 ```
    [¬P]  [¬¬P]
@@ -1234,6 +1241,16 @@ example (P : Prop) : ¬¬P → P := by
   intro hnP
   exact h hnP
 ```
+
+:::footnotes
+
+{fnAnchor "exfalso"}[2.] *Ex falso quodlibet* é latim para "de uma falsidade, qualquer coisa se segue".
+
+{fnAnchor "modusponens"}[3.] *Modus ponens* é latim, abreviação de *modus ponendo ponens*, "o modo que afirma afirmando".
+
+{fnAnchor "raa"}[4.] O passo clássico marcado RAA é *reductio ad absurdum*, latim para "redução ao absurdo".
+
+:::
 
 # Exercícios
 
