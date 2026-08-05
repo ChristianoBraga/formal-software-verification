@@ -284,7 +284,7 @@ axiom a_less_b : a < b
 
 * Nothing checks an axiom, so an inconsistent one *silently breaks the whole development*. The course states axioms only to discuss them.
 
-# Worked example: truncated subtraction
+# §3.7 Worked example: truncated subtraction
 
 Define `sub` on ℕ so that `sub 3 7 = 0`, since ℕ has no negative values.
 
@@ -330,7 +330,7 @@ example : sub 3 7 = 0 := rfl
 :::
 ::::
 
-# Worked example: evaluating `(x + 3) * y`
+# §3.7 Worked example: evaluating `(x + 3) * y`
 
 ::::cols
 :::col
@@ -376,7 +376,7 @@ example : eval someEnv
 :::
 ::::
 
-# Worked example: what computation settles
+# §3.7 Worked example: what computation settles
 
 Three claims about `add`, which recurses on its *second* argument.
 
@@ -414,7 +414,7 @@ end Worked
 :::
 ::::
 
-# Worked example: from a definition to its statement
+# §3.7 Worked example: from a definition to its statement
 
 Append one element at the end of a list, then relate it to `reverse`.
 

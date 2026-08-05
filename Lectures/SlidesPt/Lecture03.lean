@@ -284,7 +284,7 @@ axiom a_less_b : a < b
 
 * Nada verifica um axioma, então um axioma inconsistente *quebra silenciosamente todo o desenvolvimento*. A disciplina enuncia axiomas apenas para discuti-los.
 
-# Exemplo resolvido: subtração truncada
+# §3.7 Exemplo resolvido: subtração truncada
 
 Defina `sub` sobre ℕ de modo que `sub 3 7 = 0`, já que ℕ não tem valores negativos.
 
@@ -330,7 +330,7 @@ example : sub 3 7 = 0 := rfl
 :::
 ::::
 
-# Exemplo resolvido: avaliar `(x + 3) * y`
+# §3.7 Exemplo resolvido: avaliar `(x + 3) * y`
 
 ::::cols
 :::col
@@ -376,7 +376,7 @@ example : eval someEnv
 :::
 ::::
 
-# Exemplo resolvido: o que a computação resolve
+# §3.7 Exemplo resolvido: o que a computação resolve
 
 Três afirmações sobre `add`, que recursa sobre o seu *segundo* argumento.
 
@@ -414,7 +414,7 @@ end Worked
 :::
 ::::
 
-# Exemplo resolvido: da definição ao enunciado
+# §3.7 Exemplo resolvido: da definição ao enunciado
 
 Acrescente um elemento ao final de uma lista e relacione a operação com `reverse`.
 

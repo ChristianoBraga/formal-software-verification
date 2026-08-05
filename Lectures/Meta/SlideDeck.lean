@@ -273,25 +273,25 @@ def slideDeckCss : String := r##"
   }
   .notelink a:hover { border-color: var(--accent2); }
   .refs { font-size: clamp(0.85rem, 1.9vw, 1.1rem); margin: 1rem 0 0; color: var(--muted); }
-  .slide--title .refs { color: rgba(255,255,255,0.9); }
-  .slide--title .refs a { color: #ffffff; text-decoration: underline; }
+  .slide--title .inner .refs { color: rgba(255,255,255,0.9); }
+  .slide--title .inner .refs a { color: #ffffff; text-decoration: underline; }
   .slide--title { background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); }
   .slide--title .kicker { color: rgba(255,255,255,0.85); }
   .slide--title h1 { -webkit-text-fill-color: #ffffff; color: #ffffff; background: none; }
   .slide--title .subtitle, .slide--title .byline { color: rgba(255,255,255,0.92); }
-  .slide--title .notelink a {
+  .slide--title .inner .notelink a {
     background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.5);
   }
   .slide--title .inner p { margin: 0 0 1.2rem; }
   /* In dark mode the accents are pastel, so the title-slide gradient is
      light and white ink on it is unreadable. Flip the ink to slate. */
   @media (prefers-color-scheme: dark) {
-    .slide--title .refs { color: rgba(15,23,42,0.9); }
-    .slide--title .refs a { color: #0f172a; }
+    .slide--title .inner .refs { color: rgba(15,23,42,0.9); }
+    .slide--title .inner .refs a { color: #0f172a; }
     .slide--title .kicker { color: rgba(15,23,42,0.85); }
     .slide--title h1 { -webkit-text-fill-color: #0f172a; color: #0f172a; }
     .slide--title .subtitle, .slide--title .byline { color: rgba(15,23,42,0.92); }
-    .slide--title .notelink a {
+    .slide--title .inner .notelink a {
       background: rgba(15,23,42,0.12); color: #0f172a; border-color: rgba(15,23,42,0.5);
     }
   }
