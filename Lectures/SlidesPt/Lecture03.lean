@@ -284,6 +284,176 @@ axiom a_less_b : a < b
 
 * Nada verifica um axioma, então um axioma inconsistente *quebra silenciosamente todo o desenvolvimento*. A disciplina enuncia axiomas apenas para discuti-los.
 
+# Exemplo resolvido: subtração truncada
+
+Defina `sub` sobre ℕ de modo que `sub 3 7 = 0`, já que ℕ não tem valores negativos.
+
+::::cols
+:::col
+{lbl}[A escolha das equações]
+
+* A recursão descasca um `succ` de *cada* argumento, então o caso recursivo é `m + 1, n + 1`.
+
+* Dois casos base a interrompem. Subtrair zero devolve o primeiro argumento, e subtrair de zero devolve zero.
+
+* A primeira equação que casa vence, então `0, 0` cai na primeira delas.
+
+```lean
+def sub : ℕ → ℕ → ℕ
+  | m,     0     => m
+  | 0,     _     => 0
+  | m + 1, n + 1 => sub m n
+```
+:::
+:::col
+{lbl}[A verificação]
+
+```lean (name := evalSub)
+#eval sub 7 3
+```
+```leanOutput evalSub
+4
+```
+
+```lean (name := evalSubTrunc)
+#eval sub 3 7
+```
+```leanOutput evalSubTrunc
+0
+```
+
+* Cada verificação é também um teorema, já que os dois lados são *fechados*.
+
+```lean
+example : sub 3 7 = 0 := rfl
+```
+:::
+::::
+
+# Exemplo resolvido: avaliar `(x + 3) * y`
+
+::::cols
+:::col
+{lbl}[Desdobrando eval, uma equação por vez]
+
+```tree
+eval env ((x + 3) * y)
+  = eval env (x + 3) * eval env y
+  = (eval env x + eval env 3) * env "y"
+  = (env "x" + 3) * env "y"
+  = (2 + 3) * 4
+  = 20
+```
+
+* Cada passo é uma equação de `eval`: o caso `mul`, depois `add`, depois `var` e `num`.
+
+* O ambiente fornece as duas variáveis, e ℤ faz o resto.
+:::
+:::col
+{lbl}[A mesma computação em Lean]
+
+```lean
+def someEnv : String → ℤ
+  | "x" => 2
+  | "y" => 4
+  | _   => 0
+```
+
+```lean (name := evalWorked)
+#eval eval someEnv
+  (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+    (AExp.var "y"))
+```
+```leanOutput evalWorked
+20
+```
+
+```lean
+example : eval someEnv
+    (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+      (AExp.var "y")) = 20 := rfl
+```
+:::
+::::
+
+# Exemplo resolvido: o que a computação resolve
+
+Três afirmações sobre `add`, que recursa sobre o seu *segundo* argumento.
+
+::::cols
+:::col
+{lbl}[Resolvidas por rfl]
+
+```lean
+example : add 2 7 = 9 := rfl
+
+example (m : ℕ) : add m 0 = m := rfl
+```
+
+* A primeira é *fechada*, então os dois lados computam para 9.
+
+* A segunda é geral, mas `add m 0` casa a *primeira equação* de `add` qualquer que seja m, e reduz a m em um passo.
+:::
+:::col
+{lbl}[Não resolvida por rfl]
+
+```lean
+namespace Worked
+
+theorem zero_add (m : ℕ) : add 0 m = m := by
+  sorry
+
+end Worked
+```
+
+* Aqui o *segundo* argumento é a variável, então equação alguma de `add` se aplica e o termo trava.
+
+* A afirmação é verdadeira, e prová-la exige *indução estrutural sobre m*, na próxima aula.
+
+* Quem decide qual lado computa é a forma da recursão, não a forma do enunciado.
+:::
+::::
+
+# Exemplo resolvido: da definição ao enunciado
+
+Acrescente um elemento ao final de uma lista e relacione a operação com `reverse`.
+
+::::cols
+:::col
+{lbl}[A definição]
+
+```lean
+def snoc {α : Type} : List α → α → List α
+  | [],      y => [y]
+  | x :: xs, y => x :: snoc xs y
+```
+
+```lean (name := evalSnoc)
+#eval snoc [1, 2] 3
+```
+```leanOutput evalSnoc
+[1, 2, 3]
+```
+:::
+:::col
+{lbl}[O enunciado que ela sugere]
+
+```lean
+namespace Worked
+
+theorem reverse_cons {α : Type} (x : α) (xs : List α) :
+    reverse (x :: xs) = snoc (reverse xs) x := by
+  sorry
+
+end Worked
+```
+
+* `reverse (x :: xs)` desdobra para `appendPretty (reverse xs) [x]`, e `snoc (reverse xs) x` trava na lista variável, então `rfl` falha.
+
+* Enunciar uma lei é *gratuito*; prová-la é o trabalho das próximas aulas. Escrever o enunciado primeiro é como um desenvolvimento cresce.
+:::
+::::
+
 # Resumo
 
 * Dados e provas compartilham uma teoria de tipos: um *programa* é um termo cujo tipo é um tipo de função.

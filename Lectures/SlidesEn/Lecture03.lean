@@ -284,6 +284,176 @@ axiom a_less_b : a < b
 
 * Nothing checks an axiom, so an inconsistent one *silently breaks the whole development*. The course states axioms only to discuss them.
 
+# Worked example: truncated subtraction
+
+Define `sub` on ℕ so that `sub 3 7 = 0`, since ℕ has no negative values.
+
+::::cols
+:::col
+{lbl}[Choosing the equations]
+
+* Recursion peels one `succ` from *each* argument, so the recursive case is `m + 1, n + 1`.
+
+* Two base cases stop it. Subtracting zero returns the first argument, and subtracting from zero returns zero.
+
+* The first matching equation wins, so `0, 0` falls to the first one.
+
+```lean
+def sub : ℕ → ℕ → ℕ
+  | m,     0     => m
+  | 0,     _     => 0
+  | m + 1, n + 1 => sub m n
+```
+:::
+:::col
+{lbl}[Checking it]
+
+```lean (name := evalSub)
+#eval sub 7 3
+```
+```leanOutput evalSub
+4
+```
+
+```lean (name := evalSubTrunc)
+#eval sub 3 7
+```
+```leanOutput evalSubTrunc
+0
+```
+
+* Each check is also a theorem, since both sides are *ground*.
+
+```lean
+example : sub 3 7 = 0 := rfl
+```
+:::
+::::
+
+# Worked example: evaluating `(x + 3) * y`
+
+::::cols
+:::col
+{lbl}[Unfolding eval, one equation at a time]
+
+```tree
+eval env ((x + 3) * y)
+  = eval env (x + 3) * eval env y
+  = (eval env x + eval env 3) * env "y"
+  = (env "x" + 3) * env "y"
+  = (2 + 3) * 4
+  = 20
+```
+
+* Each step is one equation of `eval`: the `mul` case, then `add`, then `var` and `num`.
+
+* The environment supplies the two variables, and ℤ does the rest.
+:::
+:::col
+{lbl}[The same computation in Lean]
+
+```lean
+def someEnv : String → ℤ
+  | "x" => 2
+  | "y" => 4
+  | _   => 0
+```
+
+```lean (name := evalWorked)
+#eval eval someEnv
+  (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+    (AExp.var "y"))
+```
+```leanOutput evalWorked
+20
+```
+
+```lean
+example : eval someEnv
+    (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+      (AExp.var "y")) = 20 := rfl
+```
+:::
+::::
+
+# Worked example: what computation settles
+
+Three claims about `add`, which recurses on its *second* argument.
+
+::::cols
+:::col
+{lbl}[Settled by rfl]
+
+```lean
+example : add 2 7 = 9 := rfl
+
+example (m : ℕ) : add m 0 = m := rfl
+```
+
+* The first is *ground*, so both sides compute to 9.
+
+* The second is general, yet `add m 0` matches the *first equation* of `add` whatever m is, and reduces to m in one step.
+:::
+:::col
+{lbl}[Not settled by rfl]
+
+```lean
+namespace Worked
+
+theorem zero_add (m : ℕ) : add 0 m = m := by
+  sorry
+
+end Worked
+```
+
+* Here the *second* argument is the variable, so no equation of `add` applies and the term is stuck.
+
+* The claim is true, and proving it needs *structural induction on m*, in the next lecture.
+
+* The pattern of the recursion, not the shape of the statement, decides which side computes.
+:::
+::::
+
+# Worked example: from a definition to its statement
+
+Append one element at the end of a list, then relate it to `reverse`.
+
+::::cols
+:::col
+{lbl}[The definition]
+
+```lean
+def snoc {α : Type} : List α → α → List α
+  | [],      y => [y]
+  | x :: xs, y => x :: snoc xs y
+```
+
+```lean (name := evalSnoc)
+#eval snoc [1, 2] 3
+```
+```leanOutput evalSnoc
+[1, 2, 3]
+```
+:::
+:::col
+{lbl}[The statement it suggests]
+
+```lean
+namespace Worked
+
+theorem reverse_cons {α : Type} (x : α) (xs : List α) :
+    reverse (x :: xs) = snoc (reverse xs) x := by
+  sorry
+
+end Worked
+```
+
+* `reverse (x :: xs)` unfolds to `appendPretty (reverse xs) [x]`, and `snoc (reverse xs) x` is stuck on the variable list, so `rfl` fails.
+
+* Stating a law is *free*; proving it is the work of the coming lectures. Writing the statement first is how a development grows.
+:::
+::::
+
 # Summary
 
 * Data and proofs share one type theory: a *program* is a term whose type is a function type.
