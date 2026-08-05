@@ -350,14 +350,10 @@ def slideDeckCss : String := r##"
     .hl.lean .string.token, .hl.lean .char.token { color: #98c379; }
     .hl.lean .comment { color: #7f848e; }
   }
-  /* The deck ships no hover JS: suppress Verso's hover payloads and
-     the wavy info underline under #check commands. */
-  .hl.lean .hover-container { display: none; }
-  .hl.lean .has-info .token:not(.tactic-state):not(.tactic-state *),
-  .hl.lean .has-info .inter-text:not(.tactic-state):not(.tactic-state *) {
-    text-decoration-line: none;
-  }
-  .hl.lean .has-info.information:hover { background-color: transparent; }
+  /* Hover payloads are positioned by tippy, as in the notes. Verso's own
+     stylesheet hides them until then, so nothing is suppressed here. */
+  .tippy-box { font-size: clamp(0.7rem, 1.5vw, 1rem); }
+  .tippy-box .hl.lean { background-color: transparent; }
   /* Proof states (tactic-state boxes) in the deck's design system.
      Verso hardcodes a white box with a gray border and sans-serif
      text; these rules follow it in the stylesheet, so at equal
@@ -541,6 +537,13 @@ def emitSlideDeck (config : RenderConfig) (deck : SlideDeck)
       }}
     let counter := s!"1 / {slides.size}"
     let versoCss := String.join (state.extraCss.toArray.map (·.css ++ "\n")).toList
+    -- The hover payloads of the code rendered above are in the state
+    -- once every slide has been rendered, so the page is assembled here.
+    let docJson := toString (← get).dedup.docJson
+    -- A literal `</script` inside the JSON would end the script element.
+    let docJsonSafe := docJson.replace "</" "<\\/"
+    let hoverJs := Verso.Code.highlightingJs
+      s!"Promise.resolve({docJsonSafe})"
     let mkLink cls (l : String × String) : Html :=
       {{<a class={{(cls : String)}} href={{l.1}}>{{l.2}}</a>}}
     let notesLink := deck.notesLink.map (mkLink "back") |>.getD .empty
@@ -554,6 +557,7 @@ def emitSlideDeck (config : RenderConfig) (deck : SlideDeck)
           <title>{{deck.pageTitle}}</title>
           <style>{{Html.text false Verso.Output.Html.«verso-vars.css»}}</style>
           <style>{{Html.text false versoCss}}</style>
+          <style>{{Html.text false Verso.Code.Highlighted.WebAssets.tippy.border.css}}</style>
           <style>{{Html.text false slideDeckCss}}</style>
         </head>
         <body>
@@ -576,6 +580,9 @@ def emitSlideDeck (config : RenderConfig) (deck : SlideDeck)
             </span>
           </footer>
           <script>{{Html.text false slideDeckJs}}</script>
+          <script>{{Html.text false Verso.Code.Highlighted.WebAssets.popper}}</script>
+          <script>{{Html.text false Verso.Code.Highlighted.WebAssets.tippy}}</script>
+          <script>{{Html.text false hoverJs}}</script>
         </body>
       </html>
     }}

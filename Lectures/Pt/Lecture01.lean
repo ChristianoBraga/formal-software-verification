@@ -721,6 +721,115 @@ Exemplo 10. O currying transforma uma hipótese conjuntiva em implicações anin
      (P ∧ Q → R) → (P → (Q → R))
 ```
 
+# A Sintaxe de Lean
+
+As seções seguintes leem e escrevem Lean, então esta fixa a notação. Ela explica como uma declaração se escreve, não o que torna uma prova correta, assunto das seções posteriores.
+
+Uma declaração dá nome a um enunciado e apresenta a sua prova. A palavra-chave vem primeiro, depois o nome, depois as hipóteses entre parênteses, depois o enunciado após os dois-pontos, e por fim a prova após `:=`.
+
+```lean
+theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.right, h.left⟩
+```
+
+Aqui `theorem` dá ao resultado o nome `and_swap`. Os ligadores `(P Q : Prop)` e `(h : P ∧ Q)` introduzem duas proposições e uma hipótese. O enunciado a provar é `Q ∧ P`, e a prova é o termo após `:=`. A palavra-chave `example` substitui `theorem` quando o resultado dispensa nome.
+
+A tabela lista as construções de sintaxe que as seções seguintes usam.
+
+:::table +header
+*
+  * Escrito
+  * Lido como
+*
+  * `example (h : P) : Q := e`
+  * enunciado anônimo com hipótese h, provado por e
+*
+  * `fun h => e`
+  * a função que leva h em e
+*
+  * `f a`
+  * f aplicada a a, sem parênteses
+*
+  * `⟨a, b⟩`
+  * o construtor anônimo, aqui um par
+*
+  * `h.left`, `h.right`
+  * as duas componentes de uma conjunção
+*
+  * `by`
+  * entra no modo de táticas, uma tática por linha
+*
+  * `·`
+  * foca o objetivo seguinte dentro de um bloco de táticas
+*
+  * `sorry`
+  * marcador de uma prova ausente
+*
+  * `-- texto`
+  * comentário até o fim da linha
+:::
+
+Os símbolos lógicos são unicode. Digitar a abreviação com contrabarra e em seguida espaço ou tabulação insere o caractere no VS Code.
+
+:::table +header
+*
+  * Símbolo
+  * Significado
+  * Digitado como
+*
+  * →
+  * implicação
+  * `\to`
+*
+  * ∧
+  * conjunção
+  * `\and`
+*
+  * ∨
+  * disjunção
+  * `\or`
+*
+  * ¬
+  * negação
+  * `\not`
+*
+  * ↔
+  * bicondicional
+  * `\iff`
+*
+  * ⊥
+  * absurdo
+  * `\bot`
+*
+  * ⟨ ⟩
+  * construtor anônimo
+  * `\langle`, `\rangle`
+*
+  * ·
+  * foco de objetivo
+  * `\.`
+:::
+
+O mesmo enunciado se prova por um termo ou no modo de táticas, e os dois produzem a mesma prova subjacente. As seções seguintes usam ambos.
+
+```lean
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.right, h.left⟩
+
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
+  exact ⟨h.right, h.left⟩
+```
+
+Os comandos que inspecionam uma declaração começam com `#`. O comando `#check` imprime o tipo de um termo, que no caso de uma prova é a proposição que ela prova.
+
+```lean (name := checkAndSwap)
+#check fun (P Q : Prop) (h : P ∧ Q) =>
+  (⟨h.right, h.left⟩ : Q ∧ P)
+```
+```leanOutput checkAndSwap
+fun P Q h => ⟨h.right, h.left⟩ : ∀ (P Q : Prop), P ∧ Q → Q ∧ P
+```
+
 # Dedução Natural em Lean
 
 Em Lean, enunciamos uma proposição e a provamos em uma única declaração. A palavra-chave `example` introduz um enunciado anônimo, e `theorem` introduz um enunciado com nome. As hipóteses aparecem antes dos dois-pontos como suposições nomeadas, e a proposição a provar, o *objetivo*, aparece depois.
@@ -733,7 +842,7 @@ example (P : Prop) (h : P) : P := h
 
 Aqui `h` nomeia a suposição de que P vale, e a prova é o próprio `h`. A Aula 3 desenvolve essa correspondência entre proposições e tipos.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, em *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
 
-A tabela mapeia cada regra da seção anterior ao termo de Lean que a realiza. Uma regra de introdução constrói um termo, e uma regra de eliminação o desmonta.
+A tabela mapeia cada regra da seção de dedução natural ao termo de Lean que a realiza. Uma regra de introdução constrói um termo, e uma regra de eliminação o desmonta.
 
 :::table +header
 *

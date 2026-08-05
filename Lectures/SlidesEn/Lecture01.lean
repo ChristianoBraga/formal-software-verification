@@ -182,7 +182,7 @@ The rules above are *constructive*. Classical logic adds one further rule, equiv
      P                          P ∨ ¬P
 ```
 
-# §1.6 Natural deduction in Lean
+# §1.7 Natural deduction in Lean
 
 A proof of a proposition is a *term* whose type is that proposition; an assumption is a variable of that type. Each rule builds or takes apart a term.
 
@@ -233,7 +233,7 @@ A proof of a proposition is a *term* whose type is that proposition; an assumpti
   * `False.elim h`
 :::
 
-# §1.6 Proof terms from the derivation
+# §1.7 Proof terms from the derivation
 
 {exh}[1. P ∧ Q → Q ∧ P]
 
@@ -315,7 +315,7 @@ example (P : Prop) : P → ¬¬P :=
 :::
 ::::
 
-# §1.7 Proving with tactics
+# §1.8 Proving with tactics
 
 * A *tactic* transforms the proof state, the goal together with the hypotheses in scope, one step at a time.
 
@@ -329,7 +329,7 @@ example (P Q : Prop) (hPQ : P → Q) (hP : P) : Q := by
   exact hP
 ```
 
-# §1.7 Tactics per connective
+# §1.8 Tactics per connective
 
 :::table +header
 *
@@ -381,7 +381,7 @@ example (P : Prop) : ¬¬P → P := by
 
 Introduction tactics build the goal; elimination tactics use a hypothesis. Classical reasoning adds `Classical.byContradiction` and `Classical.em`, needed for double negation elimination.
 
-# §1.7 Proving with tactics, as a board game
+# §1.8 Proving with tactics, as a board game
 
 A tactic proof plays out like a board game. Each element of the game names a precise part of the proof.
 
@@ -412,7 +412,7 @@ A tactic proof plays out like a board game. Each element of the game names a pre
   * every goal closed, and Lean's kernel checks the final proof term
 :::
 
-# §1.8 Worked example: P ∧ Q → P
+# §1.9 Worked example: P ∧ Q → P
 
 ::::cols
 :::col
@@ -452,7 +452,7 @@ example (P Q : Prop) : P ∧ Q → P := by
 :::
 ::::
 
-# §1.8 Worked example: ⊥ → P
+# §1.9 Worked example: ⊥ → P
 
 ::::cols
 :::col
@@ -492,7 +492,7 @@ example (P : Prop) : False → P := by
 :::
 ::::
 
-# §1.8 Worked example: (P → Q) ∧ P → Q
+# §1.9 Worked example: (P → Q) ∧ P → Q
 
 ::::cols
 :::col
@@ -539,7 +539,7 @@ example (P Q : Prop) : (P → Q) ∧ P → Q := by
 :::
 ::::
 
-# §1.8 Worked example: P ∨ Q → Q ∨ P
+# §1.9 Worked example: P ∨ Q → Q ∨ P
 
 ::::cols
 :::col
@@ -589,7 +589,7 @@ example (P Q : Prop) : P ∨ Q → Q ∨ P := by
 :::
 ::::
 
-# §1.8 Worked example: ¬¬P → P (classical)
+# §1.9 Worked example: ¬¬P → P (classical)
 
 ::::cols
 :::col

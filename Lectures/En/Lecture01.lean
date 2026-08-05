@@ -721,6 +721,115 @@ Example 10. Currying turns a conjunctive hypothesis into nested implications.
      (P ∧ Q → R) → (P → (Q → R))
 ```
 
+# The Syntax of Lean
+
+The sections that follow read and write Lean, so this one fixes the notation. It explains how a declaration is spelled, not what makes a proof correct, which is the subject of the sections after it.
+
+A declaration names a statement and gives its proof. The keyword comes first, then the name, then the hypotheses in parentheses, then the statement after the colon, then the proof after `:=`.
+
+```lean
+theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.right, h.left⟩
+```
+
+Here `theorem` names the result `and_swap`. The binders `(P Q : Prop)` and `(h : P ∧ Q)` introduce two propositions and one hypothesis. The statement to prove is `Q ∧ P`, and the proof is the term after `:=`. The keyword `example` replaces `theorem` when the result needs no name.
+
+The table lists the pieces of syntax that the following sections use.
+
+:::table +header
+*
+  * Written
+  * Read as
+*
+  * `example (h : P) : Q := e`
+  * anonymous statement with hypothesis h, proved by e
+*
+  * `fun h => e`
+  * the function that takes h to e
+*
+  * `f a`
+  * f applied to a, written without parentheses
+*
+  * `⟨a, b⟩`
+  * the anonymous constructor, here a pair
+*
+  * `h.left`, `h.right`
+  * the two components of a conjunction
+*
+  * `by`
+  * enter tactic mode, one tactic per line
+*
+  * `·`
+  * focus the next goal inside a tactic block
+*
+  * `sorry`
+  * placeholder for a missing proof
+*
+  * `-- text`
+  * comment to the end of the line
+:::
+
+The logical symbols are unicode. Typing the backslash abbreviation and then space or tab inserts the character in VS Code.
+
+:::table +header
+*
+  * Symbol
+  * Meaning
+  * Typed as
+*
+  * →
+  * implication
+  * `\to`
+*
+  * ∧
+  * conjunction
+  * `\and`
+*
+  * ∨
+  * disjunction
+  * `\or`
+*
+  * ¬
+  * negation
+  * `\not`
+*
+  * ↔
+  * biconditional
+  * `\iff`
+*
+  * ⊥
+  * absurdity
+  * `\bot`
+*
+  * ⟨ ⟩
+  * anonymous constructor
+  * `\langle`, `\rangle`
+*
+  * ·
+  * goal focus
+  * `\.`
+:::
+
+The same statement can be proved by a term or in tactic mode, and the two produce the same underlying proof. The sections that follow use both.
+
+```lean
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
+  ⟨h.right, h.left⟩
+
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
+  exact ⟨h.right, h.left⟩
+```
+
+The commands that inspect a declaration begin with `#`. The command `#check` prints the type of a term, which for a proof is the proposition it proves.
+
+```lean (name := checkAndSwap)
+#check fun (P Q : Prop) (h : P ∧ Q) =>
+  (⟨h.right, h.left⟩ : Q ∧ P)
+```
+```leanOutput checkAndSwap
+fun P Q h => ⟨h.right, h.left⟩ : ∀ (P Q : Prop), P ∧ Q → Q ∧ P
+```
+
 # Natural Deduction in Lean
 
 In Lean, we state a proposition and prove it in one declaration. The `example` keyword introduces an anonymous statement, and `theorem` introduces a named one. Hypotheses appear before the colon as named assumptions, and the proposition to prove, the *goal*, appears after it.
@@ -733,7 +842,7 @@ example (P : Prop) (h : P) : P := h
 
 Here `h` names the assumption that P holds, and the proof is `h` itself. Lecture 3 develops this correspondence between propositions and types.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, in *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980.]
 
-The table maps each rule of the previous section to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
+The table maps each rule of the section on natural deduction to the Lean term that realizes it. An introduction rule builds a term, and an elimination rule takes one apart.
 
 :::table +header
 *

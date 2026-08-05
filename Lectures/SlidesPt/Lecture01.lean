@@ -182,7 +182,7 @@ As regras acima são *construtivas*. A lógica clássica acrescenta mais uma reg
      P                          P ∨ ¬P
 ```
 
-# §1.6 Dedução natural em Lean
+# §1.7 Dedução natural em Lean
 
 Uma prova de uma proposição é um *termo* cujo tipo é aquela proposição; uma suposição é uma variável daquele tipo. Cada regra constrói ou desmonta um termo.
 
@@ -233,7 +233,7 @@ Uma prova de uma proposição é um *termo* cujo tipo é aquela proposição; um
   * `False.elim h`
 :::
 
-# §1.6 Termos de prova a partir da derivação
+# §1.7 Termos de prova a partir da derivação
 
 {exh}[1. P ∧ Q → Q ∧ P]
 
@@ -315,7 +315,7 @@ example (P : Prop) : P → ¬¬P :=
 :::
 ::::
 
-# §1.7 Provando com táticas
+# §1.8 Provando com táticas
 
 * Uma *tática* transforma o estado de prova, o objetivo junto com as hipóteses em escopo, um passo por vez.
 
@@ -329,7 +329,7 @@ example (P Q : Prop) (hPQ : P → Q) (hP : P) : Q := by
   exact hP
 ```
 
-# §1.7 Táticas por conectivo
+# §1.8 Táticas por conectivo
 
 :::table +header
 *
@@ -381,7 +381,7 @@ example (P : Prop) : ¬¬P → P := by
 
 Táticas de introdução constroem o objetivo; táticas de eliminação usam uma hipótese. O raciocínio clássico acrescenta `Classical.byContradiction` e `Classical.em`, necessários para a eliminação da dupla negação.
 
-# §1.7 Provando com táticas, como um jogo de tabuleiro
+# §1.8 Provando com táticas, como um jogo de tabuleiro
 
 Uma prova por táticas se desenrola como um jogo de tabuleiro. Cada elemento do jogo nomeia uma parte precisa da prova.
 
@@ -412,7 +412,7 @@ Uma prova por táticas se desenrola como um jogo de tabuleiro. Cada elemento do 
   * todo objetivo fechado, e o kernel de Lean verifica o termo de prova final
 :::
 
-# §1.8 Exemplo resolvido: P ∧ Q → P
+# §1.9 Exemplo resolvido: P ∧ Q → P
 
 ::::cols
 :::col
@@ -452,7 +452,7 @@ example (P Q : Prop) : P ∧ Q → P := by
 :::
 ::::
 
-# §1.8 Exemplo resolvido: ⊥ → P
+# §1.9 Exemplo resolvido: ⊥ → P
 
 ::::cols
 :::col
@@ -492,7 +492,7 @@ example (P : Prop) : False → P := by
 :::
 ::::
 
-# §1.8 Exemplo resolvido: (P → Q) ∧ P → Q
+# §1.9 Exemplo resolvido: (P → Q) ∧ P → Q
 
 ::::cols
 :::col
@@ -539,7 +539,7 @@ example (P Q : Prop) : (P → Q) ∧ P → Q := by
 :::
 ::::
 
-# §1.8 Exemplo resolvido: P ∨ Q → Q ∨ P
+# §1.9 Exemplo resolvido: P ∨ Q → Q ∨ P
 
 ::::cols
 :::col
@@ -589,7 +589,7 @@ example (P Q : Prop) : P ∨ Q → Q ∨ P := by
 :::
 ::::
 
-# §1.8 Exemplo resolvido: ¬¬P → P (clássico)
+# §1.9 Exemplo resolvido: ¬¬P → P (clássico)
 
 ::::cols
 :::col
