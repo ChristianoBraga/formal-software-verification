@@ -20,6 +20,8 @@ tag := "aula-3"
 
 Esta aula passa de provar a programar, seguindo o capítulo 2 do *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, edição de 2026, capítulo 2.] Ela apresenta tipos indutivos, definições de funções por casamento de padrões e recursão, avaliação e o enunciado de teoremas sobre programas, sem realizar prova alguma ainda.
 
+*Esta aula também está disponível como [slides de apresentação](../slides/lecture-3.pt.html).*
+
 # Das Provas aos Programas
 
 A Aula 1 apresentou uma prova como um termo cujo tipo é a proposição que ela prova. A mesma teoria de tipos classifica dados. Um tipo como ℕ reúne valores, e um termo de tipo ℕ → ℕ é um programa que consome e produz valores. O `#check` abaixo se lê exatamente como o `#check` de um termo de prova, com tipos no lugar de proposições.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, em *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980, pp. 479–490.]

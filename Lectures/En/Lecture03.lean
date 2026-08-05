@@ -20,6 +20,8 @@ tag := "lecture-3"
 
 This lecture moves from proving to programming, following chapter 2 of the *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, 2026 edition, chapter 2.] It presents inductive types, function definitions by pattern matching and recursion, evaluation, and the statement of theorems about programs, without carrying out any proofs yet.
 
+*This lecture is also available as [presentation slides](../slides/lecture-3.en.html).*
+
 # From Proofs to Programs
 
 Lecture 1 presented a proof as a term whose type is the proposition it proves. The same type theory classifies data. A type such as ℕ collects values, and a term of type ℕ → ℕ is a program that consumes and produces values. The `#check` below reads exactly like the `#check` of a proof term, with types in place of propositions.{margin}[W. A. Howard, *The Formulae-as-Types Notion of Construction*, in *To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism*, Academic Press, 1980, pp. 479–490.]
