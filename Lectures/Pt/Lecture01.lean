@@ -723,7 +723,7 @@ Exemplo 10. O currying transforma uma hipótese conjuntiva em implicações anin
 
 # A Sintaxe de Lean
 
-As seções seguintes leem e escrevem Lean, então esta fixa a notação. Ela explica como uma declaração se escreve, não o que torna uma prova correta, assunto das seções posteriores.
+As seções seguintes leem e escrevem Lean, então esta fixa a notação. Ela explica como uma declaração é escrita, não o que torna uma prova correta, assunto das seções posteriores.
 
 Uma declaração dá nome a um enunciado e apresenta a sua prova. A palavra-chave vem primeiro, depois o nome, depois as hipóteses entre parênteses, depois o enunciado após os dois-pontos, e por fim a prova após `:=`.
 
@@ -732,9 +732,9 @@ theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
   ⟨h.right, h.left⟩
 ```
 
-Aqui `theorem` dá ao resultado o nome `and_swap`. Os ligadores `(P Q : Prop)` e `(h : P ∧ Q)` introduzem duas proposições e uma hipótese. O enunciado a provar é `Q ∧ P`, e a prova é o termo após `:=`. A palavra-chave `example` substitui `theorem` quando o resultado dispensa nome.
+Aqui `theorem` dá ao resultado o nome `and_swap`. Os parâmetros `(P Q : Prop)` e `(h : P ∧ Q)` introduzem duas proposições e uma hipótese. O enunciado a provar é `Q ∧ P`, e a prova é o termo após `:=`. A palavra-chave `example` substitui `theorem` quando o resultado dispensa nome.
 
-A tabela lista as construções de sintaxe que as seções seguintes usam.
+A {tabref "tbl-lean-syntax"}[Tabela 1.6.1] lista as construções de sintaxe que as seções seguintes usam.
 
 :::table +header
 *
@@ -769,7 +769,9 @@ A tabela lista as construções de sintaxe que as seções seguintes usam.
   * comentário até o fim da linha
 :::
 
-Os símbolos lógicos são unicode. Digitar a abreviação com contrabarra e em seguida espaço ou tabulação insere o caractere no VS Code.
+*{tableAnchor "tbl-lean-syntax"}[Tabela 1.6.1. A sintaxe de declarações, termos e blocos de táticas.]*
+
+Os símbolos lógicos são unicode, e a {tabref "tbl-lean-symbols"}[Tabela 1.6.2] dá a abreviação que digita cada um. Digitar a abreviação com contrabarra e em seguida espaço ou tabulação insere o caractere no VS Code.
 
 :::table +header
 *
@@ -809,6 +811,8 @@ Os símbolos lógicos são unicode. Digitar a abreviação com contrabarra e em 
   * foco de objetivo
   * `\.`
 :::
+
+*{tableAnchor "tbl-lean-symbols"}[Tabela 1.6.2. Os símbolos lógicos e as abreviações que os digitam.]*
 
 O mesmo enunciado se prova por um termo ou no modo de táticas, e os dois produzem a mesma prova subjacente. As seções seguintes usam ambos.
 

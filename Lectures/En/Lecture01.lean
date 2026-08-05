@@ -734,7 +734,7 @@ theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P :=
 
 Here `theorem` names the result `and_swap`. The binders `(P Q : Prop)` and `(h : P ∧ Q)` introduce two propositions and one hypothesis. The statement to prove is `Q ∧ P`, and the proof is the term after `:=`. The keyword `example` replaces `theorem` when the result needs no name.
 
-The table lists the pieces of syntax that the following sections use.
+{tabref "tbl-lean-syntax"}[Table 1.6.1] lists the pieces of syntax that the following sections use.
 
 :::table +header
 *
@@ -769,7 +769,9 @@ The table lists the pieces of syntax that the following sections use.
   * comment to the end of the line
 :::
 
-The logical symbols are unicode. Typing the backslash abbreviation and then space or tab inserts the character in VS Code.
+*{tableAnchor "tbl-lean-syntax"}[Table 1.6.1. The syntax of declarations, terms and tactic blocks.]*
+
+The logical symbols are unicode, and {tabref "tbl-lean-symbols"}[Table 1.6.2] gives the abbreviation that types each one. Typing the backslash abbreviation and then space or tab inserts the character in VS Code.
 
 :::table +header
 *
@@ -809,6 +811,8 @@ The logical symbols are unicode. Typing the backslash abbreviation and then spac
   * goal focus
   * `\.`
 :::
+
+*{tableAnchor "tbl-lean-symbols"}[Table 1.6.2. The logical symbols and the abbreviations that type them.]*
 
 The same statement can be proved by a term or in tactic mode, and the two produce the same underlying proof. The sections that follow use both.
 

@@ -92,3 +92,17 @@ def figrefExpander : RoleExpanderOf FigureConfig
   | {key}, content => do
     let content ← content.mapM elabInline
     ``(Verso.Doc.Inline.other (figref $(quote key)) #[$content,*])
+
+/-- Tables share the machinery of figures. The anchor goes on the
+    caption, and `tabref` links to it from the prose. -/
+@[role]
+def tableAnchor : RoleExpanderOf FigureConfig
+  | {key}, content => do
+    let content ← content.mapM elabInline
+    ``(Verso.Doc.Inline.other (figureAnchor $(quote key)) #[$content,*])
+
+@[role]
+def tabref : RoleExpanderOf FigureConfig
+  | {key}, content => do
+    let content ← content.mapM elabInline
+    ``(Verso.Doc.Inline.other (figref $(quote key)) #[$content,*])

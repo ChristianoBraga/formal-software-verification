@@ -674,7 +674,7 @@ axiom a_less_b : a < b
 
 Os exemplos abaixo releem os enunciados, separam o que a computação resolve do que ela não resolve e rastreiam de quais axiomas uma prova depende. O espaço de nomes `MoreTheorems` mantém os nomes novos longe dos de Mathlib.
 
-Exemplo 1. Um enunciado com ligadores nomeados é uma proposição universalmente quantificada.
+Exemplo 1. Um enunciado com parâmetros nomeados é uma proposição universalmente quantificada.
 
 ```lean (name := checkAddComm)
 #check @SorryTheorems.add_comm
@@ -683,7 +683,7 @@ Exemplo 1. Um enunciado com ligadores nomeados é uma proposição universalment
 SorryTheorems.add_comm : ∀ (m n : ℕ), add m n = add n m
 ```
 
-Exemplo 2. Um ligador implícito aparece entre chaves, e o enunciado quantifica também sobre o tipo.
+Exemplo 2. Um parâmetro implícito aparece entre chaves, e o enunciado quantifica também sobre o tipo.
 
 ```lean (name := checkRevRev)
 #check @SorryTheorems.reverse_reverse
