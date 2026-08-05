@@ -408,7 +408,7 @@ end Worked
 
 * Aqui o *segundo* argumento é a variável, então equação alguma de `add` se aplica e o termo trava.
 
-* A afirmação é verdadeira, e prová-la exige *indução estrutural sobre m*, na próxima aula.
+* A afirmação é verdadeira, e prová-la exige *indução estrutural sobre m*, em uma aula adiante.
 
 * Quem decide qual lado computa é a forma da recursão, não a forma do enunciado.
 :::
@@ -468,6 +468,6 @@ end Worked
 
 * Um `theorem` enuncia uma proposição; `sorry` adia a prova e `#print axioms` expõe o adiamento como `sorryAx`.
 
-* As leis gerais sobre variáveis precisam de *indução estrutural*, o assunto da próxima aula.
+* As leis gerais sobre variáveis precisam de *indução estrutural*, o assunto de uma aula adiante.
 
 Exercícios: veja as [notas de aula](../pt/Aula-3___-Programas-e-Teoremas/).

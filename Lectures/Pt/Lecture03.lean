@@ -800,6 +800,138 @@ end MoreTheorems
 'MoreTheorems.half_double' depends on axioms: [sorryAx]
 ```
 
+# Exemplos Resolvidos
+
+Cada exemplo abaixo é conduzido por inteiro, da escolha das equações às verificações que a seguem. Eles são disjuntos dos exercícios, e Lean verifica cada linha na construção das notas.
+
+## Subtração truncada
+
+A subtração sobre ℕ não tem resultados negativos, então `sub 3 7` deve ser 0. A recursão descasca um `succ` de cada argumento ao mesmo tempo, o que faz de `m + 1, n + 1` a equação recursiva. Dois casos base a interrompem. Subtrair zero devolve o primeiro argumento, e subtrair de zero devolve zero. As equações são tentadas em ordem, então o par `0, 0` cai na primeira delas e nunca alcança a segunda.
+
+```lean
+def sub : ℕ → ℕ → ℕ
+  | m,     0     => m
+  | 0,     _     => 0
+  | m + 1, n + 1 => sub m n
+```
+
+A primeira verificação executa a equação recursiva três vezes, e a segunda esgota o primeiro argumento antes do segundo.
+
+```lean (name := evalSubWorked)
+#eval sub 7 3
+```
+```leanOutput evalSubWorked
+4
+```
+
+```lean (name := evalSubTruncWorked)
+#eval sub 3 7
+```
+```leanOutput evalSubTruncWorked
+0
+```
+
+As duas verificações são equações fechadas, então cada uma é também um teorema que `rfl` prova.
+
+```lean
+example : sub 3 7 = 0 := rfl
+```
+
+## Avaliar uma expressão passo a passo
+
+Tome a expressão `(x + 3) * y` da §3.2 e um ambiente que leva "x" a 2 e "y" a 4. Cada passo abaixo aplica uma equação de `eval`, primeiro o caso `mul`, depois o caso `add`, depois os casos `var` e `num`, e a aritmética de ℤ conclui a computação.
+
+```
+eval env ((x + 3) * y)
+  = eval env (x + 3) * eval env y
+  = (eval env x + eval env 3) * env "y"
+  = (env "x" + 3) * env "y"
+  = (2 + 3) * 4
+  = 20
+```
+
+O ambiente é uma função de nomes em inteiros, e o casamento de padrões sobre cadeias de caracteres o define.
+
+```lean
+def workedEnv : String → ℤ
+  | "x" => 2
+  | "y" => 4
+  | _   => 0
+```
+
+Lean realiza a mesma computação.
+
+```lean (name := evalWorkedNotes)
+#eval eval workedEnv
+  (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+    (AExp.var "y"))
+```
+```leanOutput evalWorkedNotes
+20
+```
+
+A expressão não contém variáveis de Lean, apenas *nomes* de variáveis que o ambiente resolve, então a equação é fechada e `rfl` a prova.
+
+```lean
+example : eval workedEnv
+    (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+      (AExp.var "y")) = 20 := rfl
+```
+
+## O que a computação resolve
+
+A função `add` recursa sobre o seu segundo argumento. Esse único fato decide quais equações `rfl` prova. A primeira equação abaixo é fechada, então os dois lados computam para 9. A segunda é geral, mas `add m 0` casa a primeira equação de `add` qualquer que seja m, e reduz a m em um passo.
+
+```lean
+example : add 2 7 = 9 := rfl
+
+example (m : ℕ) : add m 0 = m := rfl
+```
+
+Trocar os argumentos muda tudo. Em `add 0 m` a variável está onde a recursão olha, equação alguma se aplica e o termo trava. A afirmação é verdadeira e `rfl` não a prova.
+
+```lean
+namespace Worked
+
+theorem zero_add (m : ℕ) : add 0 m = m := by
+  sorry
+
+end Worked
+```
+
+A prova exige indução estrutural sobre m, assunto das próximas aulas. A lição se generaliza. O que a computação resolve depende da forma da recursão, não da forma do enunciado.
+
+## Da definição ao enunciado
+
+Uma definição costuma sugerir as leis que deve satisfazer. Acrescentar um elemento ao final de uma lista é a imagem espelhada de `cons`, então a operação recursa sobre a lista e a reconstrói em torno da chamada recursiva.
+
+```lean
+def snoc {α : Type} : List α → α → List α
+  | [],      y => [y]
+  | x :: xs, y => x :: snoc xs y
+```
+
+```lean (name := evalSnocWorked)
+#eval snoc [1, 2] 3
+```
+```leanOutput evalSnocWorked
+[1, 2, 3]
+```
+
+A reversão e `snoc` devem concordar: reverter `x :: xs` põe x ao final da reversão de xs. Enunciar a lei não custa nada, e o enunciado é o que uma aula adiante prova.
+
+```lean
+namespace Worked
+
+theorem reverse_cons {α : Type} (x : α) (xs : List α) :
+    reverse (x :: xs) = snoc (reverse xs) x := by
+  sorry
+
+end Worked
+```
+
+A computação não a resolve. O lado esquerdo desdobra para `appendPretty (reverse xs) [x]`, o lado direito trava na lista variável, e os dois se encontram apenas sob indução. Escrever o enunciado primeiro, e prová-lo depois, é como um desenvolvimento cresce.
+
 # Exercícios
 
 Defina cada função e prove ou enuncie cada teorema, substituindo `sorry`. Baixe o arquivo de exercícios [`Lecture03.lean`](example-code/Lectures/Pt/Lecture03.lean) e abra-o no VS Code. O arquivo já contém as definições de `AExp`, `eval`, `appendPretty` e `reverse` da aula.
@@ -848,10 +980,12 @@ theorem eval_div_zero :
   sorry
 ```
 
-Exercício 4. Defina a subtração truncada por casamento de padrões nos dois argumentos, de modo que `sub 3 5 = 0`.
+Exercício 4. Defina a soma de uma lista de números naturais, e prove a equação fechada por computação.
 
 ```savedLean -keep
-def sub : ℕ → ℕ → ℕ := sorry
+def sumList : List ℕ → ℕ := sorry
+
+theorem sumList_example : sumList [1, 2, 3] = 6 := sorry
 ```
 
 Exercício 5. Defina o comprimento de uma lista, com argumento de tipo implícito, e prove a equação fechada por computação.
@@ -875,13 +1009,14 @@ def map {α β : Type} (f : α → β) : List α → List β :=
 --             composição das duas sobre xs.
 ```
 
-Exercício 7. Defina `snoc`, que acrescenta um elemento ao final de uma lista, e enuncie, com `sorry`, o teorema `reverse_cons`, que relaciona `reverse (x :: xs)` com `snoc (reverse xs) x`.
+Exercício 7. Defina `flatten`, que concatena uma lista de listas com `appendPretty`, e enuncie, com `sorry`, que o comprimento do resultado é a soma dos comprimentos das listas internas, usando `length`, `map` e `sumList` dos exercícios acima.
 
 ```savedLean -keep
-def snoc {α : Type} : List α → α → List α := sorry
+def flatten {α : Type} : List (List α) → List α := sorry
 
--- Enuncie reverse_cons aqui como um teorema provado por
--- sorry.
+-- Enuncie flatten_length aqui como um teorema provado por
+-- sorry: length (flatten xss) é igual a
+-- sumList (map length xss).
 ```
 
 Exercício 8. Complete `simplify`, que remove as somas com 0, os produtos por 1 e as divisões por 1, seguindo os casos dados, e enuncie, com `sorry`, a sua correção. Simplificar preserva o valor sob todo ambiente.

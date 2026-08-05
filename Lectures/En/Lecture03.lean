@@ -800,6 +800,138 @@ end MoreTheorems
 'MoreTheorems.half_double' depends on axioms: [sorryAx]
 ```
 
+# Worked Examples
+
+Each example below is carried out in full, from the choice of the equations to the checks that follow. They are disjoint from the exercises, and Lean checks every line when the notes are built.
+
+## Truncated subtraction
+
+Subtraction on ℕ has no negative results, so `sub 3 7` must be 0. The recursion peels one `succ` from each argument at once, which makes `m + 1, n + 1` the recursive equation. Two base cases stop it. Subtracting zero returns the first argument, and subtracting from zero returns zero. The equations are tried in order, so the pair `0, 0` falls to the first one and never reaches the second.
+
+```lean
+def sub : ℕ → ℕ → ℕ
+  | m,     0     => m
+  | 0,     _     => 0
+  | m + 1, n + 1 => sub m n
+```
+
+The first check runs the recursive equation three times, and the second exhausts the first argument before the second.
+
+```lean (name := evalSubWorked)
+#eval sub 7 3
+```
+```leanOutput evalSubWorked
+4
+```
+
+```lean (name := evalSubTruncWorked)
+#eval sub 3 7
+```
+```leanOutput evalSubTruncWorked
+0
+```
+
+Both checks are ground equations, so each is also a theorem that `rfl` proves.
+
+```lean
+example : sub 3 7 = 0 := rfl
+```
+
+## Evaluating an expression step by step
+
+Take the expression `(x + 3) * y` of §3.2 and an environment that sends "x" to 2 and "y" to 4. Each step below applies one equation of `eval`, first the `mul` case, then the `add` case, then the `var` and `num` cases, and the arithmetic of ℤ finishes the computation.
+
+```
+eval env ((x + 3) * y)
+  = eval env (x + 3) * eval env y
+  = (eval env x + eval env 3) * env "y"
+  = (env "x" + 3) * env "y"
+  = (2 + 3) * 4
+  = 20
+```
+
+The environment is a function from names to integers, and pattern matching on strings defines it.
+
+```lean
+def workedEnv : String → ℤ
+  | "x" => 2
+  | "y" => 4
+  | _   => 0
+```
+
+Lean performs the same computation.
+
+```lean (name := evalWorkedNotes)
+#eval eval workedEnv
+  (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+    (AExp.var "y"))
+```
+```leanOutput evalWorkedNotes
+20
+```
+
+The expression contains no variables of Lean, only variable *names* that the environment resolves, so the equation is ground and `rfl` proves it.
+
+```lean
+example : eval workedEnv
+    (AExp.mul (AExp.add (AExp.var "x") (AExp.num 3))
+      (AExp.var "y")) = 20 := rfl
+```
+
+## What computation settles
+
+The function `add` recurses on its second argument. That single fact decides which equations `rfl` proves. The first equation below is ground, so both sides compute to 9. The second is general, yet `add m 0` matches the first equation of `add` whatever m is, and reduces to m in one step.
+
+```lean
+example : add 2 7 = 9 := rfl
+
+example (m : ℕ) : add m 0 = m := rfl
+```
+
+Exchanging the arguments changes everything. In `add 0 m` the variable sits where the recursion looks, no equation applies, and the term is stuck. The claim is true and `rfl` cannot prove it.
+
+```lean
+namespace Worked
+
+theorem zero_add (m : ℕ) : add 0 m = m := by
+  sorry
+
+end Worked
+```
+
+The proof needs structural induction on m, the subject of a coming lecture. The lesson generalises. What computation settles depends on the pattern of the recursion, not on the shape of the statement.
+
+## From a definition to its statement
+
+A definition usually suggests the laws it should satisfy. Appending one element at the end of a list is the mirror image of `cons`, so it recurses on the list and rebuilds it around the recursive call.
+
+```lean
+def snoc {α : Type} : List α → α → List α
+  | [],      y => [y]
+  | x :: xs, y => x :: snoc xs y
+```
+
+```lean (name := evalSnocWorked)
+#eval snoc [1, 2] 3
+```
+```leanOutput evalSnocWorked
+[1, 2, 3]
+```
+
+Reversal and `snoc` should agree: reversing `x :: xs` puts x at the end of the reversal of xs. Stating the law costs nothing, and the statement is what a coming lecture proves.
+
+```lean
+namespace Worked
+
+theorem reverse_cons {α : Type} (x : α) (xs : List α) :
+    reverse (x :: xs) = snoc (reverse xs) x := by
+  sorry
+
+end Worked
+```
+
+Computation does not settle it. The left side unfolds to `appendPretty (reverse xs) [x]`, the right side is stuck on the variable list, and the two meet only under induction. Writing the statement first, and proving it later, is how a development grows.
+
 # Exercises
 
 Define each function and prove or state each theorem, replacing `sorry`. Download the exercise file [`Lecture03.lean`](example-code/Lectures/En/Lecture03.lean) and open it in VS Code. The file already contains the definitions of `AExp`, `eval`, `appendPretty`, and `reverse` from the lecture.
@@ -848,10 +980,12 @@ theorem eval_div_zero :
   sorry
 ```
 
-Exercise 4. Define truncated subtraction by pattern matching on both arguments, so that `sub 3 5 = 0`.
+Exercise 4. Define the sum of a list of natural numbers, and prove the ground equation by computation.
 
 ```savedLean -keep
-def sub : ℕ → ℕ → ℕ := sorry
+def sumList : List ℕ → ℕ := sorry
+
+theorem sumList_example : sumList [1, 2, 3] = 6 := sorry
 ```
 
 Exercise 5. Define the length of a list, with an implicit type argument, and prove the ground equation by computation.
@@ -874,12 +1008,13 @@ def map {α β : Type} (f : α → β) : List α → List β :=
 --             composition over xs.
 ```
 
-Exercise 7. Define `snoc`, which appends one element at the end of a list, then state, with `sorry`, the theorem `reverse_cons` relating `reverse (x :: xs)` to `snoc (reverse xs) x`.
+Exercise 7. Define `flatten`, which concatenates a list of lists with `appendPretty`, then state, with `sorry`, that the length of the result is the sum of the lengths of the inner lists, using `length`, `map` and `sumList` of the exercises above.
 
 ```savedLean -keep
-def snoc {α : Type} : List α → α → List α := sorry
+def flatten {α : Type} : List (List α) → List α := sorry
 
--- State reverse_cons here as a theorem proved by sorry.
+-- State flatten_length here as a theorem proved by sorry:
+-- length (flatten xss) equals sumList (map length xss).
 ```
 
 Exercise 8. Complete `simplify`, which removes additions of 0, multiplications by 1, and divisions by 1, following the given cases, then state, with `sorry`, its correctness. Simplifying preserves the value under every environment.

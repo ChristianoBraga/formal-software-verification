@@ -408,7 +408,7 @@ end Worked
 
 * Here the *second* argument is the variable, so no equation of `add` applies and the term is stuck.
 
-* The claim is true, and proving it needs *structural induction on m*, in the next lecture.
+* The claim is true, and proving it needs *structural induction on m*, in a coming lecture.
 
 * The pattern of the recursion, not the shape of the statement, decides which side computes.
 :::
@@ -468,6 +468,6 @@ end Worked
 
 * A `theorem` states a proposition; `sorry` defers the proof and `#print axioms` exposes the deferral as `sorryAx`.
 
-* General laws over variables need *structural induction*, the subject of the next lecture.
+* General laws over variables need *structural induction*, the subject of a coming lecture.
 
 Exercises: see the [lecture notes](../en/Lecture-3___-Programs-and-Theorems/).
