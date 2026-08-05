@@ -373,6 +373,111 @@ def reverse {α : Type} : List α → List α
   | x :: xs => appendPretty (reverse xs) [x]
 ```
 
+## Examples
+
+The examples below compare explicit and implicit type arguments and define polymorphic functions over lists and pairs.
+
+Example 1. With an explicit type argument, the type appears in the signature as an ordinary argument.
+
+```lean (name := checkAppendPoly)
+#check @append
+```
+```leanOutput checkAppendPoly
+append : (α : Type) → List α → List α → List α
+```
+
+Example 2. Curly braces mark the argument as implicit, and `@` displays it.
+
+```lean (name := checkAppendPretty)
+#check @appendPretty
+```
+```leanOutput checkAppendPretty
+@appendPretty : {α : Type} → List α → List α → List α
+```
+
+Example 3. At a call, the implicit argument comes from the type of the lists.
+
+```lean (name := evalAppendNat)
+#eval appendPretty [1, 2] [3]
+```
+```leanOutput evalAppendNat
+[1, 2, 3]
+```
+
+Example 4. The same definition serves another type without change.
+
+```lean (name := evalAppendStr)
+#eval appendImplicit ["a"] ["b"]
+```
+```leanOutput evalAppendStr
+["a", "b"]
+```
+
+Example 5. The `@` prefix restores the explicit form, useful when inference has nothing to work with.
+
+```lean (name := evalAppendAt)
+#eval @appendImplicit ℕ [1] [2]
+```
+```leanOutput evalAppendAt
+[1, 2]
+```
+
+Example 6. The identity function is polymorphic and returns its argument unchanged.
+
+```lean (name := checkIdPoly)
+def idPoly {α : Type} (x : α) : α := x
+
+#check @idPoly
+```
+```leanOutput checkIdPoly
+@idPoly : {α : Type} → α → α
+```
+
+Example 7. Building a one-element list works at every type.
+
+```lean (name := evalSingleton)
+def singletonList {α : Type} (x : α) : List α := [x]
+
+#eval singletonList 5
+```
+```leanOutput evalSingleton
+[5]
+```
+
+Example 8. A definition can take two type arguments. Swapping the components of a pair exchanges them.
+
+```lean (name := evalSwap)
+def swapPair {α β : Type} : α × β → β × α
+  | (x, y) => (y, x)
+
+#eval swapPair (1, "x")
+```
+```leanOutput evalSwap
+("x", 1)
+```
+
+Example 9. The length of a list ignores the elements, so the type argument never appears in the result.
+
+```lean (name := evalLengthPoly)
+def lengthPoly {α : Type} : List α → ℕ
+  | []      => 0
+  | _ :: xs => lengthPoly xs + 1
+
+#eval lengthPoly ["a", "b", "c"]
+```
+```leanOutput evalLengthPoly
+3
+```
+
+Example 10. An empty list carries no element to infer from, and a type ascription fixes the implicit argument.
+
+```lean (name := checkNilAscribed)
+#check ([] : List ℕ)
+```
+```leanOutput checkNilAscribed
+[] : List ℕ
+```
+
 # Evaluation
 
 The command `#eval` runs a program through Lean's compiler, and `#reduce` normalizes a term symbolically in the kernel. Both compute 9 below, and `#eval` is the one to reach for at scale.
@@ -422,6 +527,102 @@ example : eval (fun _ => 7)
     (AExp.div (AExp.var "y") (AExp.num 0)) = 0 := rfl
 ```
 
+## Examples
+
+The examples below run the functions of this lecture and inspect the arithmetic that `eval` inherits from ℤ.
+
+Example 1. The tenth Fibonacci number, computed by the compiler.
+
+```lean (name := evalFib)
+#eval fib 10
+```
+```leanOutput evalFib
+55
+```
+
+Example 2. The factorial of five, through the recursion of `mul` and `add`.
+
+```lean (name := evalFactorial)
+#eval factorial 5
+```
+```leanOutput evalFactorial
+120
+```
+
+Example 3. Two to the tenth, through the recursion of `power`.
+
+```lean (name := evalPower)
+#eval power 2 10
+```
+```leanOutput evalPower
+1024
+```
+
+Example 4. `#reduce` normalizes in the kernel and reaches the same value.
+
+```lean (name := reduceHalf)
+#reduce half 7
+```
+```leanOutput reduceHalf
+3
+```
+
+Example 5. A function into `Bool` evaluates to a Boolean value.
+
+```lean (name := evalEvenb)
+#eval evenb 10
+```
+```leanOutput evalEvenb
+true
+```
+
+Example 6. Evaluation runs polymorphic functions as well.
+
+```lean (name := evalReverse)
+#eval reverse [1, 2, 3]
+```
+```leanOutput evalReverse
+[3, 2, 1]
+```
+
+Example 7. The environment supplies the value of each variable, and the rest is arithmetic.
+
+```lean (name := evalEnvX)
+#eval eval (fun x => if x = "x" then 3 else 0)
+  (AExp.add (AExp.var "x") (AExp.num 4))
+```
+```leanOutput evalEnvX
+7
+```
+
+Example 8. Integer division truncates, so 5 / 2 evaluates to 2.
+
+```lean (name := evalDivTrunc)
+#eval eval (fun _ => 0)
+  (AExp.div (AExp.num 5) (AExp.num 2))
+```
+```leanOutput evalDivTrunc
+2
+```
+
+Example 9. Division on ℤ follows the Euclidean convention, whose remainder is never negative, so −7 / 2 evaluates to −4 rather than −3.
+
+```lean (name := evalDivNeg)
+#eval eval (fun _ => 0)
+  (AExp.div (AExp.num (-7)) (AExp.num 2))
+```
+```leanOutput evalDivNeg
+-4
+```
+
+Example 10. Every evaluation above also serves as a proof, since `rfl` closes an equation whose sides compute to the same value.
+
+```lean
+example : sumTo 10 = 55 := rfl
+
+example : twoPow 8 = 256 := rfl
+```
+
 # Theorem Statements
 
 A `theorem` is a definition whose type is a proposition. Stating it requires no proof; the placeholder `sorry` stands where the proof will go, and Lean flags every use of it. The statements below specify the functions of this lecture, and the namespace keeps their names from clashing with Mathlib's.
@@ -465,6 +666,136 @@ opaque a : ℤ
 opaque b : ℤ
 
 axiom a_less_b : a < b
+```
+
+## Examples
+
+The examples below read the statements back, separate what computation settles from what it does not, and track which axioms a proof rests on. The namespace `MoreTheorems` keeps the new names clear of Mathlib.
+
+Example 1. A statement with named binders is a universally quantified proposition.
+
+```lean (name := checkAddComm)
+#check @SorryTheorems.add_comm
+```
+```leanOutput checkAddComm
+SorryTheorems.add_comm : ∀ (m n : ℕ), add m n = add n m
+```
+
+Example 2. An implicit binder appears in braces, and the statement quantifies over the type as well.
+
+```lean (name := checkRevRev)
+#check @SorryTheorems.reverse_reverse
+```
+```leanOutput checkRevRev
+@SorryTheorems.reverse_reverse : ∀ {α : Type} (xs : List α), reverse (reverse xs) = xs
+```
+
+Example 3. The command `#print axioms` reports what a proof rests on, and `sorry` leaves the trace `sorryAx`.
+
+```lean (name := axiomsAddComm)
+#print axioms SorryTheorems.add_comm
+```
+```leanOutput axiomsAddComm
+'SorryTheorems.add_comm' depends on axioms: [sorryAx]
+```
+
+Example 4. A law that computation settles needs no induction. Zero on the right matches the first equation of `add`, so `rfl` proves it for every n.
+
+```lean (name := axiomsAddZero)
+namespace MoreTheorems
+
+theorem add_zero_right (n : ℕ) : add n 0 = n := rfl
+
+end MoreTheorems
+
+#print axioms MoreTheorems.add_zero_right
+```
+```leanOutput axiomsAddZero
+'MoreTheorems.add_zero_right' does not depend on any axioms
+```
+
+Example 5. The same holds for the first equation of `eval`, whatever the environment.
+
+```lean (name := checkEvalNum)
+namespace MoreTheorems
+
+theorem eval_num (env : String → ℤ) (i : ℤ) :
+    eval env (AExp.num i) = i := rfl
+
+end MoreTheorems
+
+#check @MoreTheorems.eval_num
+```
+```leanOutput checkEvalNum
+MoreTheorems.eval_num : ∀ (env : String → ℤ) (i : ℤ), eval env (AExp.num i) = i
+```
+
+Example 6. A ground equation deserves a name as much as a general law does.
+
+```lean
+namespace MoreTheorems
+
+theorem fib_seven : fib 7 = 13 := rfl
+
+theorem reverse_nil : reverse ([] : List ℕ) = [] := rfl
+
+end MoreTheorems
+```
+
+Example 7. Binders to the left of the colon and an explicit ∀ state the same proposition.
+
+```lean (name := checkAllAddZero)
+namespace MoreTheorems
+
+theorem all_add_zero : ∀ n : ℕ, add n 0 = n :=
+  fun _ => rfl
+
+end MoreTheorems
+
+#check @MoreTheorems.all_add_zero
+```
+```leanOutput checkAllAddZero
+MoreTheorems.all_add_zero : ∀ (n : ℕ), add n 0 = n
+```
+
+Example 8. Applying a stated theorem to arguments instantiates the statement, whether or not a proof exists yet.
+
+```lean (name := checkAddCommInst)
+#check SorryTheorems.add_comm 2 3
+```
+```leanOutput checkAddCommInst
+SorryTheorems.add_comm 2 3 : add 2 3 = add 3 2
+```
+
+Example 9. Whatever a proof uses, `#print axioms` shows. The proof below rests on the axiom of this section, and on `propext`, which Mathlib's lemma uses.
+
+```lean (name := axiomsANeB)
+namespace MoreTheorems
+
+theorem a_ne_b : a ≠ b := ne_of_lt a_less_b
+
+end MoreTheorems
+
+#print axioms MoreTheorems.a_ne_b
+```
+```leanOutput axiomsANeB
+'MoreTheorems.a_ne_b' depends on axioms: [a_less_b, propext]
+```
+
+Example 10. Variables block computation, so the law below waits for structural induction and carries `sorryAx` in the meantime.
+
+```lean (name := axiomsHalfDouble)
+namespace MoreTheorems
+
+theorem half_double (n : ℕ) : half (add n n) = n := by
+  sorry
+
+end MoreTheorems
+
+#print axioms MoreTheorems.half_double
+```
+```leanOutput axiomsHalfDouble
+'MoreTheorems.half_double' depends on axioms: [sorryAx]
 ```
 
 # Exercises
