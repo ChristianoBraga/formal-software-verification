@@ -30,7 +30,7 @@ Lecture 1 presented a proof as a term whose type is the proposition it proves. T
 fun n => n + 1 : ℕ → ℕ
 ```
 
-This lecture defines types and functions and states theorems about them. The proofs of those theorems wait for the coming lectures, which develop structural induction. This lecture also imports the LoVe library, which brings the Mathlib notations ℕ and ℤ used from here on.
+This lecture defines types and functions and states theorems about them. The proofs of those theorems wait for the coming lectures, which develop structural induction. This lecture also imports the LoVe library, and through it [Mathlib](https://github.com/leanprover-community/mathlib4), the mathematical library of the Lean community.{margin}[The mathlib Community, *The Lean Mathematical Library*, in *Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP 2020)*, pp. 367–381.] Mathlib is a single monolithic development that formalises algebra, order theory, topology, analysis and the standard data structures, and supplies the notations, lemmas and tactics that the rest of these lectures rely on. The notations ℕ and ℤ for the natural numbers and the integers come from it and are used from here on.
 
 # Inductive Types
 
