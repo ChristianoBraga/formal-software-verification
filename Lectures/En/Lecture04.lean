@@ -41,7 +41,7 @@ Forward, from the hypotheses:
   from b and hbc, we have c.
 ```
 
-A derivation in the natural deduction of Lecture 1 is a tree. Each rule application is a node whose children are the derivations of its premises, the conclusion of the derivation is the root, and the leaves are the assumptions and the axioms, the judgments no rule derives. The derivation admits both readings, forward from the leaves to the conclusion, and backward from the conclusion to the leaves.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.]
+A derivation in the natural deduction of Lecture 1 is written by stacking rule applications, with the premises of each rule above the inference line and its conclusion below it. The top formulas, which no rule derives, are the assumptions and the axioms, and the end formula, at the bottom, is the conclusion of the derivation. The derivation admits both readings, forward from the assumptions to the conclusion, and backward from the conclusion to the assumptions.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.]
 
 The keyword `by` enters tactic mode, and each line after it is one tactic. The proof below introduces the universally quantified variables and the two hypotheses, and closes the goal. The `trace_state` lines print the goal between the steps, and the outputs follow the code.
 

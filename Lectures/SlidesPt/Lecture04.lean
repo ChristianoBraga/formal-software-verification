@@ -60,7 +60,7 @@ de b e hbc, temos c.
 :::
 ::::
 
-* A frase característica de uma prova regressiva é *"basta provar"*. Uma derivação de dedução natural é uma árvore, com cada aplicação de regra como nó, as derivações das premissas como filhos, a conclusão na raiz e as suposições nas folhas. Ela admite as duas leituras, progressiva das folhas para a raiz e regressiva da raiz para as folhas.
+* A frase característica de uma prova regressiva é *"basta provar"*. Em uma derivação de dedução natural, as premissas de cada regra ficam acima do traço de inferência e a conclusão abaixo dele. A leitura progressiva vai das suposições, no topo, para a conclusão, e a regressiva vai da conclusão para as suposições.
 
 # §4.1 Modo de táticas
 
