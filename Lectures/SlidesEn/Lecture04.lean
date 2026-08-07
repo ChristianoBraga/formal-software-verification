@@ -139,7 +139,7 @@ end Backward
 :::
 ::::
 
-* Parameters left of the colon arrive in the context already, so these proofs need no `intro`.
+* Lean inserts the parameters left of the colon into the local context of the initial goal, so these proofs need no `intro`.
 
 # §4.2 Losing provability
 

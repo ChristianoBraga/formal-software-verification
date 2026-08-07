@@ -139,7 +139,7 @@ end Backward
 :::
 ::::
 
-* Parâmetros à esquerda dos dois-pontos já chegam no contexto, então estas provas dispensam `intro`.
+* Lean insere os parâmetros à esquerda dos dois-pontos no contexto local do objetivo inicial, então estas provas dispensam `intro`.
 
 # §4.2 Perder a demonstrabilidade
 

@@ -96,7 +96,7 @@ A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à
 
 A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Onde as duas funcionam, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
 
-Parâmetros escritos à esquerda dos dois-pontos já chegam no contexto, então as provas abaixo não precisam de `intro`.
+Lean insere os parâmetros escritos à esquerda dos dois-pontos no contexto local do objetivo inicial, então as provas abaixo não precisam de `intro`.
 
 ```lean
 namespace Backward
@@ -192,7 +192,7 @@ example : ∀ a b : Prop, a → a := by
   exact ha
 ```
 
-{ex "ex-basic-tactics-parameters-left-colon-context"}[] Parâmetros à esquerda dos dois-pontos dispensam `intro`, pois já chegam no contexto.
+{ex "ex-basic-tactics-parameters-left-colon-context"}[] Parâmetros à esquerda dos dois-pontos dispensam `intro`, pois Lean os insere no contexto local do objetivo inicial.
 
 ```lean
 example : ∀ a : Prop, a → a := by

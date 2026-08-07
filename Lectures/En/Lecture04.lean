@@ -96,7 +96,7 @@ The tactic `intro` moves the leading ∀-bound variable, or the leading assumpti
 
 The tactic `apply` matches the target with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. Where both work, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the target.
 
-Parameters written to the left of the colon arrive in the context already, so the proofs below need no `intro`.
+Lean inserts the parameters written to the left of the colon into the local context of the initial goal, so the proofs below need no `intro`.
 
 ```lean
 namespace Backward
@@ -192,7 +192,7 @@ example : ∀ a b : Prop, a → a := by
   exact ha
 ```
 
-{ex "ex-basic-tactics-parameters-left-colon-context"}[] Parameters to the left of the colon need no `intro`, since they arrive in the context already.
+{ex "ex-basic-tactics-parameters-left-colon-context"}[] Parameters to the left of the colon need no `intro`, since Lean inserts them into the local context of the initial goal.
 
 ```lean
 example : ∀ a : Prop, a → a := by
