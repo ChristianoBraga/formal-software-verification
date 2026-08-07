@@ -92,9 +92,9 @@ end Backward
 
 # Basic Tactics
 
-The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the target into the local context, under a chosen name. Given a provable goal it always produces a provable goal, so it is *safe*.
+The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the target into the local context, under a chosen name. Given a provable goal it always produces a provable goal.
 
-The tactic `apply` matches the target with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one, so it is *unsafe*. The tactic `exact` closes the goal with a term that proves it. Where both work, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the target.
+The tactic `apply` matches the target with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. Where both work, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the target.
 
 Parameters written to the left of the colon arrive in the context already, so the proofs below need no `intro`.
 
@@ -116,26 +116,27 @@ theorem fst_of_two_props_assumption (a b : Prop)
 end Backward
 ```
 
-The tactic `sorry` closes any goal without proving it, exactly as the term `sorry` did in Lecture 3, and Lean flags every use. The theorem below shows why `apply` is unsafe: applying it to the provable target `True` produces the unprovable target `False`.
-
-```lean
-namespace Backward
-
-theorem falseImpTrue : False → True :=
-  fun h => False.elim h
-
-end Backward
-```
+The tactic `sorry` closes any goal without proving it, exactly as the term `sorry` did in Lecture 3, and Lean flags every use. The example below shows how `apply` turns a provable goal into an unprovable one. The target `a ∨ b` follows from the hypothesis `hb` by the rule `Or.inr`, but `apply Or.inl` commits to the left disjunct and leaves the goal `a`, which no hypothesis proves.
 
 ```lean (name := unsafeApply)
-example : True := by
-  apply Backward.falseImpTrue
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inl
   trace_state
   sorry
 ```
 
 ```leanOutput unsafeApply
-⊢ False
+a b : Prop
+hb : b
+⊢ a
+```
+
+With the right rule the proof goes through.
+
+```lean
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inr
+  exact hb
 ```
 
 Two tactics clean the local context. The tactic `clear` drops variables or hypotheses that the rest of the proof does not need, and `rename` renames a hypothesis, selected by its proposition.
@@ -156,7 +157,7 @@ end Backward
 
 ## Examples
 
-The examples below exercise `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` and `rename`, and separate the safe tactics from the unsafe ones.
+The examples below exercise `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` and `rename`, and distinguish the tactics that preserve provability from those that can lose it.
 
 {ex "ex-basic-tactics-intro-forall-goal-trace"}[] `intro` on a ∀-goal moves the bound variable into the context. The trace shows the goal before and after.
 
@@ -372,10 +373,10 @@ For proving statements of propositional logic, the guide offers the following st
 * Look at the target. If it is an implication or a negation, `intro` makes progress.
 * Look at the hypotheses. A conjunction offers `And.left` and `And.right`, a disjunction offers `Or.elim`, and an equivalence offers `Iff.mp` and `Iff.mpr`.
 * Match the target with the conclusion of an introduction rule and `apply` it.
-* Prefer safe tactics while they make progress, and record the choice points where an unsafe tactic commits to a side.
+* Prefer tactics that preserve provability while they make progress, and record the choice points where a tactic commits to a side.
 * When a subgoal repeats a hypothesis, `exact` or `assumption` closes it.
 * When nothing constructive applies, consider a case analysis on `Classical.em`.
-* If the proof stalls, backtrack to the last unsafe step and try the other choice.
+* If the proof stalls, backtrack to the last choice point and try the other option.
 
 ## Examples
 
@@ -1062,7 +1063,7 @@ In words. Assume a ∧ (b ∨ c). Its right conjunct is a disjunction, and it su
 
 ## A dead end and a backtrack
 
-The statement a ∧ b → a ∨ c has two proofs of its disjunction to choose from, and only one works. `Or.inl` and `Or.inr` are unsafe, so a provable goal can turn into an unprovable one. The first attempt commits to the right disjunct, and the trace shows a target c that no hypothesis proves, so only `sorry` closes the block.
+The statement a ∧ b → a ∨ c has two proofs of its disjunction to choose from, and only one works. `Or.inl` and `Or.inr` can turn a provable goal into an unprovable one. The first attempt commits to the right disjunct, and the trace shows a target c that no hypothesis proves, so only `sorry` closes the block.
 
 ```lean (name := deadEnd)
 example (a b c : Prop) : a ∧ b → a ∨ c := by

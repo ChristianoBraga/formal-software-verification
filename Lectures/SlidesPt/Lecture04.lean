@@ -141,30 +141,29 @@ end Backward
 
 * Parâmetros à esquerda dos dois-pontos já chegam no contexto, então estas provas dispensam `intro`.
 
-# §4.2 Seguras e inseguras
+# §4.2 Perder a demonstrabilidade
 
 ::::cols
 :::col
 {lbl}[apply pode perder um objetivo demonstrável]
 
-```lean
-namespace Backward
-
-theorem falseImpTrue : False → True :=
-  fun h => False.elim h
-
-end Backward
-```
-
 ```lean (name := unsafeApply)
-example : True := by
-  apply Backward.falseImpTrue
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inl
   trace_state
   sorry
 ```
 
 ```leanOutput unsafeApply
-⊢ False
+a b : Prop
+hb : b
+⊢ a
+```
+
+```lean
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inr
+  exact hb
 ```
 :::
 :::col
@@ -187,7 +186,7 @@ end Backward
 :::
 ::::
 
-* `intro` é *segura*: um objetivo demonstrável continua demonstrável. `apply` é *insegura*. `sorry` fecha qualquer coisa e `#print axioms` o relata como `sorryAx`.
+* Um objetivo demonstrável continua demonstrável após `intro`. `apply` pode transformar um objetivo demonstrável em um indemonstrável. `sorry` fecha qualquer coisa e `#print axioms` o relata como `sorryAx`.
 
 # §4.3 Regras como teoremas
 
@@ -301,13 +300,13 @@ As estratégias do guia para quebra-cabeças proposicionais.
 
 * Case o alvo com uma regra de introdução e a aplique com `apply`.
 
-* Prefira táticas seguras enquanto fizerem progresso, e registre os pontos de escolha em que uma tática insegura se compromete com um lado.
+* Prefira táticas que preservam a demonstrabilidade enquanto fizerem progresso, e registre os pontos de escolha em que uma tática se compromete com um lado.
 
 * Quando um subobjetivo repete uma hipótese, `exact` ou `assumption` o fecha.
 
 * Quando nada construtivo se aplica, considere uma análise de casos sobre `Classical.em`.
 
-* Se a prova emperra, retroceda até o último passo inseguro e tente a outra escolha.
+* Se a prova emperra, retroceda até o último ponto de escolha e tente a outra opção.
 
 # §4.4 `rfl` e as conversões
 
@@ -569,7 +568,7 @@ end Backward
 
 * Uma tática transforma o objetivo, e uma prova regressiva se lê como uma cadeia de "basta provar".
 
-* `intro`, `apply`, `exact` e `assumption` provam qualquer quebra-cabeça proposicional, e entre elas só `intro` é segura.
+* `intro`, `apply`, `exact` e `assumption` provam qualquer quebra-cabeça proposicional, e entre elas só `intro` nunca perde um objetivo demonstrável.
 
 * Cada regra da Aula 1 é um teorema que `apply` consome regressivamente e a justaposição instancia progressivamente.
 

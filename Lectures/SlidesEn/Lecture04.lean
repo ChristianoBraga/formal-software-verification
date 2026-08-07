@@ -141,30 +141,29 @@ end Backward
 
 * Parameters left of the colon arrive in the context already, so these proofs need no `intro`.
 
-# §4.2 Safe and unsafe
+# §4.2 Losing provability
 
 ::::cols
 :::col
 {lbl}[apply can lose a provable goal]
 
-```lean
-namespace Backward
-
-theorem falseImpTrue : False → True :=
-  fun h => False.elim h
-
-end Backward
-```
-
 ```lean (name := unsafeApply)
-example : True := by
-  apply Backward.falseImpTrue
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inl
   trace_state
   sorry
 ```
 
 ```leanOutput unsafeApply
-⊢ False
+a b : Prop
+hb : b
+⊢ a
+```
+
+```lean
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inr
+  exact hb
 ```
 :::
 :::col
@@ -187,7 +186,7 @@ end Backward
 :::
 ::::
 
-* `intro` is *safe*: a provable goal stays provable. `apply` is *unsafe*. `sorry` closes anything and `#print axioms` reports it as `sorryAx`.
+* A provable goal stays provable after `intro`. `apply` can turn a provable goal into an unprovable one. `sorry` closes anything and `#print axioms` reports it as `sorryAx`.
 
 # §4.3 Rules as theorems
 
@@ -301,13 +300,13 @@ The guide's strategies for propositional puzzles.
 
 * Match the target with an introduction rule and `apply` it.
 
-* Prefer safe tactics while they make progress, and record the choice points where an unsafe tactic commits to a side.
+* Prefer tactics that preserve provability while they make progress, and record the choice points where a tactic commits to a side.
 
 * When a subgoal repeats a hypothesis, `exact` or `assumption` closes it.
 
 * When nothing constructive applies, consider a case analysis on `Classical.em`.
 
-* If the proof stalls, backtrack to the last unsafe step and try the other choice.
+* If the proof stalls, backtrack to the last choice point and try the other option.
 
 # §4.4 `rfl` and the conversions
 
@@ -569,7 +568,7 @@ end Backward
 
 * A tactic transforms the goal, and a backward proof reads as a chain of "it suffices to".
 
-* `intro`, `apply`, `exact` and `assumption` prove any propositional puzzle, and among them only `intro` is safe.
+* `intro`, `apply`, `exact` and `assumption` prove any propositional puzzle, and among them only `intro` never loses a provable goal.
 
 * Every rule of Lecture 1 is a theorem that `apply` consumes backwards and juxtaposition instantiates forwards.
 

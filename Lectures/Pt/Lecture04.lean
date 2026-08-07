@@ -92,9 +92,9 @@ end Backward
 
 # Táticas Básicas
 
-A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, do alvo para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável, então é *segura*.
+A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, do alvo para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável.
 
-A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável, então é *insegura*. A tática `exact` fecha o objetivo com um termo que o prova. Onde as duas funcionam, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
+A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Onde as duas funcionam, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
 
 Parâmetros escritos à esquerda dos dois-pontos já chegam no contexto, então as provas abaixo não precisam de `intro`.
 
@@ -116,26 +116,27 @@ theorem fst_of_two_props_assumption (a b : Prop)
 end Backward
 ```
 
-A tática `sorry` fecha qualquer objetivo sem prová-lo, exatamente como o termo `sorry` fez na Aula 3, e Lean marca cada uso. O teorema abaixo mostra por que `apply` é insegura: aplicá-la ao alvo demonstrável `True` produz o alvo indemonstrável `False`.
-
-```lean
-namespace Backward
-
-theorem falseImpTrue : False → True :=
-  fun h => False.elim h
-
-end Backward
-```
+A tática `sorry` fecha qualquer objetivo sem prová-lo, exatamente como o termo `sorry` fez na Aula 3, e Lean marca cada uso. O exemplo abaixo mostra como `apply` transforma um objetivo demonstrável em um indemonstrável. O alvo `a ∨ b` segue da hipótese `hb` pela regra `Or.inr`, mas `apply Or.inl` se compromete com o disjunto esquerdo e deixa o objetivo `a`, que nenhuma hipótese prova.
 
 ```lean (name := unsafeApply)
-example : True := by
-  apply Backward.falseImpTrue
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inl
   trace_state
   sorry
 ```
 
 ```leanOutput unsafeApply
-⊢ False
+a b : Prop
+hb : b
+⊢ a
+```
+
+Com a regra certa a prova termina.
+
+```lean
+example (a b : Prop) (hb : b) : a ∨ b := by
+  apply Or.inr
+  exact hb
 ```
 
 Duas táticas limpam o contexto local. A tática `clear` descarta variáveis ou hipóteses de que o resto da prova não precisa, e `rename` renomeia uma hipótese, selecionada pela sua proposição.
@@ -156,7 +157,7 @@ end Backward
 
 ## Exemplos
 
-Os exemplos abaixo exercitam `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` e `rename`, e separam as táticas seguras das inseguras.
+Os exemplos abaixo exercitam `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` e `rename`, e distinguem as táticas que preservam a demonstrabilidade das que podem perdê-la.
 
 {ex "ex-basic-tactics-intro-forall-goal-trace"}[] `intro` em um objetivo com ∀ move a variável ligada para o contexto. O trace mostra o objetivo antes e depois.
 
@@ -372,10 +373,10 @@ Para provar enunciados de lógica proposicional, o guia oferece as estratégias 
 * Olhe o alvo. Se ele é uma implicação ou uma negação, `intro` faz progresso.
 * Olhe as hipóteses. Uma conjunção oferece `And.left` e `And.right`, uma disjunção oferece `Or.elim`, e uma equivalência oferece `Iff.mp` e `Iff.mpr`.
 * Case o alvo com a conclusão de uma regra de introdução e a aplique com `apply`.
-* Prefira táticas seguras enquanto elas fizerem progresso, e registre os pontos de escolha em que uma tática insegura se compromete com um lado.
+* Prefira táticas que preservam a demonstrabilidade enquanto elas fizerem progresso, e registre os pontos de escolha em que uma tática se compromete com um lado.
 * Quando um subobjetivo repete uma hipótese, `exact` ou `assumption` o fecha.
 * Quando nada construtivo se aplica, considere uma análise de casos sobre `Classical.em`.
-* Se a prova emperra, retroceda até o último passo inseguro e tente a outra escolha.
+* Se a prova emperra, retroceda até o último ponto de escolha e tente a outra opção.
 
 ## Exemplos
 
@@ -1062,7 +1063,7 @@ Em palavras. Suponha a ∧ (b ∨ c). O seu conjunto direito é uma disjunção,
 
 ## Um beco sem saída e um retrocesso
 
-O enunciado a ∧ b → a ∨ c tem duas provas possíveis para a sua disjunção, e só uma funciona. `Or.inl` e `Or.inr` são inseguras, então um objetivo demonstrável pode virar um indemonstrável. A primeira tentativa se compromete com o disjunto direito, e o trace mostra um alvo c que nenhuma hipótese prova, então só `sorry` fecha o bloco.
+O enunciado a ∧ b → a ∨ c tem duas provas possíveis para a sua disjunção, e só uma funciona. `Or.inl` e `Or.inr` podem transformar um objetivo demonstrável em um indemonstrável. A primeira tentativa se compromete com o disjunto direito, e o trace mostra um alvo c que nenhuma hipótese prova, então só `sorry` fecha o bloco.
 
 ```lean (name := deadEnd)
 example (a b c : Prop) : a ∧ b → a ∨ c := by
