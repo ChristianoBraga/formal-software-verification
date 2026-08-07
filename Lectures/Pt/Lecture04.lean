@@ -41,7 +41,7 @@ Progressiva, a partir das hipóteses:
   de b e hbc, temos c.
 ```
 
-Uma derivação na dedução natural da Aula 1 se escreve empilhando aplicações de regras, com as premissas de cada regra acima do traço de inferência e a sua conclusão abaixo dele. As fórmulas do topo, que nenhuma regra deriva, são as suposições e os axiomas, e a fórmula final, embaixo, é a conclusão da derivação. A derivação admite as duas leituras, progressiva das suposições para a conclusão e regressiva da conclusão para as suposições.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.]
+Uma derivação na dedução natural da Aula 1 se escreve empilhando aplicações de regras, com as premissas de cada regra acima do traço de inferência e a sua conclusão abaixo dele. As fórmulas do topo, que nenhuma regra deriva, são as suposições e os axiomas, e a fórmula final, embaixo, é a conclusão da derivação. A derivação admite as duas leituras, progressiva das suposições para a conclusão e regressiva da conclusão para as suposições.{margin}[G. Gentzen, *Investigations into Logical Deduction*, in M. E. Szabo (ed.), *The Collected Papers of Gerhard Gentzen*, North-Holland, 1969, pp. 68–131.]
 
 A palavra-chave `by` entra no modo de táticas, e cada linha depois dela é uma tática. A prova abaixo introduz as variáveis universalmente quantificadas e as duas hipóteses, e fecha o objetivo. As linhas `trace_state` imprimem o objetivo entre os passos, e as saídas seguem o código.
 
