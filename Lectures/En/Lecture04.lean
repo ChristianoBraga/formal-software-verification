@@ -26,9 +26,9 @@ This lecture supplies the proof method that Lecture 3 postponed, following chapt
 
 # Backward Proofs
 
-A *tactic* operates on a proof goal and either proves it or creates new subgoals. A *goal* consists of a *local context*, which lists variable declarations x : σ and hypotheses h : P, and a *target* proposition, and we write C ⊢ Q for the goal with context C and target Q.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, chapter 5.]
+A *tactic* operates on a proof goal and either proves it or creates new subgoals. A *goal* consists of a *local context*, which lists variable declarations x : σ and hypotheses h : P, and a *conclusion*, the proposition to prove. We write the goal as the *sequent* C ⊢ Q, whose *antecedent* C is the context of hypotheses and whose *consequent* Q is the conclusion.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, chapter 5.]
 
-Tactics are a *backward* proof mechanism. A backward proof starts at the goal and works towards the available hypotheses and theorems, and its characteristic phrase is "it suffices to prove". A *forward* proof starts at the hypotheses and works towards the goal, and Lecture 5 develops it. Given hypotheses ha : a, hab : a → b, hbc : b → c and the target c, the two directions read as follows.
+Tactics are a *backward* proof mechanism. A backward proof starts at the goal and works towards the available hypotheses and theorems, and its characteristic phrase is "it suffices to prove". A *forward* proof starts at the hypotheses and works towards the goal, and Lecture 5 develops it. Given hypotheses ha : a, hab : a → b, hbc : b → c and the conclusion c, the two directions read as follows.
 
 ```
 Backward, from the goal:
@@ -59,14 +59,14 @@ theorem fst_of_two_props :
 end Backward
 ```
 
-After `intro a b` the two propositions have entered the context, and the target is the implication that remains.
+After `intro a b` the two propositions have entered the context, and the conclusion is the implication that remains.
 
 ```leanOutput fstOfTwo
 a b : Prop
 ⊢ a → b → a
 ```
 
-After `intro ha hb` the two hypotheses are available, and the target is a.
+After `intro ha hb` the two hypotheses are available, and the conclusion is a.
 
 ```leanOutput fstOfTwo
 a b : Prop
@@ -94,9 +94,9 @@ end Backward
 
 The basic tactics of this lecture are `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` and `rename`. They are basic because each performs a single elementary transformation of the proof state and because none depends on a particular connective, quantifier or theory. Almost every tactic proof uses them.
 
-The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the target into the local context, under a chosen name. Given a provable goal it always produces a provable goal.
+The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the conclusion into the local context, under a chosen name. Given a provable goal it always produces a provable goal.
 
-The tactic `apply` matches the target with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. When both close the goal, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the target.
+The tactic `apply` matches the conclusion of the goal with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. When both close the goal, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the conclusion.
 
 Lean inserts the parameters written to the left of the colon into the local context of the initial goal, so the proofs below need no `intro`.
 
@@ -118,7 +118,7 @@ theorem fst_of_two_props_assumption (a b : Prop)
 end Backward
 ```
 
-The tactic `sorry` closes any goal without proving it, exactly as the term `sorry` did in Lecture 3, and Lean flags every use. The example below shows how `apply` turns a provable goal into an unprovable one. The target `a ∨ b` follows from the hypothesis `hb` by the rule `Or.inr`, but `apply Or.inl` commits to the left disjunct and leaves the goal `a`, which no hypothesis proves.
+The tactic `sorry` closes any goal without proving it, exactly as the term `sorry` did in Lecture 3, and Lean flags every use. The example below shows how `apply` turns a provable goal into an unprovable one. The conclusion `a ∨ b` follows from the hypothesis `hb` by the rule `Or.inr`, but `apply Or.inl` commits to the left disjunct and leaves the goal `a`, which no hypothesis proves.
 
 ```lean (name := unsafeApply)
 example (a b : Prop) (hb : b) : a ∨ b := by
@@ -232,7 +232,7 @@ example (a b c : Prop) (hab : a → b) (hbc : b → c)
   exact ha
 ```
 
-{ex "ex-basic-tactics-unsafe-apply-provable-unprovable"}[] `apply` can lose a provable goal. Choosing the wrong disjunct leaves a target no hypothesis proves, and only `sorry` closes it.
+{ex "ex-basic-tactics-unsafe-apply-provable-unprovable"}[] `apply` can lose a provable goal. Choosing the wrong disjunct leaves a conclusion no hypothesis proves, and only `sorry` closes it.
 
 ```lean
 example (a b : Prop) (ha : a) : a ∨ b := by
@@ -289,7 +289,7 @@ Iff.mp    : (?a ↔ ?b) → ?a → ?b
 Iff.mpr   : (?a ↔ ?b) → ?b → ?a
 ```
 
-The quantifier rules, truth, falsehood and the classical principles complete the list. Negation needs no rules of its own, since ¬a is *defined* as a → False, so `intro` applies to a negated target, as Lecture 1 showed. `True.intro` is the only rule for truth, `False.elim` is the only rule for falsehood, and Lean's logic is classical through `Classical.em` and `Classical.byContradiction`, both used since Lecture 1 and now applicable backwards.
+The quantifier rules, truth, falsehood and the classical principles complete the list. Negation needs no rules of its own, since ¬a is *defined* as a → False, so `intro` applies to a negated conclusion, as Lecture 1 showed. `True.intro` is the only rule for truth, `False.elim` is the only rule for falsehood, and Lean's logic is classical through `Classical.em` and `Classical.byContradiction`, both used since Lecture 1 and now applicable backwards.
 
 ```
 Exists.intro : ∀ (w : ?α), ?p w → ∃ x, ?p x
@@ -300,7 +300,7 @@ Classical.em : ∀ (p : Prop), p ∨ ¬p
 Classical.byContradiction : (¬?a → False) → ?a
 ```
 
-A *metavariable* ?a stands for a term still to be determined. When `apply` matches the target with the conclusion of a rule, *unification* determines some metavariables and leaves the others as new goals, and those usually disappear as the proof proceeds. The proof below applies the introduction rule of ∧ backwards and closes each subgoal with an elimination rule.
+A *metavariable* ?a stands for a term still to be determined. When `apply` matches the conclusion of the goal with the conclusion of a rule, *unification* determines some metavariables and leaves the others as new goals, and those usually disappear as the proof proceeds. The proof below applies the introduction rule of ∧ backwards and closes each subgoal with an elimination rule.
 
 ```lean
 namespace Backward
@@ -372,9 +372,9 @@ end Backward
 
 For proving statements of propositional logic, the guide offers the following strategies.
 
-* Look at the target. If it is an implication or a negation, `intro` makes progress.
+* Look at the conclusion. If it is an implication or a negation, `intro` makes progress.
 * Look at the hypotheses. A conjunction offers `And.left` and `And.right`, a disjunction offers `Or.elim`, and an equivalence offers `Iff.mp` and `Iff.mpr`.
-* Match the target with the conclusion of an introduction rule and `apply` it.
+* Match the conclusion of the goal with the conclusion of an introduction rule and `apply` it.
 * Prefer tactics that preserve provability while they make progress, and record the choice points where a tactic commits to a side.
 * When a subgoal repeats a hypothesis, `exact` or `assumption` closes it.
 * When nothing constructive applies, consider a case analysis on `Classical.em`.
@@ -413,7 +413,7 @@ example (a b : Prop) (hab : a ∧ b) : b := by
   exact And.right hab
 ```
 
-{ex "ex-connectives-quantifiers-metavariable-appears-instantiated"}[] Applying the elimination rule backwards leaves a metavariable ?a in the target, and even a second goal asking for ?a itself. The final `exact` instantiates both at once.
+{ex "ex-connectives-quantifiers-metavariable-appears-instantiated"}[] Applying the elimination rule backwards leaves a metavariable ?a in the conclusion, and even a second goal asking for ?a itself. The final `exact` instantiates both at once.
 
 ```lean (name := exMetaRight)
 example (a b : Prop) (hab : a ∧ b) : b := by
@@ -493,7 +493,7 @@ example (α : Type) (P : α → Prop) (Q : Prop)
   exact h a hPa
 ```
 
-{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Three one-line proofs. `intro` applies to a negated target, `True.intro` is the only rule for truth, and `apply False.elim` closes any goal from a proof of `False`, since falsehood has no introduction rule.
+{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Three one-line proofs. `intro` applies to a negated conclusion, `True.intro` is the only rule for truth, and `apply False.elim` closes any goal from a proof of `False`, since falsehood has no introduction rule.
 
 ```lean
 example : ¬False := by
@@ -510,7 +510,7 @@ example (a : Prop) (h : False) : a := by
 
 # Reasoning about Equality
 
-The tactic `rfl` proves a target l = r when the two sides become syntactically identical under computation, and it succeeds exactly where a mathematician says "by definition". The term `rfl` of Lecture 3 is its term-level form. Computation here names six *conversions*.
+The tactic `rfl` proves a conclusion l = r when the two sides become syntactically identical under computation, and it succeeds exactly where a mathematician says "by definition". The term `rfl` of Lecture 3 is its term-level form. Computation here names six *conversions*.
 
 :::table +header
 *
@@ -679,7 +679,7 @@ example (α : Type) (P : α → Prop) (a b : α)
 
 # Rewriting Tactics
 
-The tactic `rw` applies an equation as a left-to-right rewrite rule, once. It finds the first subterm that matches the left-hand side, instantiates the variables of the equation accordingly, replaces every occurrence of that instantiated subterm, and then tries `rfl`. A leading `←` uses the equation right to left, `at h` rewrites the hypothesis h instead of the target, and `at *` rewrites everywhere. Given a constant name instead of an equation, `rw` uses the defining equations of the constant, which is how `rw [Not]` expands a negation and `rw [add]` unfolds our `add`.
+The tactic `rw` applies an equation as a left-to-right rewrite rule, once. It finds the first subterm that matches the left-hand side, instantiates the variables of the equation accordingly, replaces every occurrence of that instantiated subterm, and then tries `rfl`. A leading `←` uses the equation right to left, `at h` rewrites the hypothesis h instead of the conclusion, and `at *` rewrites everywhere. Given a constant name instead of an equation, `rw` uses the defining equations of the constant, which is how `rw [Not]` expands a negation and `rw [add]` unfolds our `add`.
 
 ```lean
 namespace Backward
@@ -699,7 +699,7 @@ theorem a_proof_of_negation (a : Prop) : a → ¬¬ a := by
 end Backward
 ```
 
-The tactic `simp` applies a standard set of rewrite rules, the *simp set*, exhaustively. The syntax `simp [t₁, …, tₙ]` adds theorems or constants for one invocation, `simp [-t]` removes one, `simp [*] at *` uses every hypothesis on every hypothesis and on the target, and the attribute `@[simp]` registers a theorem permanently.
+The tactic `simp` applies a standard set of rewrite rules, the *simp set*, exhaustively. The syntax `simp [t₁, …, tₙ]` adds theorems or constants for one invocation, `simp [-t]` removes one, `simp [*] at *` uses every hypothesis on every hypothesis and on the conclusion, and the attribute `@[simp]` registers a theorem permanently.
 
 ```lean
 namespace Backward
@@ -716,9 +716,9 @@ Rewriting is where proofs stop being predictable. The guide's advice is to try a
 
 ## Examples
 
-The examples below rewrite in the target and in the hypotheses, in both directions, and compare `rw` with `simp` on the same goal.
+The examples below rewrite in the conclusion and in the hypotheses, in both directions, and compare `rw` with `simp` on the same goal.
 
-{ex "ex-rewriting-rw-left-to-right"}[] `rw [h]` rewrites the target left to right and closes it with the `rfl` it tries at the end.
+{ex "ex-rewriting-rw-left-to-right"}[] `rw [h]` rewrites the conclusion left to right and closes it with the `rfl` it tries at the end.
 
 ```lean
 example (f : ℕ → ℕ) (a b : ℕ) (h : a = b) :
@@ -1061,11 +1061,11 @@ theorem and_or_distrib (a b c : Prop) :
 end Backward
 ```
 
-In words. Assume a ∧ (b ∨ c). Its right conjunct is a disjunction, and it suffices to prove the target from each disjunct. If b holds, it suffices to prove the left disjunct a ∧ b, whose parts are the left conjunct of the hypothesis and b itself. If c holds, the right disjunct a ∧ c follows the same way. Each bullet closes one branch, and the proof reads exactly like its pen-and-paper counterpart.
+In words. Assume a ∧ (b ∨ c). Its right conjunct is a disjunction, and it suffices to prove the conclusion from each disjunct. If b holds, it suffices to prove the left disjunct a ∧ b, whose parts are the left conjunct of the hypothesis and b itself. If c holds, the right disjunct a ∧ c follows the same way. Each bullet closes one branch, and the proof reads exactly like its pen-and-paper counterpart.
 
 ## An unprovable goal and a backtrack
 
-The disjunction of the statement a ∧ b → a ∨ c admits two introduction rules, and only one leads to a proof. `Or.inl` and `Or.inr` can turn a provable goal into an unprovable one. The first attempt commits to the right disjunct, and the trace shows a target c that no hypothesis proves, so only `sorry` closes the block.
+The disjunction of the statement a ∧ b → a ∨ c admits two introduction rules, and only one leads to a proof. `Or.inl` and `Or.inr` can turn a provable goal into an unprovable one. The first attempt commits to the right disjunct, and the trace shows a conclusion c that no hypothesis proves, so only `sorry` closes the block.
 
 ```lean (name := deadEnd)
 example (a b c : Prop) : a ∧ b → a ∨ c := by
@@ -1096,7 +1096,7 @@ end Backward
 
 ## `rw` versus `simp`
 
-Given f and the equation hf : ∀ x, f x = x + 1, the target f (f 0) = 2 falls to either tactic, in different ways. `rw [hf]` rewrites the occurrences of the first matching subterm, here the outer application, and needs a second invocation for the inner one, after which the `rfl` it tries closes the goal. `simp [hf]` rewrites exhaustively and needs one invocation.
+Given f and the equation hf : ∀ x, f x = x + 1, either tactic proves the conclusion f (f 0) = 2, in different ways. `rw [hf]` rewrites the occurrences of the first matching subterm, here the outer application, and needs a second invocation for the inner one, after which the `rfl` it tries closes the goal. `simp [hf]` rewrites exhaustively and needs one invocation.
 
 ```lean
 example (f : ℕ → ℕ) (hf : ∀ x, f x = x + 1) :

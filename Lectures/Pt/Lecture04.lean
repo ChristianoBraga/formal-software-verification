@@ -26,9 +26,9 @@ Esta aula fornece o método de prova que a Aula 3 adiou, seguindo o capítulo 3 
 
 # Provas Regressivas
 
-Uma *tática* opera sobre um objetivo de prova e o prova ou cria novos subobjetivos. Um *objetivo* consiste em um *contexto local*, que lista declarações de variáveis x : σ e hipóteses h : P, e uma proposição *alvo*, e escrevemos C ⊢ Q para o objetivo com contexto C e alvo Q.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, capítulo 5.]
+Uma *tática* opera sobre um objetivo de prova e o prova ou cria novos subobjetivos. Um *objetivo* consiste em um *contexto local*, que lista declarações de variáveis x : σ e hipóteses h : P, e uma *conclusão*, a proposição por provar. Escrevemos o objetivo como o *sequente* C ⊢ Q, cujo *antecedente* C é o contexto de hipóteses e cujo *consequente* Q é a conclusão.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, capítulo 5.]
 
-Táticas são um mecanismo de prova *regressivo*. Uma prova regressiva parte do objetivo e trabalha em direção às hipóteses e aos teoremas disponíveis, e a sua frase característica é "basta provar". Uma prova *progressiva* parte das hipóteses e trabalha em direção ao objetivo, e a Aula 5 a desenvolve. Dadas as hipóteses ha : a, hab : a → b, hbc : b → c e o alvo c, as duas direções se leem assim.
+Táticas são um mecanismo de prova *regressivo*. Uma prova regressiva parte do objetivo e trabalha em direção às hipóteses e aos teoremas disponíveis, e a sua frase característica é "basta provar". Uma prova *progressiva* parte das hipóteses e trabalha em direção ao objetivo, e a Aula 5 a desenvolve. Dadas as hipóteses ha : a, hab : a → b, hbc : b → c e a conclusão c, as duas direções se leem assim.
 
 ```
 Regressiva, a partir do objetivo:
@@ -59,14 +59,14 @@ theorem fst_of_two_props :
 end Backward
 ```
 
-Depois de `intro a b`, as duas proposições entraram no contexto, e o alvo é a implicação que resta.
+Depois de `intro a b`, as duas proposições entraram no contexto, e a conclusão é a implicação que resta.
 
 ```leanOutput fstOfTwo
 a b : Prop
 ⊢ a → b → a
 ```
 
-Depois de `intro ha hb`, as duas hipóteses estão disponíveis, e o alvo é a.
+Depois de `intro ha hb`, as duas hipóteses estão disponíveis, e a conclusão é a.
 
 ```leanOutput fstOfTwo
 a b : Prop
@@ -94,9 +94,9 @@ end Backward
 
 As táticas básicas desta aula são `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` e `rename`. Elas são básicas porque cada uma realiza uma única transformação elementar do estado da prova e porque nenhuma depende de um conectivo, de um quantificador ou de uma teoria em particular. Quase toda prova por táticas as utiliza.
 
-A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, do alvo para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável.
+A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, da conclusão para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável.
 
-A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Quando as duas fecham o objetivo, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
+A tática `apply` casa a conclusão do objetivo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Quando as duas fecham o objetivo, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com a conclusão.
 
 Lean insere os parâmetros escritos à esquerda dos dois-pontos no contexto local do objetivo inicial, então as provas abaixo não precisam de `intro`.
 
@@ -118,7 +118,7 @@ theorem fst_of_two_props_assumption (a b : Prop)
 end Backward
 ```
 
-A tática `sorry` fecha qualquer objetivo sem prová-lo, exatamente como o termo `sorry` fez na Aula 3, e Lean marca cada uso. O exemplo abaixo mostra como `apply` transforma um objetivo demonstrável em um indemonstrável. O alvo `a ∨ b` segue da hipótese `hb` pela regra `Or.inr`, mas `apply Or.inl` se compromete com o disjunto esquerdo e deixa o objetivo `a`, que nenhuma hipótese prova.
+A tática `sorry` fecha qualquer objetivo sem prová-lo, exatamente como o termo `sorry` fez na Aula 3, e Lean marca cada uso. O exemplo abaixo mostra como `apply` transforma um objetivo demonstrável em um indemonstrável. A conclusão `a ∨ b` segue da hipótese `hb` pela regra `Or.inr`, mas `apply Or.inl` se compromete com o disjunto esquerdo e deixa o objetivo `a`, que nenhuma hipótese prova.
 
 ```lean (name := unsafeApply)
 example (a b : Prop) (hb : b) : a ∨ b := by
@@ -232,7 +232,7 @@ example (a b c : Prop) (hab : a → b) (hbc : b → c)
   exact ha
 ```
 
-{ex "ex-basic-tactics-unsafe-apply-provable-unprovable"}[] `apply` pode perder um objetivo demonstrável. Escolher o disjunto errado deixa um alvo que nenhuma hipótese prova, e só `sorry` o fecha.
+{ex "ex-basic-tactics-unsafe-apply-provable-unprovable"}[] `apply` pode perder um objetivo demonstrável. Escolher o disjunto errado deixa uma conclusão que nenhuma hipótese prova, e só `sorry` o fecha.
 
 ```lean
 example (a b : Prop) (ha : a) : a ∨ b := by
@@ -289,7 +289,7 @@ Iff.mp    : (?a ↔ ?b) → ?a → ?b
 Iff.mpr   : (?a ↔ ?b) → ?b → ?a
 ```
 
-As regras dos quantificadores, a verdade, a falsidade e os princípios clássicos completam a lista. A negação dispensa regras próprias, pois ¬a é *definida* como a → False, então `intro` se aplica a um alvo negado, como a Aula 1 mostrou. `True.intro` é a única regra da verdade, `False.elim` é a única regra da falsidade, e a lógica de Lean é clássica por meio de `Classical.em` e `Classical.byContradiction`, usados desde a Aula 1 e agora aplicáveis regressivamente.
+As regras dos quantificadores, a verdade, a falsidade e os princípios clássicos completam a lista. A negação dispensa regras próprias, pois ¬a é *definida* como a → False, então `intro` se aplica a uma conclusão negada, como a Aula 1 mostrou. `True.intro` é a única regra da verdade, `False.elim` é a única regra da falsidade, e a lógica de Lean é clássica por meio de `Classical.em` e `Classical.byContradiction`, usados desde a Aula 1 e agora aplicáveis regressivamente.
 
 ```
 Exists.intro : ∀ (w : ?α), ?p w → ∃ x, ?p x
@@ -300,7 +300,7 @@ Classical.em : ∀ (p : Prop), p ∨ ¬p
 Classical.byContradiction : (¬?a → False) → ?a
 ```
 
-Uma *metavariável* ?a representa um termo ainda por determinar. Quando `apply` casa o alvo com a conclusão de uma regra, a *unificação* determina algumas metavariáveis e deixa as demais como novos objetivos, que em geral desaparecem conforme a prova avança. A prova abaixo aplica a regra de introdução de ∧ regressivamente e fecha cada subobjetivo com uma regra de eliminação.
+Uma *metavariável* ?a representa um termo ainda por determinar. Quando `apply` casa a conclusão do objetivo com a conclusão de uma regra, a *unificação* determina algumas metavariáveis e deixa as demais como novos objetivos, que em geral desaparecem conforme a prova avança. A prova abaixo aplica a regra de introdução de ∧ regressivamente e fecha cada subobjetivo com uma regra de eliminação.
 
 ```lean
 namespace Backward
@@ -372,9 +372,9 @@ end Backward
 
 Para provar enunciados de lógica proposicional, o guia oferece as estratégias a seguir.
 
-* Olhe o alvo. Se ele é uma implicação ou uma negação, `intro` faz progresso.
+* Olhe a conclusão. Se ela é uma implicação ou uma negação, `intro` faz progresso.
 * Olhe as hipóteses. Uma conjunção oferece `And.left` e `And.right`, uma disjunção oferece `Or.elim`, e uma equivalência oferece `Iff.mp` e `Iff.mpr`.
-* Case o alvo com a conclusão de uma regra de introdução e a aplique com `apply`.
+* Case a conclusão do objetivo com a conclusão de uma regra de introdução e a aplique com `apply`.
 * Prefira táticas que preservam a demonstrabilidade enquanto elas fizerem progresso, e registre os pontos de escolha em que uma tática se compromete com um lado.
 * Quando um subobjetivo repete uma hipótese, `exact` ou `assumption` o fecha.
 * Quando nada construtivo se aplica, considere uma análise de casos sobre `Classical.em`.
@@ -413,7 +413,7 @@ example (a b : Prop) (hab : a ∧ b) : b := by
   exact And.right hab
 ```
 
-{ex "ex-connectives-quantifiers-metavariable-appears-instantiated"}[] Aplicar a regra de eliminação regressivamente deixa uma metavariável ?a no alvo, e até um segundo objetivo pedindo a própria ?a. O `exact` final instancia os dois de uma vez.
+{ex "ex-connectives-quantifiers-metavariable-appears-instantiated"}[] Aplicar a regra de eliminação regressivamente deixa uma metavariável ?a na conclusão, e até um segundo objetivo pedindo a própria ?a. O `exact` final instancia os dois de uma vez.
 
 ```lean (name := exMetaRight)
 example (a b : Prop) (hab : a ∧ b) : b := by
@@ -493,7 +493,7 @@ example (α : Type) (P : α → Prop) (Q : Prop)
   exact h a hPa
 ```
 
-{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Três provas de uma linha. `intro` se aplica a um alvo negado, `True.intro` é a única regra da verdade, e `apply False.elim` fecha qualquer objetivo a partir de uma prova de `False`, pois a falsidade não tem regra de introdução.
+{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Três provas de uma linha. `intro` se aplica a uma conclusão negada, `True.intro` é a única regra da verdade, e `apply False.elim` fecha qualquer objetivo a partir de uma prova de `False`, pois a falsidade não tem regra de introdução.
 
 ```lean
 example : ¬False := by
@@ -510,7 +510,7 @@ example (a : Prop) (h : False) : a := by
 
 # Raciocínio sobre Igualdade
 
-A tática `rfl` prova um alvo l = r quando os dois lados se tornam sintaticamente idênticos sob computação, e ela tem sucesso exatamente onde um matemático diz "por definição". O termo `rfl` da Aula 3 é a sua forma de termo. A computação aqui nomeia seis *conversões*.
+A tática `rfl` prova uma conclusão l = r quando os dois lados se tornam sintaticamente idênticos sob computação, e ela tem sucesso exatamente onde um matemático diz "por definição". O termo `rfl` da Aula 3 é a sua forma de termo. A computação aqui nomeia seis *conversões*.
 
 :::table +header
 *
@@ -679,7 +679,7 @@ example (α : Type) (P : α → Prop) (a b : α)
 
 # Táticas de Reescrita
 
-A tática `rw` aplica uma equação como regra de reescrita da esquerda para a direita, uma vez. Ela encontra o primeiro subtermo que casa com o lado esquerdo, instancia as variáveis da equação de acordo, substitui toda ocorrência daquele subtermo instanciado e então tenta `rfl`. Um `←` à frente usa a equação da direita para a esquerda, `at h` reescreve a hipótese h em vez do alvo, e `at *` reescreve em toda parte. Dado o nome de uma constante em vez de uma equação, `rw` usa as equações que definem a constante, e é assim que `rw [Not]` expande uma negação e `rw [add]` desdobra o nosso `add`.
+A tática `rw` aplica uma equação como regra de reescrita da esquerda para a direita, uma vez. Ela encontra o primeiro subtermo que casa com o lado esquerdo, instancia as variáveis da equação de acordo, substitui toda ocorrência daquele subtermo instanciado e então tenta `rfl`. Um `←` à frente usa a equação da direita para a esquerda, `at h` reescreve a hipótese h em vez da conclusão, e `at *` reescreve em toda parte. Dado o nome de uma constante em vez de uma equação, `rw` usa as equações que definem a constante, e é assim que `rw [Not]` expande uma negação e `rw [add]` desdobra o nosso `add`.
 
 ```lean
 namespace Backward
@@ -699,7 +699,7 @@ theorem a_proof_of_negation (a : Prop) : a → ¬¬ a := by
 end Backward
 ```
 
-A tática `simp` aplica um conjunto padrão de regras de reescrita, o *conjunto simp*, exaustivamente. A sintaxe `simp [t₁, …, tₙ]` adiciona teoremas ou constantes por uma invocação, `simp [-t]` remove um, `simp [*] at *` usa cada hipótese sobre cada hipótese e sobre o alvo, e o atributo `@[simp]` registra um teorema permanentemente.
+A tática `simp` aplica um conjunto padrão de regras de reescrita, o *conjunto simp*, exaustivamente. A sintaxe `simp [t₁, …, tₙ]` adiciona teoremas ou constantes por uma invocação, `simp [-t]` remove um, `simp [*] at *` usa cada hipótese sobre cada hipótese e sobre a conclusão, e o atributo `@[simp]` registra um teorema permanentemente.
 
 ```lean
 namespace Backward
@@ -716,9 +716,9 @@ A reescrita é onde as provas deixam de ser previsíveis. O conselho do guia é 
 
 ## Exemplos
 
-Os exemplos abaixo reescrevem no alvo e nas hipóteses, nas duas direções, e comparam `rw` com `simp` sobre o mesmo objetivo.
+Os exemplos abaixo reescrevem na conclusão e nas hipóteses, nas duas direções, e comparam `rw` com `simp` sobre o mesmo objetivo.
 
-{ex "ex-rewriting-rw-left-to-right"}[] `rw [h]` reescreve o alvo da esquerda para a direita e o fecha com o `rfl` que tenta ao final.
+{ex "ex-rewriting-rw-left-to-right"}[] `rw [h]` reescreve a conclusão da esquerda para a direita e o fecha com o `rfl` que tenta ao final.
 
 ```lean
 example (f : ℕ → ℕ) (a b : ℕ) (h : a = b) :
@@ -1061,11 +1061,11 @@ theorem and_or_distrib (a b c : Prop) :
 end Backward
 ```
 
-Em palavras. Suponha a ∧ (b ∨ c). O seu conjunto direito é uma disjunção, e basta provar o alvo a partir de cada disjunto. Se b vale, basta provar o disjunto esquerdo a ∧ b, cujas partes são o conjunto esquerdo da hipótese e o próprio b. Se c vale, o disjunto direito a ∧ c segue do mesmo modo. Cada marcador fecha um ramo, e a prova se lê exatamente como a sua contraparte de papel e caneta.
+Em palavras. Suponha a ∧ (b ∨ c). O seu conjunto direito é uma disjunção, e basta provar a conclusão a partir de cada disjunto. Se b vale, basta provar o disjunto esquerdo a ∧ b, cujas partes são o conjunto esquerdo da hipótese e o próprio b. Se c vale, o disjunto direito a ∧ c segue do mesmo modo. Cada marcador fecha um ramo, e a prova se lê exatamente como a sua contraparte de papel e caneta.
 
 ## Um objetivo indemonstrável e um retrocesso
 
-A disjunção do enunciado a ∧ b → a ∨ c admite duas regras de introdução, e apenas uma conduz a uma prova. `Or.inl` e `Or.inr` podem transformar um objetivo demonstrável em um indemonstrável. A primeira tentativa se compromete com o disjunto direito, e o trace mostra um alvo c que nenhuma hipótese prova, então só `sorry` fecha o bloco.
+A disjunção do enunciado a ∧ b → a ∨ c admite duas regras de introdução, e apenas uma conduz a uma prova. `Or.inl` e `Or.inr` podem transformar um objetivo demonstrável em um indemonstrável. A primeira tentativa se compromete com o disjunto direito, e o trace mostra uma conclusão c que nenhuma hipótese prova, então só `sorry` fecha o bloco.
 
 ```lean (name := deadEnd)
 example (a b c : Prop) : a ∧ b → a ∨ c := by
@@ -1096,7 +1096,7 @@ end Backward
 
 ## `rw` versus `simp`
 
-Dados f e a equação hf : ∀ x, f x = x + 1, o alvo f (f 0) = 2 cai por qualquer das duas táticas, de modos diferentes. `rw [hf]` reescreve as ocorrências do primeiro subtermo que casa, aqui a aplicação externa, e precisa de uma segunda invocação para a interna, após a qual o `rfl` que ela tenta fecha o objetivo. `simp [hf]` reescreve exaustivamente e precisa de uma invocação.
+Dados f e a equação hf : ∀ x, f x = x + 1, qualquer das duas táticas prova a conclusão f (f 0) = 2, de modos diferentes. `rw [hf]` reescreve as ocorrências do primeiro subtermo que casa, aqui a aplicação externa, e precisa de uma segunda invocação para a interna, após a qual o `rfl` que ela tenta fecha o objetivo. `simp [hf]` reescreve exaustivamente e precisa de uma invocação.
 
 ```lean
 example (f : ℕ → ℕ) (hf : ∀ x, f x = x + 1) :

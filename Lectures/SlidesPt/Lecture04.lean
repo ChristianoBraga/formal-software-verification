@@ -36,7 +36,7 @@ Baseada no [*Hitchhiker's Guide to Logical Verification*](https://github.com/lea
 
 # §4.1 Regressivo e progressivo
 
-* Uma *tática* opera sobre um objetivo e o prova ou cria subobjetivos. Um objetivo é um contexto local C e um alvo Q, escrito C ⊢ Q.
+* Uma *tática* opera sobre um objetivo e o prova ou cria subobjetivos. Um objetivo é o sequente C ⊢ Q, com antecedente C, o contexto local, e consequente Q, a conclusão.
 
 ::::cols
 :::col
@@ -103,7 +103,7 @@ hb : b
 
 * Táticas básicas realizam uma transformação elementar do estado da prova cada uma, e nenhuma depende de um conectivo ou de uma teoria em particular.
 
-* `intro` move variáveis e suposições para o contexto; `apply` casa o alvo com uma conclusão e deixa as suposições como objetivos; `exact` fecha o objetivo com um termo; `assumption` procura no contexto.
+* `intro` move variáveis e suposições para o contexto; `apply` casa a conclusão do objetivo com a de um teorema e deixa as suposições como objetivos; `exact` fecha o objetivo com um termo; `assumption` procura no contexto.
 
 ::::cols
 :::col
@@ -277,7 +277,7 @@ Classical.em : ∀ (p : Prop), p ∨ ¬p
 Classical.byContradiction : (¬?a → False) → ?a
 ```
 
-* A negação dispensa regras: ¬a é *definida* como a → False, então `intro` se aplica a um alvo negado.
+* A negação dispensa regras: ¬a é *definida* como a → False, então `intro` se aplica a uma conclusão negada.
 
 * `True.intro` é a única regra da verdade; a falsidade não tem regra de introdução, e `False.elim` fecha qualquer objetivo a partir de uma prova de `False`.
 
@@ -296,11 +296,11 @@ end Backward
 
 As estratégias do guia para provas proposicionais.
 
-* Olhe o alvo. Uma implicação ou uma negação pede `intro`.
+* Olhe a conclusão. Uma implicação ou uma negação pede `intro`.
 
 * Olhe as hipóteses. Uma conjunção oferece `And.left` e `And.right`, uma disjunção oferece `Or.elim`, uma equivalência oferece `Iff.mp` e `Iff.mpr`.
 
-* Case o alvo com uma regra de introdução e a aplique com `apply`.
+* Case a conclusão do objetivo com uma regra de introdução e a aplique com `apply`.
 
 * Prefira táticas que preservam a demonstrabilidade enquanto fizerem progresso, e registre os pontos de escolha em que uma tática se compromete com um lado.
 

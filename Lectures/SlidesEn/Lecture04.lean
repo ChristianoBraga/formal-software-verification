@@ -36,7 +36,7 @@ Based on the [*Hitchhiker's Guide to Logical Verification*](https://github.com/l
 
 # §4.1 Backward and forward
 
-* A *tactic* operates on a goal and either proves it or creates subgoals. A goal is a local context C and a target Q, written C ⊢ Q.
+* A *tactic* operates on a goal and either proves it or creates subgoals. A goal is the sequent C ⊢ Q, with antecedent C, the local context, and consequent Q, the conclusion.
 
 ::::cols
 :::col
@@ -103,7 +103,7 @@ hb : b
 
 * Basic tactics perform one elementary transformation of the proof state each, and none depends on a particular connective or theory.
 
-* `intro` moves variables and assumptions into the context; `apply` matches the target with a conclusion and leaves the assumptions as goals; `exact` closes the goal with a term; `assumption` searches the context.
+* `intro` moves variables and assumptions into the context; `apply` matches the conclusion of the goal with that of a theorem and leaves the assumptions as goals; `exact` closes the goal with a term; `assumption` searches the context.
 
 ::::cols
 :::col
@@ -277,7 +277,7 @@ Classical.em : ∀ (p : Prop), p ∨ ¬p
 Classical.byContradiction : (¬?a → False) → ?a
 ```
 
-* Negation needs no rules: ¬a is *defined* as a → False, so `intro` works on a negated target.
+* Negation needs no rules: ¬a is *defined* as a → False, so `intro` applies to a negated conclusion.
 
 * `True.intro` is the only rule for truth; falsehood has no introduction rule, and `False.elim` closes any goal from a proof of `False`.
 
@@ -296,11 +296,11 @@ end Backward
 
 The guide's strategies for propositional proofs.
 
-* Look at the target. An implication or a negation calls for `intro`.
+* Look at the conclusion. An implication or a negation calls for `intro`.
 
 * Look at the hypotheses. A conjunction offers `And.left` and `And.right`, a disjunction offers `Or.elim`, an equivalence offers `Iff.mp` and `Iff.mpr`.
 
-* Match the target with an introduction rule and `apply` it.
+* Match the conclusion of the goal with an introduction rule and `apply` it.
 
 * Prefer tactics that preserve provability while they make progress, and record the choice points where a tactic commits to a side.
 
@@ -390,7 +390,7 @@ end Backward
 
 # §4.5 `rw`
 
-* `rw` applies an equation left to right, once: it finds the first matching subterm, replaces every occurrence of it, and then tries `rfl`. `←` reverses the equation, `at h` targets a hypothesis, and a constant name uses its defining equations.
+* `rw` applies an equation left to right, once: it finds the first matching subterm, replaces every occurrence of it, and then tries `rfl`. `←` reverses the equation, `at h` rewrites a hypothesis, and a constant name uses its defining equations.
 
 ::::cols
 :::col
