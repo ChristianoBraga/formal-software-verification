@@ -28,7 +28,7 @@ This lecture supplies the proof method that Lecture 3 postponed, following chapt
 
 A *tactic* operates on a proof goal and either proves it or creates new subgoals. A *goal* consists of a *local context*, which lists variable declarations x : σ and hypotheses h : P, and a *target* proposition, and we write C ⊢ Q for the goal with context C and target Q.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, chapter 5.]
 
-Tactics are a *backward* proof mechanism. A backward proof starts at the goal and works towards the available hypotheses and theorems, and its telltale phrase is "it suffices to". A *forward* proof starts at the hypotheses and works towards the goal, and Lecture 5 develops it. Given hypotheses ha : a, hab : a → b, hbc : b → c and the target c, the two directions read as follows.
+Tactics are a *backward* proof mechanism. A backward proof starts at the goal and works towards the available hypotheses and theorems, and its characteristic phrase is "it suffices to prove". A *forward* proof starts at the hypotheses and works towards the goal, and Lecture 5 develops it. Given hypotheses ha : a, hab : a → b, hbc : b → c and the target c, the two directions read as follows.
 
 ```
 Backward, from the goal:
@@ -91,6 +91,8 @@ end Backward
 ```
 
 # Basic Tactics
+
+The basic tactics of this lecture are `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` and `rename`. They are basic because each performs a single elementary transformation of the proof state and because none depends on a particular connective, quantifier or theory. Almost every tactic proof uses them.
 
 The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the target into the local context, under a chosen name. Given a provable goal it always produces a provable goal.
 

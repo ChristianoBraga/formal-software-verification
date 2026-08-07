@@ -99,7 +99,9 @@ hb : b
 :::
 ::::
 
-# §4.2 As quatro básicas
+# §4.2 As quatro táticas básicas
+
+* Táticas básicas realizam uma transformação elementar do estado da prova cada uma, e nenhuma depende de um conectivo ou de uma teoria em particular.
 
 * `intro` move variáveis e suposições para o contexto; `apply` casa o alvo com uma conclusão e deixa as suposições como objetivos; `exact` fecha o objetivo com um termo; `assumption` procura no contexto.
 

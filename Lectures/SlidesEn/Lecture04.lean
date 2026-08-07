@@ -60,7 +60,7 @@ from b and hbc, we have c.
 :::
 ::::
 
-* The telltale phrase of a backward proof is *"it suffices to"*. A natural deduction derivation of Lecture 1 admits both readings: forward from the leaves down, backward from the conclusion up.
+* The characteristic phrase of a backward proof is *"it suffices to prove"*. A natural deduction derivation of Lecture 1 admits both readings: forward from the leaves down, backward from the conclusion up.
 
 # §4.1 Tactic mode
 
@@ -99,7 +99,9 @@ hb : b
 :::
 ::::
 
-# §4.2 The four staples
+# §4.2 The four basic tactics
+
+* Basic tactics perform one elementary transformation of the proof state each, and none depends on a particular connective or theory.
 
 * `intro` moves variables and assumptions into the context; `apply` matches the target with a conclusion and leaves the assumptions as goals; `exact` closes the goal with a term; `assumption` searches the context.
 

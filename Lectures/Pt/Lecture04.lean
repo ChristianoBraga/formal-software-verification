@@ -92,6 +92,8 @@ end Backward
 
 # Táticas Básicas
 
+As táticas básicas desta aula são `intro`, `apply`, `exact`, `assumption`, `sorry`, `clear` e `rename`. Elas são básicas porque cada uma realiza uma única transformação elementar do estado da prova e porque nenhuma depende de um conectivo, de um quantificador ou de uma teoria em particular. Quase toda prova por táticas as utiliza.
+
 A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, do alvo para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável.
 
 A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Quando as duas fecham o objetivo, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
