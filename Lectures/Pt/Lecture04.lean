@@ -41,7 +41,7 @@ Progressiva, a partir das hipóteses:
   de b e hbc, temos c.
 ```
 
-Uma derivação na dedução natural da Aula 1 admite as duas leituras, progressiva das folhas para a conclusão e regressiva da conclusão para as folhas.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.]
+Uma derivação na dedução natural da Aula 1 é uma árvore. Cada aplicação de regra é um nó cujos filhos são as derivações das suas premissas, a conclusão da derivação é a raiz, e as folhas são as suposições e os axiomas, os julgamentos que nenhuma regra deriva. A derivação admite as duas leituras, progressiva das folhas para a conclusão e regressiva da conclusão para as folhas.{margin}[G. Gentzen, *Untersuchungen über das logische Schließen. I*, Mathematische Zeitschrift 39, 1935, pp. 176–210.]
 
 A palavra-chave `by` entra no modo de táticas, e cada linha depois dela é uma tática. A prova abaixo introduz as variáveis universalmente quantificadas e as duas hipóteses, e fecha o objetivo. As linhas `trace_state` imprimem o objetivo entre os passos, e as saídas seguem o código.
 

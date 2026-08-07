@@ -60,7 +60,7 @@ from b and hbc, we have c.
 :::
 ::::
 
-* The characteristic phrase of a backward proof is *"it suffices to prove"*. A natural deduction derivation of Lecture 1 admits both readings: forward from the leaves down, backward from the conclusion up.
+* The characteristic phrase of a backward proof is *"it suffices to prove"*. A natural deduction derivation is a tree, with each rule application as a node, the derivations of its premises as children, the conclusion at the root and the assumptions at the leaves. It admits both readings, forward from the leaves to the root and backward from the root to the leaves.
 
 # §4.1 Tactic mode
 
