@@ -113,7 +113,7 @@ The ten examples.
 7. `Iff.mp` and `Iff.mpr` extract the two directions of an equivalence hypothesis by juxtaposition.
 8. `apply Exists.intro 0` supplies a witness, and `rfl` closes what remains.
 9. `apply Exists.elim hex` consumes an existential hypothesis and names its witness.
-10. Three one-line proofs in one block: `intro` on `⊢ ¬ a`, `exact False.intro`-free closure of any goal by `apply False.elim`, and `exact True.intro`.
+10. Three one-line proofs in one block: `intro` on `⊢ ¬ a`; `exact True.intro` on `⊢ True`, the only introduction rule for truth; and `apply False.elim` closing an arbitrary goal from a hypothesis `h : False`, since falsehood has no introduction rule and one proof of `False` proves everything.
 
 ### 4.4 Reasoning about Equality | Raciocínio sobre Igualdade (10 examples)
 
@@ -188,7 +188,7 @@ All four are verified to compile against `Lectures.En.Lecture03`.
 
 `a ∧ b → a ∨ c`. The first attempt applies `Or.inr` and reaches `⊢ c`, which `trace_state` displays and which no hypothesis proves; the block ends in `sorry`. The second attempt applies `Or.inl` and closes with `exact And.left hab`. The lesson is the guide's own: `Or.inl` and `Or.inr` are unsafe, a provable theorem can produce an unprovable subgoal, and the remedy is to remember the choices made and backtrack.
 
-### 3. `rw` against `simp` | `rw` contra `simp`
+### 3. `rw` versus `simp` | `rw` versus `simp`
 
 Given `f : ℕ → ℕ` and `hf : ∀ x, f x = x + 1`, prove `f (f 0) = 2` twice, once by `rw [hf, hf]` and once by `simp [hf]` (both verified). The text explains the difference. `rw [hf]` rewrites the first matching subterm and needs a second invocation, and it then closes the goal because it tries `rfl`; `simp [hf]` rewrites exhaustively and reaches the numeral in one step. A third variant shows `rw [hf]` alone and the residual goal, so the student sees what "first matching subterm" means.
 
@@ -202,6 +202,8 @@ Statements and skeletons below, all disjoint from the section examples and the w
 
 The exercise file needs the definitions and the theorems the induction exercises build on. Those go in `savedLean` blocks without `-keep`, following the Lecture 3 precedent, namely `namespace Backward`, `add`, `mul`, `add_zero`, `add_succ`, `add_comm`, `add_assoc`, `mul_add` and the two `Std` instances. The extracted file imports only the notations, which is enough: verified that `add_zero`, `mul_comm` and `mul_zero` are undefined after `import Mathlib.Data.Nat.Notation`, so the student file has no collision with Mathlib.
 
+**Every exercise block below must be wrapped in `namespace Backward … end Backward`, exactly like the section examples.** The skeletons are shown bare for readability only. The lecture module reaches Mathlib through `LoVelib`, and Mathlib declares `mul_comm`, `mul_zero`, `mul_assoc`, `add_mul` and `forall_and` at the root; `-keep` rolls the environment back only after elaboration, so a bare root declaration still fails with a duplicate-name error at elaboration time. The no-collision check above covers the extracted student file, not the lecture module.
+
 ```savedImport
 import Mathlib.Data.Nat.Notation
 ```
@@ -213,7 +215,7 @@ Replace each `sorry` with a proof. Questions 1 to 6 use only
 `induction`, `simp`, and `rw`. Question 10 is optional.
 ```
 
-Exercise 1. The identity and the constant combinators.
+Exercise 1. Two basic combinators. (The sheet's `K` states `a → b → b`, which returns its second argument; it is not the constant combinator `a → b → a`, so the prose must not call it that.)
 
 ```savedLean -keep
 theorem I (a : Prop) :

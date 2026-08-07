@@ -9,6 +9,7 @@ import Lectures.Meta.SlideDeck
 import Lectures.SlidesEn.Lecture01
 import Lectures.SlidesEn.Lecture02
 import Lectures.SlidesEn.Lecture03
+import Lectures.SlidesEn.Lecture04
 
 open Verso Doc
 open Verso.Genre Manual
@@ -39,8 +40,18 @@ def lecture3Deck : SlideDeck where
   label := "Lecture 3 · Programs and Theorems"
   notesLink := some ("../en/Lecture-3___-Programs-and-Theorems/", "↩ Notes")
   prevLink := some ("lecture-2.en.html", "‹ Previous lecture")
+  nextLink := some ("lecture-4.en.html", "Next lecture ›")
+
+def lecture4Deck : SlideDeck where
+  fileName := "lecture-4.en.html"
+  pageTitle := "Lecture 4: Backward Proofs · Slides"
+  kicker := "Lecture 4 · Formal Software Verification"
+  label := "Lecture 4 · Backward Proofs"
+  notesLink := some ("../en/Lecture-4___-Backward-Proofs/", "↩ Notes")
+  prevLink := some ("lecture-3.en.html", "‹ Previous lecture")
 
 def main := slidesMain (decks :=
   [((%doc Lectures.SlidesEn.Lecture01), lecture1Deck),
    ((%doc Lectures.SlidesEn.Lecture02), lecture2Deck),
-   ((%doc Lectures.SlidesEn.Lecture03), lecture3Deck)])
+   ((%doc Lectures.SlidesEn.Lecture03), lecture3Deck),
+   ((%doc Lectures.SlidesEn.Lecture04), lecture4Deck)])

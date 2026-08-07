@@ -4,6 +4,7 @@ import Lectures.Papers
 import Lectures.En.Lecture01
 import Lectures.En.Lecture02
 import Lectures.En.Lecture03
+import Lectures.En.Lecture04
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -29,3 +30,5 @@ The main references are [*How To Prove It with Lean*](https://djvelleman.github.
 {include 0 Lectures.En.Lecture02}
 
 {include 0 Lectures.En.Lecture03}
+
+{include 0 Lectures.En.Lecture04}
