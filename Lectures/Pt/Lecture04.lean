@@ -94,7 +94,7 @@ end Backward
 
 A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, do alvo para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável.
 
-A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Onde as duas funcionam, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
+A tática `apply` casa o alvo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Quando as duas fecham o objetivo, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com o alvo.
 
 Lean insere os parâmetros escritos à esquerda dos dois-pontos no contexto local do objetivo inicial, então as provas abaixo não precisam de `intro`.
 
@@ -131,7 +131,7 @@ hb : b
 ⊢ a
 ```
 
-Com a regra certa a prova termina.
+Com a regra `Or.inr` a prova fecha o objetivo.
 
 ```lean
 example (a b : Prop) (hb : b) : a ∨ b := by
@@ -220,7 +220,7 @@ example (a b c : Prop) (ha : a) (hb : b) (hc : c) : b := by
   assumption
 ```
 
-{ex "ex-basic-tactics-two-applys-walk-backwards"}[] Dois `apply`s em sequência caminham para trás por duas implicações.
+{ex "ex-basic-tactics-two-applys-walk-backwards"}[] Dois `apply`s em sequência aplicam duas implicações regressivamente.
 
 ```lean
 example (a b c : Prop) (hab : a → b) (hbc : b → c)
@@ -238,7 +238,7 @@ example (a b : Prop) (ha : a) : a ∨ b := by
   sorry
 ```
 
-{ex "ex-basic-tactics-sorry-closes-print-axioms"}[] `sorry` fecha qualquer objetivo, e `#print axioms` relata a dívida como `sorryAx`, como na Aula 3.
+{ex "ex-basic-tactics-sorry-closes-print-axioms"}[] `sorry` fecha qualquer objetivo, e `#print axioms` relata o uso de `sorryAx`, como na Aula 3.
 
 ```lean (name := exSorryAxioms)
 namespace Backward
@@ -287,7 +287,7 @@ Iff.mp    : (?a ↔ ?b) → ?a → ?b
 Iff.mpr   : (?a ↔ ?b) → ?b → ?a
 ```
 
-As regras dos quantificadores, a verdade, a falsidade e os princípios clássicos completam a lista. A negação dispensa regras próprias, pois ¬a é *definida* como a → False, então `intro` funciona em um alvo negado, como a Aula 1 mostrou. `True.intro` é a única regra da verdade, `False.elim` é a única regra da falsidade, e a lógica de Lean é clássica por meio de `Classical.em` e `Classical.byContradiction`, usados desde a Aula 1 e agora aplicáveis regressivamente.
+As regras dos quantificadores, a verdade, a falsidade e os princípios clássicos completam a lista. A negação dispensa regras próprias, pois ¬a é *definida* como a → False, então `intro` se aplica a um alvo negado, como a Aula 1 mostrou. `True.intro` é a única regra da verdade, `False.elim` é a única regra da falsidade, e a lógica de Lean é clássica por meio de `Classical.em` e `Classical.byContradiction`, usados desde a Aula 1 e agora aplicáveis regressivamente.
 
 ```
 Exists.intro : ∀ (w : ?α), ?p w → ∃ x, ?p x
@@ -376,7 +376,7 @@ Para provar enunciados de lógica proposicional, o guia oferece as estratégias 
 * Prefira táticas que preservam a demonstrabilidade enquanto elas fizerem progresso, e registre os pontos de escolha em que uma tática se compromete com um lado.
 * Quando um subobjetivo repete uma hipótese, `exact` ou `assumption` o fecha.
 * Quando nada construtivo se aplica, considere uma análise de casos sobre `Classical.em`.
-* Se a prova emperra, retroceda até o último ponto de escolha e tente a outra opção.
+* Se a prova não progride, retroceda até o último ponto de escolha e tente a outra opção.
 
 ## Exemplos
 
@@ -491,7 +491,7 @@ example (α : Type) (P : α → Prop) (Q : Prop)
   exact h a hPa
 ```
 
-{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Três fechamentos de uma linha. `intro` funciona em um alvo negado, `True.intro` é a única regra da verdade, e `apply False.elim` fecha qualquer objetivo a partir de uma prova de `False`, pois a falsidade não tem regra de introdução.
+{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Três provas de uma linha. `intro` se aplica a um alvo negado, `True.intro` é a única regra da verdade, e `apply False.elim` fecha qualquer objetivo a partir de uma prova de `False`, pois a falsidade não tem regra de introdução.
 
 ```lean
 example : ¬False := by
@@ -962,7 +962,7 @@ example (l m n : ℕ) :
   | succ n' ih => simp [add, ih]
 ```
 
-{ex "ex-induction-wrong-variable-stalls"}[] A variável de indução errada emperra. Induzir sobre m deixa objetivos que nem `rfl` nem a hipótese de indução alcançam, e os traces mostram por quê: a recursão de `add` consome n, que os dois objetivos deixam intocado.
+{ex "ex-induction-wrong-variable-stalls"}[] A variável de indução errada impede o progresso da prova. Induzir sobre m deixa objetivos que nem `rfl` nem a hipótese de indução alcançam, e os traces mostram por quê: a recursão de `add` consome n, que os dois objetivos deixam intocado.
 
 ```lean (name := exWrongVariable)
 example (m n : ℕ) :
@@ -1061,9 +1061,9 @@ end Backward
 
 Em palavras. Suponha a ∧ (b ∨ c). O seu conjunto direito é uma disjunção, e basta provar o alvo a partir de cada disjunto. Se b vale, basta provar o disjunto esquerdo a ∧ b, cujas partes são o conjunto esquerdo da hipótese e o próprio b. Se c vale, o disjunto direito a ∧ c segue do mesmo modo. Cada marcador fecha um ramo, e a prova se lê exatamente como a sua contraparte de papel e caneta.
 
-## Um beco sem saída e um retrocesso
+## Um objetivo indemonstrável e um retrocesso
 
-O enunciado a ∧ b → a ∨ c tem duas provas possíveis para a sua disjunção, e só uma funciona. `Or.inl` e `Or.inr` podem transformar um objetivo demonstrável em um indemonstrável. A primeira tentativa se compromete com o disjunto direito, e o trace mostra um alvo c que nenhuma hipótese prova, então só `sorry` fecha o bloco.
+A disjunção do enunciado a ∧ b → a ∨ c admite duas regras de introdução, e apenas uma conduz a uma prova. `Or.inl` e `Or.inr` podem transformar um objetivo demonstrável em um indemonstrável. A primeira tentativa se compromete com o disjunto direito, e o trace mostra um alvo c que nenhuma hipótese prova, então só `sorry` fecha o bloco.
 
 ```lean (name := deadEnd)
 example (a b c : Prop) : a ∧ b → a ∨ c := by

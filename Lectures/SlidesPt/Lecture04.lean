@@ -275,7 +275,7 @@ Classical.em : ∀ (p : Prop), p ∨ ¬p
 Classical.byContradiction : (¬?a → False) → ?a
 ```
 
-* A negação dispensa regras: ¬a é *definida* como a → False, então `intro` funciona em um alvo negado.
+* A negação dispensa regras: ¬a é *definida* como a → False, então `intro` se aplica a um alvo negado.
 
 * `True.intro` é a única regra da verdade; a falsidade não tem regra de introdução, e `False.elim` fecha qualquer objetivo a partir de uma prova de `False`.
 
@@ -292,7 +292,7 @@ end Backward
 
 # §4.3 Estratégias
 
-As estratégias do guia para quebra-cabeças proposicionais.
+As estratégias do guia para provas proposicionais.
 
 * Olhe o alvo. Uma implicação ou uma negação pede `intro`.
 
@@ -306,7 +306,7 @@ As estratégias do guia para quebra-cabeças proposicionais.
 
 * Quando nada construtivo se aplica, considere uma análise de casos sobre `Classical.em`.
 
-* Se a prova emperra, retroceda até o último ponto de escolha e tente a outra opção.
+* Se a prova não progride, retroceda até o último ponto de escolha e tente a outra opção.
 
 # §4.4 `rfl` e as conversões
 
@@ -568,7 +568,7 @@ end Backward
 
 * Uma tática transforma o objetivo, e uma prova regressiva se lê como uma cadeia de "basta provar".
 
-* `intro`, `apply`, `exact` e `assumption` provam qualquer quebra-cabeça proposicional, e entre elas só `intro` nunca perde um objetivo demonstrável.
+* `intro`, `apply`, `exact` e `assumption` provam os teoremas proposicionais desta aula, e entre elas só `intro` nunca perde um objetivo demonstrável.
 
 * Cada regra da Aula 1 é um teorema que `apply` consome regressivamente e a justaposição instancia progressivamente.
 

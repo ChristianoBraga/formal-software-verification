@@ -94,7 +94,7 @@ end Backward
 
 The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the target into the local context, under a chosen name. Given a provable goal it always produces a provable goal.
 
-The tactic `apply` matches the target with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. Where both work, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the target.
+The tactic `apply` matches the target with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. When both close the goal, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the target.
 
 Lean inserts the parameters written to the left of the colon into the local context of the initial goal, so the proofs below need no `intro`.
 
@@ -131,7 +131,7 @@ hb : b
 ⊢ a
 ```
 
-With the right rule the proof goes through.
+With the rule `Or.inr` the proof closes the goal.
 
 ```lean
 example (a b : Prop) (hb : b) : a ∨ b := by
@@ -220,7 +220,7 @@ example (a b c : Prop) (ha : a) (hb : b) (hc : c) : b := by
   assumption
 ```
 
-{ex "ex-basic-tactics-two-applys-walk-backwards"}[] Two `apply`s in sequence walk backwards through two implications.
+{ex "ex-basic-tactics-two-applys-walk-backwards"}[] Two `apply`s in sequence apply two implications backwards.
 
 ```lean
 example (a b c : Prop) (hab : a → b) (hbc : b → c)
@@ -238,7 +238,7 @@ example (a b : Prop) (ha : a) : a ∨ b := by
   sorry
 ```
 
-{ex "ex-basic-tactics-sorry-closes-print-axioms"}[] `sorry` closes any goal, and `#print axioms` reports the debt as `sorryAx`, as in Lecture 3.
+{ex "ex-basic-tactics-sorry-closes-print-axioms"}[] `sorry` closes any goal, and `#print axioms` reports the use of `sorryAx`, as in Lecture 3.
 
 ```lean (name := exSorryAxioms)
 namespace Backward
@@ -287,7 +287,7 @@ Iff.mp    : (?a ↔ ?b) → ?a → ?b
 Iff.mpr   : (?a ↔ ?b) → ?b → ?a
 ```
 
-The quantifier rules, truth, falsehood and the classical principles complete the list. Negation needs no rules of its own, since ¬a is *defined* as a → False, so `intro` works on a negated target, as Lecture 1 showed. `True.intro` is the only rule for truth, `False.elim` is the only rule for falsehood, and Lean's logic is classical through `Classical.em` and `Classical.byContradiction`, both used since Lecture 1 and now applicable backwards.
+The quantifier rules, truth, falsehood and the classical principles complete the list. Negation needs no rules of its own, since ¬a is *defined* as a → False, so `intro` applies to a negated target, as Lecture 1 showed. `True.intro` is the only rule for truth, `False.elim` is the only rule for falsehood, and Lean's logic is classical through `Classical.em` and `Classical.byContradiction`, both used since Lecture 1 and now applicable backwards.
 
 ```
 Exists.intro : ∀ (w : ?α), ?p w → ∃ x, ?p x
@@ -376,7 +376,7 @@ For proving statements of propositional logic, the guide offers the following st
 * Prefer tactics that preserve provability while they make progress, and record the choice points where a tactic commits to a side.
 * When a subgoal repeats a hypothesis, `exact` or `assumption` closes it.
 * When nothing constructive applies, consider a case analysis on `Classical.em`.
-* If the proof stalls, backtrack to the last choice point and try the other option.
+* If the proof makes no progress, backtrack to the last choice point and try the other option.
 
 ## Examples
 
@@ -491,7 +491,7 @@ example (α : Type) (P : α → Prop) (Q : Prop)
   exact h a hPa
 ```
 
-{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Three one-line closings. `intro` works on a negated target, `True.intro` is the only rule for truth, and `apply False.elim` closes any goal from a proof of `False`, since falsehood has no introduction rule.
+{ex "ex-connectives-quantifiers-negation-truth-falsehood"}[] Three one-line proofs. `intro` applies to a negated target, `True.intro` is the only rule for truth, and `apply False.elim` closes any goal from a proof of `False`, since falsehood has no introduction rule.
 
 ```lean
 example : ¬False := by
@@ -962,7 +962,7 @@ example (l m n : ℕ) :
   | succ n' ih => simp [add, ih]
 ```
 
-{ex "ex-induction-wrong-variable-stalls"}[] The wrong induction variable stalls. Inducting on m leaves goals that neither `rfl` nor the induction hypothesis reaches, and the traces show why: the recursion of `add` consumes n, which both goals leave untouched.
+{ex "ex-induction-wrong-variable-stalls"}[] The wrong induction variable blocks the progress of the proof. Inducting on m leaves goals that neither `rfl` nor the induction hypothesis reaches, and the traces show why: the recursion of `add` consumes n, which both goals leave untouched.
 
 ```lean (name := exWrongVariable)
 example (m n : ℕ) :
@@ -1061,9 +1061,9 @@ end Backward
 
 In words. Assume a ∧ (b ∨ c). Its right conjunct is a disjunction, and it suffices to prove the target from each disjunct. If b holds, it suffices to prove the left disjunct a ∧ b, whose parts are the left conjunct of the hypothesis and b itself. If c holds, the right disjunct a ∧ c follows the same way. Each bullet closes one branch, and the proof reads exactly like its pen-and-paper counterpart.
 
-## A dead end and a backtrack
+## An unprovable goal and a backtrack
 
-The statement a ∧ b → a ∨ c has two proofs of its disjunction to choose from, and only one works. `Or.inl` and `Or.inr` can turn a provable goal into an unprovable one. The first attempt commits to the right disjunct, and the trace shows a target c that no hypothesis proves, so only `sorry` closes the block.
+The disjunction of the statement a ∧ b → a ∨ c admits two introduction rules, and only one leads to a proof. `Or.inl` and `Or.inr` can turn a provable goal into an unprovable one. The first attempt commits to the right disjunct, and the trace shows a target c that no hypothesis proves, so only `sorry` closes the block.
 
 ```lean (name := deadEnd)
 example (a b c : Prop) : a ∧ b → a ∨ c := by

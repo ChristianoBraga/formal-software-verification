@@ -292,7 +292,7 @@ end Backward
 
 # §4.3 Strategies
 
-The guide's strategies for propositional puzzles.
+The guide's strategies for propositional proofs.
 
 * Look at the target. An implication or a negation calls for `intro`.
 
@@ -306,7 +306,7 @@ The guide's strategies for propositional puzzles.
 
 * When nothing constructive applies, consider a case analysis on `Classical.em`.
 
-* If the proof stalls, backtrack to the last choice point and try the other option.
+* If the proof makes no progress, backtrack to the last choice point and try the other option.
 
 # §4.4 `rfl` and the conversions
 
@@ -568,7 +568,7 @@ end Backward
 
 * A tactic transforms the goal, and a backward proof reads as a chain of "it suffices to".
 
-* `intro`, `apply`, `exact` and `assumption` prove any propositional puzzle, and among them only `intro` never loses a provable goal.
+* `intro`, `apply`, `exact` and `assumption` prove the propositional theorems of this lecture, and among them only `intro` never loses a provable goal.
 
 * Every rule of Lecture 1 is a theorem that `apply` consumes backwards and juxtaposition instantiates forwards.
 
