@@ -1148,7 +1148,7 @@ The auxiliary theorem inducts on the list that the recursion of `appendPretty` c
 
 # Exercises
 
-Prove each statement in Lean, replacing `sorry`. Download the exercise file [`Lecture04.lean`](example-code/Lectures/En/Lecture04.lean) and open it in VS Code. The file already contains the definitions of `add` and `mul` and the theorems of §4.6, so the induction exercises can build on them. Exercises 1 to 6 use only `intro`, `apply` and `exact`, following LoVe exercise sheet 3.
+Prove each statement in Lean, replacing `sorry`. Download the exercise file [`Lecture04.lean`](example-code/Lectures/En/Lecture04.lean) and open it in VS Code. The file already contains the definitions of `add` and `mul` and the theorems of §4.6, so the induction exercises can build on them. Exercises 1 to 6 use only `intro`, `apply` and `exact`; exercises 7 to 9 use `induction`, `simp` and `rw`; exercise 10 is optional.
 
 ```savedImport
 import Mathlib.Data.Nat.Notation
@@ -1162,151 +1162,130 @@ Replace each `sorry` with a proof. Exercises 1 to 6 use only
 The definitions and theorems above come from the lecture.
 ```
 
-{exercise "exr-two-basic-combinators"}[] Two basic combinators, the identity and the projection to the second argument.
+{exercise "exr-contraction-and-pull"}[] Two ways of feeding hypotheses to a function. The first supplies the same premise twice; the second reorders the premises before applying.
 
 ```savedLean -keep
 namespace Backward
 
-theorem I (a : Prop) :
-    a → a :=
+theorem contract (a b : Prop) :
+    (a → a → b) → a → b :=
   sorry
 
-theorem K (a b : Prop) :
-    a → b → b :=
+theorem pull (a b c : Prop) :
+    a → (a → b → c) → b → c :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-permutation-arguments-implication"}[] Permutation of the two arguments of an implication.
+{exercise "exr-implication-into-conjunction"}[] An implication whose conclusion is a conjunction splits into one implication for each part.
 
 ```savedLean -keep
 namespace Backward
 
-theorem C (a b c : Prop) :
-    (a → b → c) → b → a → c :=
+theorem imp_into_and (a b c : Prop) :
+    (a → b) → (a → c) → a → b ∧ c :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-two-proofs-same-statement"}[] Two proofs of the same statement, differing in which hypothesis they use.
+{exercise "exr-two-injections"}[] Two proofs of the same statement, differing in which injection they choose.
 
 ```savedLean -keep
 namespace Backward
 
-theorem proj_fst (a : Prop) :
-    a → a → a :=
+theorem left_choice (a : Prop) :
+    a → a ∨ a :=
   sorry
 
--- Give a different answer than for `proj_fst`:
-theorem proj_snd (a : Prop) :
-    a → a → a :=
+-- Give a different answer than for `left_choice`:
+theorem right_choice (a : Prop) :
+    a → a ∨ a :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-longer-chain-implications"}[] A longer chain of implications.
+{exercise "exr-relay-chain"}[] A relay of three implications carries the first hypothesis to the last conclusion.
 
 ```savedLean -keep
 namespace Backward
 
-theorem some_nonsense (a b c : Prop) :
-    (a → b → c) → a → (a → c) → b → c :=
+theorem relay (a b c d : Prop) :
+    (a → b) → (b → c) → (c → d) → a → d :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-contraposition-rule"}[] Contraposition. Recall that ¬a abbreviates a → False.
+{exercise "exr-absurd-implication"}[] A proposition together with its negation proves anything. Recall that ¬a abbreviates a → False.
 
 ```savedLean -keep
 namespace Backward
 
-theorem contrapositive (a b : Prop) :
-    (a → b) → ¬ b → ¬ a :=
+theorem absurd_imp (a b : Prop) :
+    a → ¬ a → b :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-distributivity-forall-and"}[] Distributivity of ∀ over ∧. The right-to-left direction needs a forward step by juxtaposition, as `And_swap_braces` does in the notes.
+{exercise "exr-existential-currying"}[] An implication out of an existential is the same as a universally quantified implication.
 
 ```savedLean -keep
 namespace Backward
 
-theorem forall_and {α : Type} (p q : α → Prop) :
-    (∀ x, p x ∧ q x) ↔ (∀ x, p x) ∧ (∀ x, q x) :=
+theorem exists_imp {α : Type} (p : α → Prop) (q : Prop) :
+    ((∃ x, p x) → q) → ∀ x, p x → q :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-recursive-equations-mul-first"}[] The recursive equations of `mul` on its first argument, mirroring `add_zero` and `add_succ` of §4.6.
+{exercise "exr-one-left-identity-mul"}[] One is a left identity for `mul`, by induction on the second argument.
 
 ```savedLean -keep
 namespace Backward
 
-theorem mul_zero (n : ℕ) :
-    mul 0 n = 0 :=
-  sorry
-
-theorem mul_succ (m n : ℕ) :
-    mul (Nat.succ m) n = add (mul m n) n :=
+theorem one_mul (n : ℕ) :
+    mul 1 n = n :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-mul-comm-assoc-induction"}[] Commutativity and associativity of `mul`, by induction. Choose the induction variable carefully.
+{exercise "exr-add-left-commute"}[] The left summand of a nested sum moves past the middle one, by rewriting with associativity and commutativity.
 
 ```savedLean -keep
 namespace Backward
 
-theorem mul_comm (m n : ℕ) :
-    mul m n = mul n m :=
-  sorry
-
-theorem mul_assoc (l m n : ℕ) :
-    mul (mul l m) n = mul l (mul m n) :=
+theorem add_left_comm (l m n : ℕ) :
+    add l (add m n) = add m (add l n) :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-add-mul-symmetric-variant"}[] The symmetric variant of `mul_add`, using `rw`. To rewrite at one position only, instantiate the rule, as in `mul_comm _ l`.
+{exercise "exr-add-right-commute"}[] The right summand of a nested sum moves past the middle one.
 
 ```savedLean -keep
 namespace Backward
 
-theorem add_mul (l m n : ℕ) :
-    add (mul n l) (mul n m) = mul (add l m) n :=
+theorem add_right_comm (l m n : ℕ) :
+    add (add l m) n = add (add l n) m :=
   sorry
 
 end Backward
 ```
 
-{exercise "exr-three-classical-axioms"}[] Optional. Three classical axioms and two implications between them. Avoid the theorems of the `Classical` namespace; `rw [ExcludedMiddle]` unfolds the definition, and `Or.elim` and `False.elim` do the rest.
+{exercise "exr-double-is-times-two"}[] Optional. Adding a number to itself equals multiplying it by two, and the two sides already agree by computation.
 
 ```savedLean -keep
 namespace Backward
 
-def ExcludedMiddle : Prop :=
-  ∀ a : Prop, a ∨ ¬ a
-
-def Peirce : Prop :=
-  ∀ a b : Prop, ((a → b) → a) → a
-
-def DoubleNegation : Prop :=
-  ∀ a : Prop, (¬¬ a) → a
-
-theorem Peirce_of_EM :
-    ExcludedMiddle → Peirce :=
-  sorry
-
-theorem DN_of_Peirce :
-    Peirce → DoubleNegation :=
+theorem two_mul (n : ℕ) :
+    add n n = mul n 2 :=
   sorry
 
 end Backward
