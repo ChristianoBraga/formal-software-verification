@@ -48,7 +48,7 @@ The keyword `by` enters tactic mode, and each line after it is one tactic. The p
 ```lean (name := fstOfTwo)
 namespace Backward
 
-theorem fst_of_two_props :
+theorem first_of_two :
     ∀ a b : Prop, a → b → a := by
   intro a b
   trace_state
@@ -80,7 +80,7 @@ The proof below chains two implications. Read it as three "it suffices to" steps
 ```lean
 namespace Backward
 
-theorem prop_comp (a b c : Prop) (hab : a → b)
+theorem imp_chain (a b c : Prop) (hab : a → b)
     (hbc : b → c) : a → c := by
   intro ha
   apply hbc
@@ -103,15 +103,15 @@ Lean inserts the parameters written to the left of the colon into the local cont
 ```lean
 namespace Backward
 
-theorem fst_of_two_props_params (a b : Prop)
+theorem first_of_two_params (a b : Prop)
     (ha : a) (hb : b) : a := by
   apply ha
 
-theorem fst_of_two_props_exact (a b : Prop)
+theorem first_of_two_exact (a b : Prop)
     (ha : a) (hb : b) : a := by
   exact ha
 
-theorem fst_of_two_props_assumption (a b : Prop)
+theorem first_of_two_assumption (a b : Prop)
     (ha : a) (hb : b) : a := by
   assumption
 
