@@ -68,7 +68,7 @@ de b e hbc, temos c.
 
 ::::cols
 :::col
-```lean (name := fstOfTwo)
+```lean (name := firstOfTwo)
 namespace Backward
 
 theorem first_of_two :
@@ -85,12 +85,12 @@ end Backward
 :::col
 {lbl}[Depois do primeiro e do segundo intro]
 
-```leanOutput fstOfTwo
+```leanOutput firstOfTwo
 a b : Prop
 ⊢ a → b → a
 ```
 
-```leanOutput fstOfTwo
+```leanOutput firstOfTwo
 a b : Prop
 ha : a
 hb : b
@@ -251,12 +251,10 @@ end Backward
 ```lean
 namespace Backward
 
-opaque fixedFun : ℕ → ℕ
-
-theorem fixedFun_at_seven
-    (h : ∀ n : ℕ, fixedFun n = 0) :
-    fixedFun 7 = 0 := by
-  exact h 7
+theorem apply_forall_imp (p : ℕ → Prop)
+    (h : ∀ n : ℕ, p n → p (n + 1))
+    (h0 : p 0) : p 1 := by
+  exact h 0 h0
 
 end Backward
 ```
@@ -408,11 +406,11 @@ end Backward
 ```lean
 namespace Backward
 
-theorem not_intro_demo (a : Prop) :
-    (a → False) → ¬ a := by
+theorem not_conj_left (a b : Prop)
+    (hna : ¬ a) : ¬ (a ∧ b) := by
   rw [Not]
-  intro h
-  exact h
+  intro hab
+  exact hna hab.left
 
 end Backward
 ```
