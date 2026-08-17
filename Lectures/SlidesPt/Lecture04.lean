@@ -174,14 +174,12 @@ example (a b : Prop) (hb : b) : a ∨ b := by
 ```lean
 namespace Backward
 
-theorem cleanup_example (a b c : Prop)
-    (ha : a) (hb : b)
-    (hab : a → b) (hbc : b → c) : c := by
-  clear ha hab a
-  apply hbc
-  clear hbc c
-  rename b => h
-  exact h
+theorem drop_unused (p q : Prop)
+    (hp : p) (hq : q)
+    (hpq : p → q) : q := by
+  clear hp hpq p
+  rename q => hgoal
+  exact hgoal
 
 end Backward
 ```
@@ -239,7 +237,7 @@ end Backward
 ```lean
 namespace Backward
 
-theorem And_swap_braces :
+theorem and_swap_bullets :
     ∀ a b : Prop, a ∧ b → b ∧ a := by
   intro a b hab
   apply And.intro
@@ -253,11 +251,12 @@ end Backward
 ```lean
 namespace Backward
 
-opaque f : ℕ → ℕ
+opaque fixedFun : ℕ → ℕ
 
-theorem f5_if (h : ∀ n : ℕ, f n = n) :
-    f 5 = 5 := by
-  exact h 5
+theorem fixedFun_at_seven
+    (h : ∀ n : ℕ, fixedFun n = 0) :
+    fixedFun 7 = 0 := by
+  exact h 7
 
 end Backward
 ```
@@ -409,13 +408,11 @@ end Backward
 ```lean
 namespace Backward
 
-theorem a_proof_of_negation (a : Prop) :
-    a → ¬¬ a := by
+theorem not_intro_demo (a : Prop) :
+    (a → False) → ¬ a := by
   rw [Not]
-  rw [Not]
-  intro ha hna
-  apply hna
-  exact ha
+  intro h
+  exact h
 
 end Backward
 ```
@@ -429,10 +426,10 @@ end Backward
 ```lean
 namespace Backward
 
-theorem cong_two_args_1p1 {α : Type} (a b c d : α)
-    (g : α → α → ℕ → α) (hab : a = b) (hcd : c = d) :
-    g a c (1 + 1) = g b d 2 := by
-  simp [hab, hcd]
+theorem simp_congruence {α : Type} (a b : α)
+    (k : α → ℕ → ℕ) (hab : a = b) :
+    k a (2 + 3) = k b 5 := by
+  simp [hab]
 
 end Backward
 ```
