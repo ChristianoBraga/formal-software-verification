@@ -57,6 +57,100 @@ Quantifiers bind the variable of a predicate and produce a proposition, and {num
 
 The quantifier *binds* its variable, so ∀ x, P x depends on no free variable and is a proposition. The variable ranges over a type. For example, `∃ n : Nat, n * n = 9` states that some natural number squares to 9. When the context determines the type, Lean infers it and we omit the annotation.
 
+## Examples
+
+The examples below write predicates and quantified propositions and read their types with `#check`. A predicate has type α → Prop, and a quantified proposition, which binds its variable, has type Prop. The command `#eval` reports the truth value of a decidable predicate at a concrete point through `decide`.
+
+{ex "ex-predicates-applying-predicate-yields-proposition"}[] Applying a predicate to an argument yields a proposition.
+
+```lean (name := ex21apply)
+#check (fun n : Nat => n < 5) 3
+```
+```leanOutput ex21apply
+(fun n => n < 5) 3 : Prop
+```
+
+{ex "ex-predicates-predicate-on-strings"}[] A predicate may range over any type, strings among them.
+
+```lean (name := ex21string)
+#check fun s : String => s.length > 0
+```
+```leanOutput ex21string
+fun s => s.length > 0 : String → Prop
+```
+
+{ex "ex-predicates-binary-relation-two-arguments"}[] A predicate of two arguments is a binary relation, a function into Prop in two stages.
+
+```lean (name := ex21binary)
+#check fun m n : Nat => m ≤ n
+```
+```leanOutput ex21binary
+fun m n => m ≤ n : Nat → Nat → Prop
+```
+
+{ex "ex-predicates-universal-statement-is-proposition"}[] A universally quantified statement is a proposition.
+
+```lean (name := ex21forall)
+#check ∀ n : Nat, n + 0 = n
+```
+```leanOutput ex21forall
+∀ (n : Nat), n + 0 = n : Prop
+```
+
+{ex "ex-predicates-existential-statement-is-proposition"}[] So is an existentially quantified one.
+
+```lean (name := ex21exists)
+#check ∃ n : Nat, n > 100
+```
+```leanOutput ex21exists
+∃ n, n > 100 : Prop
+```
+
+{ex "ex-predicates-nested-quantifiers-still-proposition"}[] Nested quantifiers of different kinds still produce a proposition.
+
+```lean (name := ex21nested)
+#check ∀ m : Nat, ∃ n : Nat, m < n
+```
+```leanOutput ex21nested
+∀ (m : Nat), ∃ n, m < n : Prop
+```
+
+{ex "ex-predicates-quantifying-over-strings"}[] The bound variable of an existential may range over strings.
+
+```lean (name := ex21existsstring)
+#check ∃ s : String, s.length = 3
+```
+```leanOutput ex21existsstring
+∃ s, s.length = 3 : Prop
+```
+
+{ex "ex-predicates-relation-applied-both-arguments"}[] A binary relation applied to both of its arguments is again a proposition.
+
+```lean (name := ex21relapply)
+#check (fun m n : Nat => m ≤ n) 2 3
+```
+```leanOutput ex21relapply
+(fun m n => m ≤ n) 2 3 : Prop
+```
+
+{ex "ex-predicates-decide-true-at-point"}[] At a concrete point a decidable predicate has a computable truth value, here true.
+
+```lean (name := ex21decidetrue)
+#eval decide (3 < 5)
+```
+```leanOutput ex21decidetrue
+true
+```
+
+{ex "ex-predicates-decide-false-at-point"}[] The same computation reports false where the predicate does not hold.
+
+```lean (name := ex21decidefalse)
+#eval decide (2 = 3)
+```
+```leanOutput ex21decidefalse
+false
+```
+
 # The Universal Quantifier
 
 To prove ∀ x, P x, consider an arbitrary element and prove the proposition at it. The tactic `intro`, which introduced implications in Lecture 1, also introduces universal quantifiers.
@@ -877,6 +971,23 @@ example (α : Type) (P : α → Prop)
     (h : ¬∀ x, ¬P x) : ∃ x, P x := by
   obtain ⟨a, hnnPa⟩ := not_forall_exists α (fun x => ¬P x) h
   exact ⟨a, Classical.byContradiction hnnPa⟩
+```
+
+## Intersection lies within union
+
+Every element of the intersection belongs to both parts, so in particular to the left one, which already places it in the union. The term supplies the left injection directly, and the tactic proof does the same after `intro`.
+
+```lean
+example (α : Type) (s t : Set α) :
+    s ∩ t ⊆ s ∪ t :=
+  fun x hx => Or.inl hx.left
+```
+
+```lean
+example (α : Type) (s t : Set α) :
+    s ∩ t ⊆ s ∪ t := by
+  intro x hx
+  exact Or.inl hx.left
 ```
 
 # Exercises
