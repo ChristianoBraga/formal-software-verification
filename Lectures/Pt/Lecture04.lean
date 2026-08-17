@@ -45,7 +45,7 @@ Uma derivação na dedução natural da Aula 1 se escreve empilhando aplicaçõe
 
 A palavra-chave `by` entra no modo de táticas, e cada linha depois dela é uma tática. A prova abaixo introduz as variáveis universalmente quantificadas e as duas hipóteses, e fecha o objetivo. As linhas `trace_state` imprimem o objetivo entre os passos, e as saídas seguem o código.
 
-```lean (name := fstOfTwo)
+```lean (name := firstOfTwo)
 namespace Backward
 
 theorem first_of_two :
@@ -61,14 +61,14 @@ end Backward
 
 Depois de `intro a b`, as duas proposições entraram no contexto, e a conclusão é a implicação que resta.
 
-```leanOutput fstOfTwo
+```leanOutput firstOfTwo
 a b : Prop
 ⊢ a → b → a
 ```
 
 Depois de `intro ha hb`, as duas hipóteses estão disponíveis, e a conclusão é a.
 
-```leanOutput fstOfTwo
+```leanOutput firstOfTwo
 a b : Prop
 ha : a
 hb : b
@@ -334,11 +334,9 @@ A justaposição também instancia uma hipótese universal, exatamente como na A
 ```lean
 namespace Backward
 
-opaque fixedFun : ℕ → ℕ
-
-theorem fixedFun_at_seven (h : ∀ n : ℕ, fixedFun n = 0) :
-    fixedFun 7 = 0 := by
-  exact h 7
+theorem apply_forall_imp (p : ℕ → Prop)
+    (h : ∀ n : ℕ, p n → p (n + 1)) (h0 : p 0) : p 1 := by
+  exact h 0 h0
 
 end Backward
 ```
@@ -688,10 +686,11 @@ theorem Eq_trans_symm_rw {α : Type} (a b c : α)
   rw [hab]
   rw [hcb]
 
-theorem not_intro_demo (a : Prop) : (a → False) → ¬ a := by
+theorem not_conj_left (a b : Prop) (hna : ¬ a) :
+    ¬ (a ∧ b) := by
   rw [Not]
-  intro h
-  exact h
+  intro hab
+  exact hna hab.left
 
 end Backward
 ```
