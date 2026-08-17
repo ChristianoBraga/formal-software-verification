@@ -45,7 +45,7 @@ A derivation in the natural deduction of Lecture 1 is written by stacking rule a
 
 The keyword `by` enters tactic mode, and each line after it is one tactic. The proof below introduces the universally quantified variables and the two hypotheses, and closes the goal. The `trace_state` lines print the goal between the steps, and the outputs follow the code.
 
-```lean (name := fstOfTwo)
+```lean (name := firstOfTwo)
 namespace Backward
 
 theorem first_of_two :
@@ -61,14 +61,14 @@ end Backward
 
 After `intro a b` the two propositions have entered the context, and the conclusion is the implication that remains.
 
-```leanOutput fstOfTwo
+```leanOutput firstOfTwo
 a b : Prop
 ⊢ a → b → a
 ```
 
 After `intro ha hb` the two hypotheses are available, and the conclusion is a.
 
-```leanOutput fstOfTwo
+```leanOutput firstOfTwo
 a b : Prop
 ha : a
 hb : b
@@ -334,11 +334,9 @@ Juxtaposition also instantiates a universal hypothesis, exactly as in Lecture 2.
 ```lean
 namespace Backward
 
-opaque fixedFun : ℕ → ℕ
-
-theorem fixedFun_at_seven (h : ∀ n : ℕ, fixedFun n = 0) :
-    fixedFun 7 = 0 := by
-  exact h 7
+theorem apply_forall_imp (p : ℕ → Prop)
+    (h : ∀ n : ℕ, p n → p (n + 1)) (h0 : p 0) : p 1 := by
+  exact h 0 h0
 
 end Backward
 ```
@@ -688,10 +686,11 @@ theorem Eq_trans_symm_rw {α : Type} (a b c : α)
   rw [hab]
   rw [hcb]
 
-theorem not_intro_demo (a : Prop) : (a → False) → ¬ a := by
+theorem not_conj_left (a b : Prop) (hna : ¬ a) :
+    ¬ (a ∧ b) := by
   rw [Not]
-  intro h
-  exact h
+  intro hab
+  exact hna hab.left
 
 end Backward
 ```
