@@ -58,6 +58,100 @@ Quantificadores ligam a variável de um predicado e produzem uma proposição, e
 
 O quantificador *liga* a sua variável, então ∀ x, P x não depende de variável livre e é uma proposição. A variável percorre um tipo. Por exemplo, `∃ n : Nat, n * n = 9` afirma que algum número natural elevado ao quadrado dá 9. Quando o contexto determina o tipo, Lean o infere e omitimos a anotação.
 
+## Exemplos
+
+Os exemplos abaixo escrevem predicados e proposições quantificadas e leem os seus tipos com `#check`. Um predicado tem tipo α → Prop, e uma proposição quantificada, que liga a sua variável, tem tipo Prop. O comando `#eval` informa o valor de verdade de um predicado decidível num ponto concreto através de `decide`.
+
+{ex "ex-predicates-applying-predicate-yields-proposition"}[] Aplicar um predicado a um argumento produz uma proposição.
+
+```lean (name := ex21apply)
+#check (fun n : Nat => n < 5) 3
+```
+```leanOutput ex21apply
+(fun n => n < 5) 3 : Prop
+```
+
+{ex "ex-predicates-predicate-on-strings"}[] Um predicado pode percorrer qualquer tipo, entre eles as cadeias de caracteres.
+
+```lean (name := ex21string)
+#check fun s : String => s.length > 0
+```
+```leanOutput ex21string
+fun s => s.length > 0 : String → Prop
+```
+
+{ex "ex-predicates-binary-relation-two-arguments"}[] Um predicado de dois argumentos é uma relação binária, uma função em Prop em duas etapas.
+
+```lean (name := ex21binary)
+#check fun m n : Nat => m ≤ n
+```
+```leanOutput ex21binary
+fun m n => m ≤ n : Nat → Nat → Prop
+```
+
+{ex "ex-predicates-universal-statement-is-proposition"}[] Um enunciado universalmente quantificado é uma proposição.
+
+```lean (name := ex21forall)
+#check ∀ n : Nat, n + 0 = n
+```
+```leanOutput ex21forall
+∀ (n : Nat), n + 0 = n : Prop
+```
+
+{ex "ex-predicates-existential-statement-is-proposition"}[] E um enunciado existencialmente quantificado também.
+
+```lean (name := ex21exists)
+#check ∃ n : Nat, n > 100
+```
+```leanOutput ex21exists
+∃ n, n > 100 : Prop
+```
+
+{ex "ex-predicates-nested-quantifiers-still-proposition"}[] Quantificadores aninhados de tipos diferentes ainda produzem uma proposição.
+
+```lean (name := ex21nested)
+#check ∀ m : Nat, ∃ n : Nat, m < n
+```
+```leanOutput ex21nested
+∀ (m : Nat), ∃ n, m < n : Prop
+```
+
+{ex "ex-predicates-quantifying-over-strings"}[] A variável ligada de um existencial pode percorrer cadeias de caracteres.
+
+```lean (name := ex21existsstring)
+#check ∃ s : String, s.length = 3
+```
+```leanOutput ex21existsstring
+∃ s, s.length = 3 : Prop
+```
+
+{ex "ex-predicates-relation-applied-both-arguments"}[] Uma relação binária aplicada aos seus dois argumentos é de novo uma proposição.
+
+```lean (name := ex21relapply)
+#check (fun m n : Nat => m ≤ n) 2 3
+```
+```leanOutput ex21relapply
+(fun m n => m ≤ n) 2 3 : Prop
+```
+
+{ex "ex-predicates-decide-true-at-point"}[] Num ponto concreto um predicado decidível tem um valor de verdade computável, aqui verdadeiro.
+
+```lean (name := ex21decidetrue)
+#eval decide (3 < 5)
+```
+```leanOutput ex21decidetrue
+true
+```
+
+{ex "ex-predicates-decide-false-at-point"}[] A mesma computação informa falso onde o predicado não vale.
+
+```lean (name := ex21decidefalse)
+#eval decide (2 = 3)
+```
+```leanOutput ex21decidefalse
+false
+```
+
 # O Quantificador Universal
 
 Para provar ∀ x, P x, considere um elemento arbitrário e prove a proposição nele. A tática `intro`, que introduziu implicações na Aula 1, também introduz quantificadores universais.
@@ -878,6 +972,23 @@ example (α : Type) (P : α → Prop)
     (h : ¬∀ x, ¬P x) : ∃ x, P x := by
   obtain ⟨a, hnnPa⟩ := not_forall_exists α (fun x => ¬P x) h
   exact ⟨a, Classical.byContradiction hnnPa⟩
+```
+
+## A interseção está contida na união
+
+Todo elemento da interseção pertence às duas partes, portanto em particular à da esquerda, o que já o coloca na união. O termo fornece a injeção à esquerda diretamente, e a prova por táticas faz o mesmo depois de `intro`.
+
+```lean
+example (α : Type) (s t : Set α) :
+    s ∩ t ⊆ s ∪ t :=
+  fun x hx => Or.inl hx.left
+```
+
+```lean
+example (α : Type) (s t : Set α) :
+    s ∩ t ⊆ s ∪ t := by
+  intro x hx
+  exact Or.inl hx.left
 ```
 
 # Exercícios
