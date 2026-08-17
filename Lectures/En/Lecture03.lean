@@ -1017,21 +1017,13 @@ def flatten {α : Type} : List (List α) → List α := sorry
 -- length (flatten xss) equals sumList (map length xss).
 ```
 
-{exercise "exr-complete-which-removes-additions"}[] Complete `simplify`, which removes additions of 0, multiplications by 1, and divisions by 1, following the given cases, then state, with `sorry`, its correctness. Simplifying preserves the value under every environment.
+{exercise "exr-fold-numeral-operations"}[] Define `constFold`, which folds an addition or a multiplication of two numerals into the single numeral of its value and leaves every other expression unchanged, then state, with `sorry`, its correctness. Folding preserves the value under every environment.
 
 ```savedLean -keep
-def simplify : AExp → AExp
-  | AExp.add (AExp.num 0) e₂ => simplify e₂
-  | AExp.add e₁ (AExp.num 0) => simplify e₁
-  | AExp.sub e₁ e₂           => sorry
-  | AExp.mul e₁ e₂           => sorry
-  | AExp.div e₁ e₂           => sorry
-  | AExp.add e₁ e₂           =>
-      AExp.add (simplify e₁) (simplify e₂)
-  | e                        => e
+def constFold : AExp → AExp := sorry
 
--- State simplify_correct here as a theorem proved by
--- sorry: for every env and e, eval env (simplify e)
+-- State constFold_correct here as a theorem proved by
+-- sorry: for every env and e, eval env (constFold e)
 -- equals eval env e.
 ```
 
@@ -1046,10 +1038,12 @@ theorem depth_le_size (e : AExp) :
     depth e ≤ size e := sorry
 ```
 
-{exercise "exr-define-which-swaps-operands"}[] Define `mirror`, which swaps the operands of every addition and multiplication and leaves the rest unchanged, then state, with `sorry`, that mirroring preserves the value under every environment.
+{exercise "exr-replace-variables-by-zero"}[] Define `zeroVars`, which replaces every variable by the numeral 0 and leaves the structure otherwise unchanged, then state, with `sorry`, that its value under any environment equals the value of the original expression under the environment that maps every name to 0.
 
 ```savedLean -keep
-def mirror : AExp → AExp := sorry
+def zeroVars : AExp → AExp := sorry
 
--- State mirror_eval here as a theorem proved by sorry.
+-- State zeroVars_eval here as a theorem proved by sorry:
+-- for every env and e, eval env (zeroVars e) equals
+-- eval (fun _ => 0) e.
 ```
