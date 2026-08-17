@@ -1159,7 +1159,7 @@ example (P : Prop) (hP : P) (hnP : ¬P) : False := hnP hP
 Toda tática para implicação, portanto, funciona para negação. A direção contrapositiva abaixo precisa apenas de `intro` e de aplicação.
 
 ```lean
-theorem contrapositive (P Q : Prop) (hPQ : P → Q) :
+theorem contraposition (P Q : Prop) (hPQ : P → Q) :
     ¬Q → ¬P := by
   intro hnQ hP
   exact hnQ (hPQ hP)
