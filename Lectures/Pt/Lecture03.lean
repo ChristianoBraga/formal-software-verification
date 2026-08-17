@@ -1020,22 +1020,14 @@ def flatten {α : Type} : List (List α) → List α := sorry
 -- sumList (map length xss).
 ```
 
-{exercise "exr-complete-which-removes-additions"}[] Complete `simplify`, que remove as somas com 0, os produtos por 1 e as divisões por 1, seguindo os casos dados, e enuncie, com `sorry`, a sua correção. Simplificar preserva o valor sob todo ambiente.
+{exercise "exr-fold-numeral-operations"}[] Defina `constFold`, que reduz uma soma ou um produto de dois numerais ao numeral único do seu valor e deixa toda outra expressão inalterada, e enuncie, com `sorry`, a sua correção. Reduzir preserva o valor sob todo ambiente.
 
 ```savedLean -keep
-def simplify : AExp → AExp
-  | AExp.add (AExp.num 0) e₂ => simplify e₂
-  | AExp.add e₁ (AExp.num 0) => simplify e₁
-  | AExp.sub e₁ e₂           => sorry
-  | AExp.mul e₁ e₂           => sorry
-  | AExp.div e₁ e₂           => sorry
-  | AExp.add e₁ e₂           =>
-      AExp.add (simplify e₁) (simplify e₂)
-  | e                        => e
+def constFold : AExp → AExp := sorry
 
--- Enuncie simplify_correct aqui como um teorema provado
+-- Enuncie constFold_correct aqui como um teorema provado
 -- por sorry: para todo env e todo e, eval env
--- (simplify e) é igual a eval env e.
+-- (constFold e) é igual a eval env e.
 ```
 
 {exercise "exr-define-size-expression-counting"}[] Defina o tamanho de uma expressão, contando cada construtor, e a sua profundidade, contando a maior cadeia de construtores, e enuncie, com `sorry`, que a profundidade nunca excede o tamanho.
@@ -1049,11 +1041,12 @@ theorem depth_le_size (e : AExp) :
     depth e ≤ size e := sorry
 ```
 
-{exercise "exr-define-which-swaps-operands"}[] Defina `mirror`, que troca os operandos de cada soma e de cada produto e deixa o resto inalterado, e enuncie, com `sorry`, que espelhar preserva o valor sob todo ambiente.
+{exercise "exr-replace-variables-by-zero"}[] Defina `zeroVars`, que substitui cada variável pelo numeral 0 e deixa a estrutura inalterada no restante, e enuncie, com `sorry`, que o seu valor sob qualquer ambiente é igual ao valor da expressão original sob o ambiente que leva todo nome a 0.
 
 ```savedLean -keep
-def mirror : AExp → AExp := sorry
+def zeroVars : AExp → AExp := sorry
 
--- Enuncie mirror_eval aqui como um teorema provado por
--- sorry.
+-- Enuncie zeroVars_eval aqui como um teorema provado por
+-- sorry: para todo env e todo e, eval env (zeroVars e)
+-- é igual a eval (fun _ => 0) e.
 ```
