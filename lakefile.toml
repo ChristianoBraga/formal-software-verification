@@ -1,5 +1,5 @@
 name = "lectures"
-defaultTargets = ["Lectures"]
+defaultTargets = ["lectures-en", "lectures-pt", "slides-en", "slides-pt"]
 
 [[require]]
 name = "verso"
