@@ -5,6 +5,7 @@ import Lectures.Pt.Lecture01
 import Lectures.Pt.Lecture02
 import Lectures.Pt.Lecture03
 import Lectures.Pt.Lecture04
+import Lectures.Pt.Lecture05
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -32,3 +33,5 @@ As referências principais são [*How To Prove It with Lean*](https://djvelleman
 {include 0 Lectures.Pt.Lecture03}
 
 {include 0 Lectures.Pt.Lecture04}
+
+{include 0 Lectures.Pt.Lecture05}
