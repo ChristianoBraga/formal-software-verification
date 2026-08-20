@@ -34,9 +34,9 @@ Based on the [*Hitchhiker's Guide to Logical Verification*](https://github.com/l
 
 # §6.1 Inductive types and their principles
 
-* An inductive type is its list of *constructors*, and its values are exactly the finite constructor applications.
+* An inductive type is its list of *constructors*, and every value is built by applying them, each in just one way.
 
-* From that list the kernel derives four principles: the *recursor* `T.rec`, the non-recursive `casesOn`, the *injectivity* of each constructor, and the *disjointness* of distinct constructors.
+* For a data type, Lean generates four principles: the *recursor* `T.rec`, the non-recursive `casesOn`, the *injectivity* of each constructor, and the *disjointness* of distinct constructors.
 
 ```lean (name := injEq)
 #check @Nat.succ.injEq
@@ -105,7 +105,7 @@ end Func
 
 # §6.2 Why termination
 
-* A non-terminating definition would let one name a value with a contradictory equation, from which `False` follows. Lean rejects such definitions.
+* A total definition exposes its equation as a usable theorem, so accepting `loopy = loopy + 1` would prove `False`. Lean rejects such definitions; a genuine loop needs `partial def`, which stays opaque.
 
 ::::cols
 :::col
@@ -142,7 +142,7 @@ def loopForever {α : Type} :
 
 # §6.3 Pattern matching expressions
 
-* `match` and `if` are pattern matching as expressions, usable wherever a term is expected, and `Option` packages a partial result.
+* `match` and `if` bring pattern matching into a term. A `match` elaborates through the type's recursor, and `if` branches on a `Decidable` instance. `Option` packages a partial result.
 
 ::::cols
 :::col
@@ -255,7 +255,7 @@ end Func
 
 # §6.5 Type classes
 
-* A `class` declares operations, an `instance` supplies them for a type, and resolution finds the instance from the type when a function requests `[C α]`.
+* A `class` declares operations parameterised by one or more arguments, an `instance` supplies them, and resolution finds the instance from those arguments. `Std.Associative op` is indexed by an operation, not only a type.
 
 ::::cols
 :::col
