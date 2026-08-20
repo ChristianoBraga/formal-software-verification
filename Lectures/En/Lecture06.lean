@@ -28,7 +28,7 @@ The course spends two weeks on this chapter. This lecture is the programs side, 
 
 # Inductive Types and Their Principles
 
-An inductive type is defined by listing its *constructors*, and its values are exactly the finite applications of those constructors, and nothing else. Lecture 3 used this to build ℕ from `Nat.zero` and `Nat.succ` and `List` from `List.nil` and `List.cons`. From the list of constructors the kernel derives four principles automatically, and naming them explains where the tools of the earlier lectures come from.
+An inductive type is defined by listing its *constructors*. Every value of the type is built by applying those constructors, and each value is built in just one way. Lecture 3 used this to build ℕ from `Nat.zero` and `Nat.succ` and `List` from `List.nil` and `List.cons`. For a type of data such as ℕ, Lean generates from the constructors four principles, and naming them explains where the tools of the earlier lectures come from.
 
 The *recursor* `T.rec` is the primitive principle of the type. It is the raw form of structural recursion, and read on a proposition-valued motive it is the raw form of structural induction. Its type for ℕ shows the two cases a function on ℕ must supply, one for `Nat.zero` and one for `Nat.succ`, and the second case receives the value at the predecessor, which is the recursive result.
 
@@ -54,7 +54,7 @@ example : usingRec 3 = 6 := rfl
 end Func
 ```
 
-The remaining two principles concern the constructors themselves. Each constructor is *injective*, so equal constructor applications have equal arguments, and Lean generates the equation `Nat.succ.injEq` recording this. Distinct constructors are *disjoint*, so no application of `Nat.succ` equals `Nat.zero`; the demo calls this no confusion. The second output above is the injectivity equation, and the two examples below use injectivity and disjointness.
+The remaining two principles concern the constructors themselves. Each constructor is *injective*, so equal constructor applications have equal arguments, and Lean generates the equation `Nat.succ.injEq` recording this. Distinct constructors are *disjoint*, so no application of `Nat.succ` equals `Nat.zero`. Injectivity and disjointness hold for a type of data like ℕ; for a type of proofs, where all proofs of one proposition are equal, they do not. The second output above is the injectivity equation, and the two examples below use injectivity and disjointness.
 
 ```leanOutput natRec
 Nat.succ.injEq : ∀ (u v : ℕ), (u.succ = v.succ) = (u = v)
@@ -96,7 +96,7 @@ def fib : ℕ → ℕ
 end Func
 ```
 
-Lean admits only definitions it can show terminate, and the reason is soundness, not convenience. A definition that could call itself forever would let one name a value satisfying a contradictory equation, and from that equation `False` follows. The block below posits, as an axiom, that some natural number equals its own successor, the equation a non-terminating `loopy = loopy + 1` would satisfy, and derives `False`. Lean generates no such axiom on its own, and it rejects the definitions that would need it, which is why every function above terminates.
+Lean admits as ordinary definitions only those it can show terminate, and the reason is soundness. A total definition exposes its defining equations as usable theorems and reduces during type checking, so a recursive equation such as `loopy = loopy + 1`, were Lean to accept it, would itself prove `False`. The block below posits exactly that equation as an axiom and derives the contradiction, to show what an unrestricted non-terminating definition would grant. Lean generates no such axiom, and it rejects the definitions that would produce it, which is why every function above terminates. A genuinely looping computation is still writable with `partial def`, but Lean then keeps the function opaque and exposes no equation, so no contradiction follows.
 
 ```lean -keep
 namespace Func
@@ -111,7 +111,7 @@ theorem loopy_false : False := by
 end Func
 ```
 
-The escape hatch for a recursion that terminates for a reason Lean cannot see structurally is `termination_by` with `decreasing_by`, which the guide treats later; this lecture stays within structural recursion.
+For a recursion that terminates for a reason Lean cannot see structurally, `termination_by` with `decreasing_by` supplies a measure and its proof, which the guide treats later; this lecture stays within structural recursion.
 
 ## Examples
 
@@ -222,7 +222,7 @@ example : orZeroList none = [] := rfl
 end Func
 ```
 
-{ex "ex-recursion-rejected"}[] A definition Lean rejects. The recursive call is on the same list, so no argument grows smaller, and no such function exists. The block is shown but not elaborated.
+{ex "ex-recursion-rejected"}[] A definition Lean rejects. The recursive call is on the same list, so no argument grows smaller, Lean cannot see that it terminates, and it does not accept this equation as a total definition. The block is shown but not elaborated.
 
 ```
 def loopForever {α : Type} : List α → List α
@@ -246,7 +246,7 @@ end Func
 
 # Pattern Matching Expressions
 
-Lecture 3 wrote a function as top-level equations, one per constructor shape. The same power is available as a `match` expression usable wherever a term is expected, and as `if c then … else …` for a decidable condition. Both elaborate to the `casesOn` of §6.1. Patterns are tried top to bottom, so an earlier pattern shadows a later one, and the wildcard `_` matches anything.
+Lecture 3 wrote a function as top-level equations, one per constructor shape. The same power is available as a `match` expression usable wherever a term is expected, and as `if c then … else …` for a decidable condition. A `match` elaborates through the type's recursor, its `casesOn` of §6.1 in the simplest cases, and `if` branches on a `Decidable` instance for its condition. Patterns are tried top to bottom, so an earlier pattern shadows a later one, and the wildcard `_` matches anything.
 
 ```lean
 namespace Func
@@ -542,7 +542,7 @@ example (a b : Prop) (ha : a) (hb : b) : a ∧ b :=
 
 # Type Classes
 
-A *type class* is a structure of operations parameterised by a type. A `class` declares the operations, an `instance` supplies them for a particular type, and *instance resolution* finds the right instance from the type alone whenever a function requests one with `[C α]`. This is the mechanism Lecture 2 used to give `∈` its meaning through a `Membership` instance and Lecture 4 used to register `add` as associative and commutative for `ac_rfl`.
+A *type class* is a structure of operations parameterised by one or more arguments, usually types. A `class` declares the operations, an `instance` supplies them for particular arguments, and *instance resolution* finds the right instance from those arguments whenever a function requests one with `[C α]`. Some classes are indexed by more than a type, and `Std.Associative op` of Lecture 4 is indexed by an operation. This is the mechanism Lecture 2 used to give `∈` its meaning through a `Membership` instance and Lecture 4 used to register `add` as associative and commutative for `ac_rfl`.
 
 ```lean
 namespace Func
@@ -732,6 +732,25 @@ def mirror {α : Type} : Tree α → Tree α
 end Func
 ```
 
+The recursor of `Tree` shows the general schema on a fresh type. It takes a value for the `leaf` case and, for the `branch` case, a function that receives the two subtrees, the stored value, and the recursive results on the two subtrees, which become the induction hypotheses of a proof by induction.
+
+```lean (name := treeRec)
+namespace Func
+
+#check @Tree.rec
+
+end Func
+```
+
+```leanOutput treeRec
+@Tree.rec : {α : Type} →
+  {motive : Tree α → Sort u_1} →
+    motive Tree.leaf →
+      ((l : Tree α) → (x : α) → (r : Tree α) → motive l → motive r → motive (l.branch x r)) → (t : Tree α) → motive t
+```
+
+The general laws this section states and Lecture 7 proves are `mirror (mirror t) = t`, `treeSize (mirror t) = treeSize t`, and the counting law relating the leaves and the branches of a tree. Each needs induction, so this section proves only their closed instances.
+
 ## Examples
 
 The examples below build a tree, compute with it, and read the other datatypes the schema produces.
@@ -775,17 +794,19 @@ end Func
 2
 ```
 
-{ex "ex-datatype-mirror"}[] `mirror` swaps the two subtrees at every branch.
+{ex "ex-datatype-mirror"}[] `mirror` swaps the two subtrees at every branch, and this constructor law holds for every tree by computation, with no induction.
 
 ```lean
 namespace Func
 
-example : mirror (mirror t1) = t1 := rfl
+example {α : Type} (l : Tree α) (x : α) (r : Tree α) :
+    mirror (.branch l x r)
+      = .branch (mirror r) x (mirror l) := rfl
 
 end Func
 ```
 
-The example above holds for this closed tree by computation. The general law `mirror (mirror t) = t`, for every tree, needs induction and is a worked example of Lecture 7.
+The doubly-mirrored law `mirror (mirror t) = t`, for every tree, is different, since it needs induction, and it is a worked example of Lecture 7.
 
 {ex "ex-datatype-mirror-leaf"}[] Mirroring a leaf changes nothing.
 
@@ -821,7 +842,7 @@ example : fromSum (.inl 4) = 4 := rfl
 end Func
 ```
 
-{ex "ex-datatype-option-map"}[] `Option` is the canonical nullable type, and a function may map over its value.
+{ex "ex-datatype-option-map"}[] `Option` is the canonical nullable type, and a function may map over its value. The law for `some` holds for every function and argument by computation, with no induction.
 
 ```lean
 namespace Func
@@ -831,7 +852,8 @@ def mapOption {α β : Type} (f : α → β) :
   | none   => none
   | some a => some (f a)
 
-example : mapOption (· + 1) (some 4) = some 5 := rfl
+example {α β : Type} (f : α → β) (a : α) :
+    mapOption f (some a) = some (f a) := rfl
 
 end Func
 ```
@@ -1035,16 +1057,20 @@ theorem turn_four :
 end FuncEx
 ```
 
-{exercise "exr-count"}[] Define `count`, the number of list elements satisfying a Boolean test, and check it on a concrete list.
+{exercise "exr-last-opt"}[] Define `lastOpt`, the last element of a list as an option, and prove its value on the empty list and on a concrete list.
 
 ```savedLean -keep
 namespace FuncEx
 
-def count {α : Type} (p : α → Bool) : List α → ℕ :=
+def lastOpt {α : Type} : List α → Option α :=
   sorry
 
-theorem count_example :
-    count (fun n => n % 2 == 0) [1, 2, 3, 4] = 2 :=
+theorem last_opt_nil {α : Type} :
+    lastOpt ([] : List α) = none :=
+  sorry
+
+theorem last_opt_example :
+    lastOpt [3, 1, 4] = some 4 :=
   sorry
 
 end FuncEx
@@ -1091,24 +1117,24 @@ theorem volume_example :
 end FuncExBox
 ```
 
-{exercise "exr-default"}[] Complete the `Default` instances and the selector, and prove the default for ℕ.
+{exercise "exr-doubler"}[] Complete the `Doubler` instances, doubling a number by addition and a list by self-append, and the selector, then prove the doubled value for ℕ.
 
 ```savedLean -keep
 namespace FuncEx
 
-class Default (α : Type) where
-  dflt : α
+class Doubler (α : Type) where
+  dup : α → α
 
-instance : Default ℕ :=
+instance : Doubler ℕ :=
   sorry
 
-instance {α : Type} : Default (List α) :=
+instance {α : Type} : Doubler (List α) :=
   sorry
 
-def getDefault (α : Type) [Default α] : α :=
+def applyDup {α : Type} [Doubler α] (a : α) : α :=
   sorry
 
-theorem default_nat : getDefault ℕ = 0 :=
+theorem dup_nat : applyDup (3 : ℕ) = 6 :=
   sorry
 
 end FuncEx
