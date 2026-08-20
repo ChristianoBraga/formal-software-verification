@@ -10,6 +10,7 @@ import Lectures.SlidesPt.Lecture02
 import Lectures.SlidesPt.Lecture03
 import Lectures.SlidesPt.Lecture04
 import Lectures.SlidesPt.Lecture05
+import Lectures.SlidesPt.Lecture06
 
 open Verso Doc
 open Verso.Genre Manual
@@ -75,6 +76,19 @@ def aula5Deck : SlideDeck where
   label := "Aula 5 · Provas Progressivas"
   notesLink := some ("../pt/Aula-5___-Provas-Progressivas/", "↩ Notas")
   prevLink := some ("lecture-4.pt.html", "‹ Aula anterior")
+  nextLink := some ("lecture-6.pt.html", "Próxima aula ›")
+  startLabel := "⇤ Início"
+  prevSlideLabel := "Slide anterior"
+  nextSlideLabel := "Próximo slide"
+
+def aula6Deck : SlideDeck where
+  fileName := "lecture-6.pt.html"
+  pageTitle := "Aula 6: Programação Funcional · Slides"
+  htmlLang := "pt"
+  kicker := "Aula 6 · Verificação Formal de Software"
+  label := "Aula 6 · Programação Funcional"
+  notesLink := some ("../pt/Aula-6___-Programa______o-Funcional/", "↩ Notas")
+  prevLink := some ("lecture-5.pt.html", "‹ Aula anterior")
   startLabel := "⇤ Início"
   prevSlideLabel := "Slide anterior"
   nextSlideLabel := "Próximo slide"
@@ -84,4 +98,5 @@ def main := slidesMain (decks :=
    ((%doc Lectures.SlidesPt.Lecture02), aula2Deck),
    ((%doc Lectures.SlidesPt.Lecture03), aula3Deck),
    ((%doc Lectures.SlidesPt.Lecture04), aula4Deck),
-   ((%doc Lectures.SlidesPt.Lecture05), aula5Deck)])
+   ((%doc Lectures.SlidesPt.Lecture05), aula5Deck),
+   ((%doc Lectures.SlidesPt.Lecture06), aula6Deck)])
