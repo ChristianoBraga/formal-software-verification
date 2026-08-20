@@ -36,9 +36,9 @@ Baseado no [*Hitchhiker's Guide to Logical Verification*](https://github.com/lea
 
 # §6.1 Tipos indutivos e seus princípios
 
-* Um tipo indutivo é a sua lista de *construtores*, e os seus valores são exatamente as aplicações finitas de construtores.
+* Um tipo indutivo é a sua lista de *construtores*, e todo valor é construído aplicando-os, cada um de uma única maneira.
 
-* Dessa lista o núcleo deriva quatro princípios: o *recursor* `T.rec`, o `casesOn` não recursivo, a *injetividade* de cada construtor e a *disjunção* de construtores distintos.
+* Para um tipo de dados, Lean gera quatro princípios: o *recursor* `T.rec`, o `casesOn` não recursivo, a *injetividade* de cada construtor e a *disjunção* de construtores distintos.
 
 ```lean (name := injEq)
 #check @Nat.succ.injEq
@@ -107,7 +107,7 @@ end Func
 
 # §6.2 Por que a terminação
 
-* Uma definição não terminante permitiria nomear um valor com uma equação contraditória, da qual `False` segue. Lean rejeita tais definições.
+* Uma definição total expõe a sua equação como teorema utilizável, então aceitar `loopy = loopy + 1` provaria `False`. Lean rejeita tais definições; um laço genuíno precisa de `partial def`, que fica opaco.
 
 ::::cols
 :::col
@@ -144,7 +144,7 @@ def loopForever {α : Type} :
 
 # §6.3 Casamento de padrões como expressão
 
-* `match` e `if` são casamento de padrões como expressão, usáveis onde um termo é esperado, e `Option` empacota um resultado parcial.
+* `match` e `if` trazem o casamento de padrões para um termo. Um `match` se traduz pelo recursor do tipo, e `if` ramifica sobre uma instância `Decidable`. `Option` empacota um resultado parcial.
 
 ::::cols
 :::col
@@ -257,7 +257,7 @@ end Func
 
 # §6.5 Classes de tipos
 
-* Uma `class` declara operações, uma `instance` as fornece para um tipo, e a resolução encontra a instância a partir do tipo quando uma função pede `[C α]`.
+* Uma `class` declara operações parametrizadas por um ou mais argumentos, uma `instance` as fornece, e a resolução encontra a instância a partir desses argumentos. `Std.Associative op` é indexada por uma operação, não só por um tipo.
 
 ::::cols
 :::col
