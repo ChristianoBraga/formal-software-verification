@@ -11,6 +11,7 @@ import Lectures.SlidesEn.Lecture02
 import Lectures.SlidesEn.Lecture03
 import Lectures.SlidesEn.Lecture04
 import Lectures.SlidesEn.Lecture05
+import Lectures.SlidesEn.Lecture06
 
 open Verso Doc
 open Verso.Genre Manual
@@ -59,10 +60,20 @@ def lecture5Deck : SlideDeck where
   label := "Lecture 5 · Forward Proofs"
   notesLink := some ("../en/Lecture-5___-Forward-Proofs/", "↩ Notes")
   prevLink := some ("lecture-4.en.html", "‹ Previous lecture")
+  nextLink := some ("lecture-6.en.html", "Next lecture ›")
+
+def lecture6Deck : SlideDeck where
+  fileName := "lecture-6.en.html"
+  pageTitle := "Lecture 6: Functional Programming · Slides"
+  kicker := "Lecture 6 · Formal Software Verification"
+  label := "Lecture 6 · Functional Programming"
+  notesLink := some ("../en/Lecture-6___-Functional-Programming/", "↩ Notes")
+  prevLink := some ("lecture-5.en.html", "‹ Previous lecture")
 
 def main := slidesMain (decks :=
   [((%doc Lectures.SlidesEn.Lecture01), lecture1Deck),
    ((%doc Lectures.SlidesEn.Lecture02), lecture2Deck),
    ((%doc Lectures.SlidesEn.Lecture03), lecture3Deck),
    ((%doc Lectures.SlidesEn.Lecture04), lecture4Deck),
-   ((%doc Lectures.SlidesEn.Lecture05), lecture5Deck)])
+   ((%doc Lectures.SlidesEn.Lecture05), lecture5Deck),
+   ((%doc Lectures.SlidesEn.Lecture06), lecture6Deck)])
