@@ -103,7 +103,7 @@ hb : b
 
 * Táticas básicas realizam uma transformação elementar do estado da prova cada uma, e nenhuma depende de um conectivo ou de uma teoria em particular.
 
-* `intro` move variáveis e suposições para o contexto; `apply` casa a conclusão do objetivo com a de um teorema e deixa as suposições como objetivos; `exact` fecha o objetivo com um termo; `assumption` procura no contexto.
+* `intro` move variáveis e suposições para o contexto; `apply` casa a conclusão do objetivo com a de um teorema e deixa os seus argumentos e premissas não resolvidos como objetivos; `exact` fecha o objetivo com um termo; `assumption` procura no contexto.
 
 ::::cols
 :::col
@@ -188,7 +188,7 @@ end Backward
 :::
 ::::
 
-* Um objetivo demonstrável continua demonstrável após `intro`. `apply` pode transformar um objetivo demonstrável em um indemonstrável. `sorry` fecha qualquer coisa e `#print axioms` o relata como `sorryAx`.
+* Um objetivo demonstrável continua demonstrável após `intro`. `apply` e `clear` podem transformar um objetivo demonstrável em um indemonstrável. `sorry` fecha qualquer coisa e `#print axioms` o relata como `sorryAx`.
 
 # §4.3 Regras como teoremas
 
@@ -477,7 +477,7 @@ end Backward
 
 # §4.6 Comutatividade e `ac_rfl`
 
-* Estas são as leis que a Aula 3 enunciou com `sorry`, agora provadas, e as instâncias deixam `ac_rfl` tratar `add` como `+`.
+* Estas reprovam leis que a Aula 3 enunciou com `sorry`, agora como teoremas próprios, e as instâncias deixam `ac_rfl` tratar `add` como `+`.
 
 ::::cols
 :::col
@@ -578,7 +578,7 @@ end Backward
 
 * `rw` reescreve uma vez no primeiro casamento e então tenta `rfl`; `simp` reescreve exaustivamente com o conjunto simp.
 
-* `induction … with` prova as leis gerais que a computação não alcança, e descarrega os enunciados da Aula 3.
+* `induction … with` prova as leis gerais que a computação não alcança, e reprova vários dos enunciados da Aula 3 como teoremas próprios.
 
 * A Aula 5 vira as mesmas provas do avesso, em provas progressivas e estruturadas.
 
