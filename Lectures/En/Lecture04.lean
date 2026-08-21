@@ -20,13 +20,13 @@ set_option linter.tacticAnalysis.introMerge false
 tag := "lecture-4"
 %%%
 
-This lecture supplies the proof method that Lecture 3 postponed, following chapter 3 of the *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, 2026 edition, chapter 3.] It presents tactic mode, the basic tactics, the rules for the connectives, the quantifiers and equality, the rewriting tactics `rw` and `simp`, and proofs by mathematical induction, and it discharges the statements that Lecture 3 left with `sorry`.
+This lecture supplies the proof method that Lecture 3 postponed, following chapter 3 of the *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, 2026 edition, chapter 3.] It presents tactic mode, the basic tactics, the rules for the connectives, the quantifiers and equality, the rewriting tactics `rw` and `simp`, and proofs by mathematical induction, and it re-proves several of the statements that Lecture 3 left with `sorry`, now as theorems of its own.
 
 *This lecture is also available as [presentation slides](../slides/lecture-4.en.html).*
 
 # Backward Proofs
 
-A *tactic* operates on a proof goal and either proves it or creates new subgoals. A *goal* consists of a *local context*, which lists variable declarations x : σ and hypotheses h : P, and a *conclusion*, the proposition to prove. We write the goal as the *sequent* C ⊢ Q, whose *antecedent* C is the context of hypotheses and whose *consequent* Q is the conclusion.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, chapter 5.]
+A *tactic* operates on a proof goal and either proves it or creates new subgoals. A *goal* consists of a *local context*, which lists variable declarations x : σ and hypotheses h : P, and a *conclusion*, the proposition to prove. We write the goal as the *sequent* C ⊢ Q, whose *antecedent* C is the local context and whose *consequent* Q is the conclusion.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, chapter 5.]
 
 Tactics are a *backward* proof mechanism. A backward proof starts at the goal and works towards the available hypotheses and theorems, and its characteristic phrase is "it suffices to prove". A *forward* proof starts at the hypotheses and works towards the goal, and Lecture 5 develops it. Given hypotheses ha : a, hab : a → b, hbc : b → c and the conclusion c, the two directions read as follows.
 
@@ -96,7 +96,7 @@ The basic tactics of this lecture are `intro`, `apply`, `exact`, `assumption`, `
 
 The tactic `intro` moves the leading ∀-bound variable, or the leading assumption of an implication, from the conclusion into the local context, under a chosen name. Given a provable goal it always produces a provable goal.
 
-The tactic `apply` matches the conclusion of the goal with the conclusion of a theorem or hypothesis, up to computation, and adds the assumptions of the theorem as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. When both close the goal, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the conclusion.
+The tactic `apply` matches the conclusion of the goal with the conclusion of a theorem or hypothesis, up to computation, and adds its unresolved arguments and premises as new goals. It can turn a provable goal into an unprovable one. The tactic `exact` closes the goal with a term that proves it. When both close the goal, `exact` states the intention more clearly. The tactic `assumption` searches the local context for a hypothesis that matches the conclusion.
 
 Lean inserts the parameters written to the left of the colon into the local context of the initial goal, so the proofs below need no `intro`.
 
@@ -141,7 +141,7 @@ example (a b : Prop) (hb : b) : a ∨ b := by
   exact hb
 ```
 
-Two tactics clean the local context. The tactic `clear` drops variables or hypotheses that the rest of the proof does not need, and `rename` renames a hypothesis, selected by its proposition.
+Two tactics clean the local context. The tactic `clear` drops the variables or hypotheses you name, and Lean only checks that nothing else depends on them, not that the proof can still go through, so `clear` can turn a provable goal into an unprovable one. The tactic `rename` renames a hypothesis, selected by its proposition.
 
 ```lean
 namespace Backward
@@ -275,7 +275,7 @@ example (a b : Prop) (h : a ∧ b) : a ∧ b := by
 
 # Reasoning about Connectives and Quantifiers
 
-Lecture 1 presented the rules of the connectives as inference figures. Each figure is an ordinary Lean theorem. An *introduction rule* has the connective as the outermost symbol of its conclusion and says how to prove it, and an *elimination rule* has the connective in an assumption and says how such a proof must have been built. The display below lists the rules for ∧, ∨ and ↔, with metavariables in the places the rules leave open.
+Lecture 1 presented the rules of the connectives as inference figures. Each figure is an ordinary Lean theorem. An *introduction rule* has the connective as the outermost symbol of its conclusion and says how to prove it, and an *elimination rule* has the connective in a hypothesis and says how a proof of it may be used. The display below lists the rules for ∧, ∨ and ↔, with metavariables in the places the rules leave open.
 
 ```
 And.intro : ?a → ?b → ?a ∧ ?b
@@ -289,7 +289,7 @@ Iff.mp    : (?a ↔ ?b) → ?a → ?b
 Iff.mpr   : (?a ↔ ?b) → ?b → ?a
 ```
 
-The quantifier rules, truth, falsehood and the classical principles complete the list. Negation needs no rules of its own, since ¬a is *defined* as a → False, so `intro` applies to a negated conclusion, as Lecture 1 showed. `True.intro` is the only rule for truth, `False.elim` is the only rule for falsehood, and Lean's logic is classical through `Classical.em` and `Classical.byContradiction`, both used since Lecture 1 and now applicable backwards.
+The rules for the existential quantifier, truth, falsehood and the classical principles round out the display. Implication and the universal quantifier appear in none of these displays, because both are dependent function types, so their introduction is `intro` and their elimination is application, the juxtaposition of Lecture 2. Negation needs no rules of its own, since ¬a is *defined* as a → False, so `intro` applies to a negated conclusion, as Lecture 1 showed. `True.intro` is the only rule for truth, and `False.elim` is the only rule for falsehood. Lean's core logic is constructive, and it offers classical reasoning explicitly through `Classical.em` and `Classical.byContradiction`, which rest on added axioms. Both appeared since Lecture 1 and now apply backwards.
 
 ```
 Exists.intro : ∀ (w : ?α), ?p w → ∃ x, ?p x
@@ -510,7 +510,7 @@ example (a : Prop) (h : False) : a := by
 
 # Reasoning about Equality
 
-The tactic `rfl` proves a conclusion l = r when the two sides become syntactically identical under computation, and it succeeds exactly where a mathematician says "by definition". The term `rfl` of Lecture 3 is its term-level form. Computation here names six *conversions*.
+The tactic `rfl` proves a conclusion l = r when the two sides become syntactically identical under computation, and it succeeds roughly where a mathematician says "by definition". The term `rfl` of Lecture 3 is its term-level form. Computation here names six *conversions*.
 
 :::table +header
 *
@@ -828,7 +828,7 @@ def mul : ℕ → ℕ → ℕ
 end Backward
 ```
 
-The first two theorems supply the recursive equations that `add` lacks, on its first argument. Each proof inducts on the variable the recursion consumes and closes the step case with `simp`, using the defining equations of `add` and the induction hypothesis.
+The first two theorems supply the equations for `add` when its first argument is zero or a successor, which the definition itself does not give, since `add` recurses on its second argument. Each proof inducts on that second argument, the variable the recursion consumes, and closes the step case with `simp`, using the defining equations of `add` and the induction hypothesis.
 
 ```savedLean
 namespace Backward
@@ -847,7 +847,7 @@ theorem add_succ (m n : ℕ) :
 end Backward
 ```
 
-Commutativity and associativity follow, with the two theorems above discharging the base and step cases of the first. These are `SorryTheorems.add_comm` and `SorryTheorems.add_assoc` of Lecture 3, now with real proofs.
+Commutativity and associativity follow, with the two theorems above discharging the base and step cases of the first. They re-prove the propositions stated with `sorry` as `SorryTheorems.add_comm` and `SorryTheorems.add_assoc` in Lecture 3, here as the new theorems `Backward.add_comm` and `Backward.add_assoc`. The earlier declarations keep their `sorryAx` proofs, and other Lecture 3 statements, among them `mul_comm`, `mul_assoc` and `reverse_reverse`, stay open.
 
 ```savedLean
 namespace Backward
@@ -902,7 +902,7 @@ The guide offers two hints. Induct on the argument the recursion consumes, and r
 
 ## Examples
 
-The examples below induct on ℕ and once on lists, watch the two subgoals, and check what the finished proofs rest on.
+The examples below induct on ℕ and once on lists, watch the two subgoals, and check what the finished proofs rest on. In the goals, Lean prints `Nat.succ n'` as `n' + 1` and uses the built-in `+`, not our `add`, so a trace that shows `n' + 1` reflects the pretty printer, not a change of definition.
 
 {ex "ex-induction-two-branches-trace"}[] `induction n with` produces one branch per constructor, and the trace shows the base and the step goals.
 
@@ -964,7 +964,7 @@ example (l m n : ℕ) :
   | succ n' ih => simp [add, ih]
 ```
 
-{ex "ex-induction-wrong-variable-stalls"}[] The wrong induction variable blocks the progress of the proof. Inducting on m leaves goals that neither `rfl` nor the induction hypothesis reaches, and the traces show why: the recursion of `add` consumes n, which both goals leave untouched.
+{ex "ex-induction-wrong-variable-stalls"}[] The wrong induction variable stalls the naive script. Inducting on m leaves goals that neither `rfl` nor the induction hypothesis closes, and the traces show why: the recursion of `add` consumes n, which both goals leave untouched. The statement is still provable, since `add_succ` above is exactly it, but the base-and-step routine of the earlier proofs does not carry through here.
 
 ```lean (name := exWrongVariable)
 example (m n : ℕ) :
@@ -1231,7 +1231,7 @@ theorem absurd_imp (a b : Prop) :
 end Backward
 ```
 
-{exercise "exr-existential-currying"}[] An implication out of an existential is the same as a universally quantified implication.
+{exercise "exr-existential-currying"}[] An implication out of an existential yields a universally quantified implication. This exercise proves that one direction, and the converse also holds.
 
 ```savedLean -keep
 namespace Backward
