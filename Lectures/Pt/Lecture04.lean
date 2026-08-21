@@ -20,13 +20,13 @@ set_option linter.tacticAnalysis.introMerge false
 tag := "aula-4"
 %%%
 
-Esta aula fornece o método de prova que a Aula 3 adiou, seguindo o capítulo 3 do *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, edição de 2026, capítulo 3.] Ela apresenta o modo de táticas, as táticas básicas, as regras dos conectivos, dos quantificadores e da igualdade, as táticas de reescrita `rw` e `simp` e as provas por indução matemática, e descarrega os enunciados que a Aula 3 deixou com `sorry`.
+Esta aula fornece o método de prova que a Aula 3 adiou, seguindo o capítulo 3 do *Hitchhiker's Guide to Logical Verification*.{margin}[A. Baanen, A. Bentkamp, J. Blanchette, J. Hölzl, J. Limperg, *The Hitchhiker's Guide to Logical Verification*, edição de 2026, capítulo 3.] Ela apresenta o modo de táticas, as táticas básicas, as regras dos conectivos, dos quantificadores e da igualdade, as táticas de reescrita `rw` e `simp` e as provas por indução matemática, e reprova vários dos enunciados que a Aula 3 deixou com `sorry`, agora como teoremas próprios.
 
 *Esta aula também está disponível como [slides de apresentação](../slides/lecture-4.pt.html).*
 
 # Provas Regressivas
 
-Uma *tática* opera sobre um objetivo de prova e o prova ou cria novos subobjetivos. Um *objetivo* consiste em um *contexto local*, que lista declarações de variáveis x : σ e hipóteses h : P, e uma *conclusão*, a proposição por provar. Escrevemos o objetivo como o *sequente* C ⊢ Q, cujo *antecedente* C é o contexto de hipóteses e cujo *consequente* Q é a conclusão.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, capítulo 5.]
+Uma *tática* opera sobre um objetivo de prova e o prova ou cria novos subobjetivos. Um *objetivo* consiste em um *contexto local*, que lista declarações de variáveis x : σ e hipóteses h : P, e uma *conclusão*, a proposição por provar. Escrevemos o objetivo como o *sequente* C ⊢ Q, cujo *antecedente* C é o contexto local e cujo *consequente* Q é a conclusão.{margin}[J. Avigad, L. de Moura, S. Kong, S. Ullrich, *Theorem Proving in Lean 4*, capítulo 5.]
 
 Táticas são um mecanismo de prova *regressivo*. Uma prova regressiva parte do objetivo e trabalha em direção às hipóteses e aos teoremas disponíveis, e a sua frase característica é "basta provar". Uma prova *progressiva* parte das hipóteses e trabalha em direção ao objetivo, e a Aula 5 a desenvolve. Dadas as hipóteses ha : a, hab : a → b, hbc : b → c e a conclusão c, as duas direções se leem assim.
 
@@ -96,7 +96,7 @@ As táticas básicas desta aula são `intro`, `apply`, `exact`, `assumption`, `s
 
 A tática `intro` move a variável ligada por ∀ à frente, ou a suposição à frente de uma implicação, da conclusão para o contexto local, sob um nome escolhido. Dado um objetivo demonstrável, ela sempre produz um objetivo demonstrável.
 
-A tática `apply` casa a conclusão do objetivo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona as suposições do teorema como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Quando as duas fecham o objetivo, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com a conclusão.
+A tática `apply` casa a conclusão do objetivo com a conclusão de um teorema ou de uma hipótese, a menos de computação, e adiciona os seus argumentos e premissas não resolvidos como novos objetivos. Ela pode transformar um objetivo demonstrável em um indemonstrável. A tática `exact` fecha o objetivo com um termo que o prova. Quando as duas fecham o objetivo, `exact` declara a intenção com mais clareza. A tática `assumption` procura no contexto local uma hipótese que case com a conclusão.
 
 Lean insere os parâmetros escritos à esquerda dos dois-pontos no contexto local do objetivo inicial, então as provas abaixo não precisam de `intro`.
 
@@ -141,7 +141,7 @@ example (a b : Prop) (hb : b) : a ∨ b := by
   exact hb
 ```
 
-Duas táticas limpam o contexto local. A tática `clear` descarta variáveis ou hipóteses de que o resto da prova não precisa, e `rename` renomeia uma hipótese, selecionada pela sua proposição.
+Duas táticas limpam o contexto local. A tática `clear` descarta as variáveis ou hipóteses que você nomeia, e Lean apenas verifica que nada mais depende delas, não que a prova ainda se conclui, então `clear` pode transformar um objetivo demonstrável em um indemonstrável. A tática `rename` renomeia uma hipótese, selecionada pela sua proposição.
 
 ```lean
 namespace Backward
@@ -275,7 +275,7 @@ example (a b : Prop) (h : a ∧ b) : a ∧ b := by
 
 # Raciocínio sobre Conectivos e Quantificadores
 
-A Aula 1 apresentou as regras dos conectivos como figuras de inferência. Cada figura é um teorema ordinário de Lean. Uma *regra de introdução* tem o conectivo como símbolo mais externo da sua conclusão e diz como prová-lo, e uma *regra de eliminação* tem o conectivo em uma suposição e diz como essa prova deve ter sido construída. O quadro abaixo lista as regras de ∧, ∨ e ↔, com metavariáveis nos lugares que as regras deixam em aberto.
+A Aula 1 apresentou as regras dos conectivos como figuras de inferência. Cada figura é um teorema ordinário de Lean. Uma *regra de introdução* tem o conectivo como símbolo mais externo da sua conclusão e diz como prová-lo, e uma *regra de eliminação* tem o conectivo em uma hipótese e diz como uma prova dele pode ser usada. O quadro abaixo lista as regras de ∧, ∨ e ↔, com metavariáveis nos lugares que as regras deixam em aberto.
 
 ```
 And.intro : ?a → ?b → ?a ∧ ?b
@@ -289,7 +289,7 @@ Iff.mp    : (?a ↔ ?b) → ?a → ?b
 Iff.mpr   : (?a ↔ ?b) → ?b → ?a
 ```
 
-As regras dos quantificadores, a verdade, a falsidade e os princípios clássicos completam a lista. A negação dispensa regras próprias, pois ¬a é *definida* como a → False, então `intro` se aplica a uma conclusão negada, como a Aula 1 mostrou. `True.intro` é a única regra da verdade, `False.elim` é a única regra da falsidade, e a lógica de Lean é clássica por meio de `Classical.em` e `Classical.byContradiction`, usados desde a Aula 1 e agora aplicáveis regressivamente.
+As regras do quantificador existencial, a verdade, a falsidade e os princípios clássicos completam o quadro. A implicação e o quantificador universal não aparecem em nenhum desses quadros, porque ambos são tipos de função dependentes, então a sua introdução é `intro` e a sua eliminação é a aplicação, a justaposição da Aula 2. A negação dispensa regras próprias, pois ¬a é *definida* como a → False, então `intro` se aplica a uma conclusão negada, como a Aula 1 mostrou. `True.intro` é a única regra da verdade, e `False.elim` é a única regra da falsidade. A lógica central de Lean é construtiva, e ela oferece o raciocínio clássico de forma explícita por meio de `Classical.em` e `Classical.byContradiction`, que repousam sobre axiomas adicionais. Ambos aparecem desde a Aula 1 e agora se aplicam regressivamente.
 
 ```
 Exists.intro : ∀ (w : ?α), ?p w → ∃ x, ?p x
@@ -510,7 +510,7 @@ example (a : Prop) (h : False) : a := by
 
 # Raciocínio sobre Igualdade
 
-A tática `rfl` prova uma conclusão l = r quando os dois lados se tornam sintaticamente idênticos sob computação, e ela tem sucesso exatamente onde um matemático diz "por definição". O termo `rfl` da Aula 3 é a sua forma de termo. A computação aqui nomeia seis *conversões*.
+A tática `rfl` prova uma conclusão l = r quando os dois lados se tornam sintaticamente idênticos sob computação, e ela tem sucesso aproximadamente onde um matemático diz "por definição". O termo `rfl` da Aula 3 é a sua forma de termo. A computação aqui nomeia seis *conversões*.
 
 :::table +header
 *
@@ -828,7 +828,7 @@ def mul : ℕ → ℕ → ℕ
 end Backward
 ```
 
-Os dois primeiros teoremas fornecem as equações recursivas que faltam a `add`, sobre o seu primeiro argumento. Cada prova induz sobre a variável que a recursão consome e fecha o caso do passo com `simp`, usando as equações que definem `add` e a hipótese de indução.
+Os dois primeiros teoremas fornecem as equações para `add` quando o seu primeiro argumento é zero ou um sucessor, que a própria definição não dá, pois `add` recorre sobre o seu segundo argumento. Cada prova induz sobre esse segundo argumento, a variável que a recursão consome, e fecha o caso do passo com `simp`, usando as equações que definem `add` e a hipótese de indução.
 
 ```savedLean
 namespace Backward
@@ -847,7 +847,7 @@ theorem add_succ (m n : ℕ) :
 end Backward
 ```
 
-Comutatividade e associatividade seguem, com os dois teoremas acima descarregando o caso base e o caso do passo da primeira. Estes são `SorryTheorems.add_comm` e `SorryTheorems.add_assoc` da Aula 3, agora com provas de verdade.
+Comutatividade e associatividade seguem, com os dois teoremas acima descarregando o caso base e o caso do passo da primeira. Eles reprovam as proposições enunciadas com `sorry` como `SorryTheorems.add_comm` e `SorryTheorems.add_assoc` na Aula 3, aqui como os novos teoremas `Backward.add_comm` e `Backward.add_assoc`. As declarações anteriores mantêm as suas provas com `sorryAx`, e outros enunciados da Aula 3, entre eles `mul_comm`, `mul_assoc` e `reverse_reverse`, continuam em aberto.
 
 ```savedLean
 namespace Backward
@@ -902,7 +902,7 @@ O guia oferece duas dicas. Induza sobre o argumento que a recursão consome, e l
 
 ## Exemplos
 
-Os exemplos abaixo induzem sobre ℕ e uma vez sobre listas, observam os dois subobjetivos e verificam sobre o que as provas terminadas repousam.
+Os exemplos abaixo induzem sobre ℕ e uma vez sobre listas, observam os dois subobjetivos e verificam sobre o que as provas terminadas repousam. Nos objetivos, Lean imprime `Nat.succ n'` como `n' + 1` e usa o `+` interno, não o nosso `add`, então um trace que mostra `n' + 1` reflete o impressor, não uma mudança de definição.
 
 {ex "ex-induction-two-branches-trace"}[] `induction n with` produz um ramo por construtor, e o trace mostra os objetivos do caso base e do passo.
 
@@ -964,7 +964,7 @@ example (l m n : ℕ) :
   | succ n' ih => simp [add, ih]
 ```
 
-{ex "ex-induction-wrong-variable-stalls"}[] A variável de indução errada impede o progresso da prova. Induzir sobre m deixa objetivos que nem `rfl` nem a hipótese de indução alcançam, e os traces mostram por quê: a recursão de `add` consome n, que os dois objetivos deixam intocado.
+{ex "ex-induction-wrong-variable-stalls"}[] A variável de indução errada emperra o roteiro ingênuo. Induzir sobre m deixa objetivos que nem `rfl` nem a hipótese de indução fecham, e os traces mostram por quê: a recursão de `add` consome n, que os dois objetivos deixam intocado. O enunciado continua demonstrável, pois `add_succ` acima é exatamente ele, mas a rotina de caso base e passo das provas anteriores não se sustenta aqui.
 
 ```lean (name := exWrongVariable)
 example (m n : ℕ) :
@@ -1231,7 +1231,7 @@ theorem absurd_imp (a b : Prop) :
 end Backward
 ```
 
-{exercise "exr-existential-currying"}[] Uma implicação a partir de um existencial é o mesmo que uma implicação universalmente quantificada.
+{exercise "exr-existential-currying"}[] Uma implicação a partir de um existencial produz uma implicação universalmente quantificada. Este exercício prova essa direção, e a recíproca também vale.
 
 ```savedLean -keep
 namespace Backward
