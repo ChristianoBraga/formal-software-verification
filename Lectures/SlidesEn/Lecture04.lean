@@ -103,7 +103,7 @@ hb : b
 
 * Basic tactics perform one elementary transformation of the proof state each, and none depends on a particular connective or theory.
 
-* `intro` moves variables and assumptions into the context; `apply` matches the conclusion of the goal with that of a theorem and leaves the assumptions as goals; `exact` closes the goal with a term; `assumption` searches the context.
+* `intro` moves variables and assumptions into the context; `apply` matches the conclusion of the goal with that of a theorem and leaves its unresolved arguments and premises as goals; `exact` closes the goal with a term; `assumption` searches the context.
 
 ::::cols
 :::col
@@ -188,7 +188,7 @@ end Backward
 :::
 ::::
 
-* A provable goal stays provable after `intro`. `apply` can turn a provable goal into an unprovable one. `sorry` closes anything and `#print axioms` reports it as `sorryAx`.
+* A provable goal stays provable after `intro`. `apply` and `clear` can turn a provable goal into an unprovable one. `sorry` closes anything and `#print axioms` reports it as `sorryAx`.
 
 # §4.3 Rules as theorems
 
@@ -477,7 +477,7 @@ end Backward
 
 # §4.6 Commutativity and `ac_rfl`
 
-* These are the laws Lecture 3 stated with `sorry`, now proved, and the instances let `ac_rfl` treat `add` like `+`.
+* These re-prove laws Lecture 3 stated with `sorry`, now as theorems of their own, and the instances let `ac_rfl` treat `add` like `+`.
 
 ::::cols
 :::col
@@ -578,7 +578,7 @@ end Backward
 
 * `rw` rewrites once at the first match and then tries `rfl`; `simp` rewrites exhaustively with the simp set.
 
-* `induction … with` proves the general laws that computation cannot reach, and it discharges Lecture 3's statements.
+* `induction … with` proves the general laws that computation cannot reach, and it re-proves several of Lecture 3's statements as theorems of its own.
 
 * Lecture 5 turns the same proofs around, into forward and structured proofs.
 
